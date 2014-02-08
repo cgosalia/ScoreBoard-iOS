@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F12B7A20-570E-432C-B299-3F4054A63D82</string>
+	<key>IDESourceControlProjectName</key>
+	<string>SimpleTable</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>B100FAE4-4300-407F-9B60-470B75F8D127</key>
+		<string>ssh://github.iu.edu/ravichee/OOSM.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>SimplestTableDelete/SimpleTable.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>B100FAE4-4300-407F-9B60-470B75F8D127</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.iu.edu/ravichee/OOSM.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>B100FAE4-4300-407F-9B60-470B75F8D127</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B100FAE4-4300-407F-9B60-470B75F8D127</string>
+			<key>IDESourceControlWCCName</key>
+			<string>OOSM</string>
+		</dict>
+	</array>
+</dict>
+</plist>

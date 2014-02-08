@@ -144,7 +144,6 @@
 				F4FFD317153BF3E800759785 /* SimpleTableViewController.m */,
 				F4FFD319153BF3E900759785 /* SimpleTableViewController.xib */,
 				F4FFD30B153BF3E800759785 /* Supporting Files */,
-				F4DBB63A154C41F300904C6A /* SimpleTableCell.h */,
 				F4DBB63B154C41F300904C6A /* SimpleTableCell.m */,
 				F4DBB63D154CC10B00904C6A /* SimpleTableCell.xib */,
 				F479E158155E3E99005C48B1 /* recipes.plist */,
@@ -155,6 +154,7 @@
 		F4FFD30B153BF3E800759785 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F4DBB63A154C41F300904C6A /* SimpleTableCell.h */,
 				F4FFD30C153BF3E800759785 /* SimpleTable-Info.plist */,
 				F4FFD30D153BF3E800759785 /* InfoPlist.strings */,
 				F4FFD310153BF3E800759785 /* main.m */,
