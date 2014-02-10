@@ -5,19 +5,19 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>F12B7A20-570E-432C-B299-3F4054A63D82</string>
+	<string>83168198-CDA3-4271-9774-5C3CB0F0772D</string>
 	<key>IDESourceControlProjectName</key>
 	<string>SimpleTable</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>B100FAE4-4300-407F-9B60-470B75F8D127</key>
+		<key>08829253-8FB6-4072-BD44-650E520399ED</key>
 		<string>ssh://github.iu.edu/ravichee/OOSM.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>SimplestTableDelete/SimpleTable.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>B100FAE4-4300-407F-9B60-470B75F8D127</key>
+		<key>08829253-8FB6-4072-BD44-650E520399ED</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -25,14 +25,14 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>B100FAE4-4300-407F-9B60-470B75F8D127</string>
+	<string>08829253-8FB6-4072-BD44-650E520399ED</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>B100FAE4-4300-407F-9B60-470B75F8D127</string>
+			<string>08829253-8FB6-4072-BD44-650E520399ED</string>
 			<key>IDESourceControlWCCName</key>
 			<string>OOSM</string>
 		</dict>
