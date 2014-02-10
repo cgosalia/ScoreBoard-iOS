@@ -1,0 +1,493 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CDF7ECEB18A6FE3B006C1306 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF7ECEA18A6FE3B006C1306 /* Foundation.framework */; };
+		CDF7ECED18A6FE3B006C1306 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF7ECEC18A6FE3B006C1306 /* CoreGraphics.framework */; };
+		CDF7ECEF18A6FE3B006C1306 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF7ECEE18A6FE3B006C1306 /* UIKit.framework */; };
+		CDF7ECF518A6FE3B006C1306 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CDF7ECF318A6FE3B006C1306 /* InfoPlist.strings */; };
+		CDF7ECF718A6FE3B006C1306 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF7ECF618A6FE3B006C1306 /* main.m */; };
+		CDF7ECFB18A6FE3B006C1306 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF7ECFA18A6FE3B006C1306 /* AppDelegate.m */; };
+		CDF7ECFE18A6FE3B006C1306 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDF7ECFC18A6FE3B006C1306 /* Main.storyboard */; };
+		CDF7ED0118A6FE3B006C1306 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF7ED0018A6FE3B006C1306 /* ViewController.m */; };
+		CDF7ED0318A6FE3B006C1306 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDF7ED0218A6FE3B006C1306 /* Images.xcassets */; };
+		CDF7ED0A18A6FE3B006C1306 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF7ED0918A6FE3B006C1306 /* XCTest.framework */; };
+		CDF7ED0B18A6FE3B006C1306 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF7ECEA18A6FE3B006C1306 /* Foundation.framework */; };
+		CDF7ED0C18A6FE3B006C1306 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF7ECEE18A6FE3B006C1306 /* UIKit.framework */; };
+		CDF7ED1418A6FE3B006C1306 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CDF7ED1218A6FE3B006C1306 /* InfoPlist.strings */; };
+		CDF7ED1618A6FE3B006C1306 /* Bento_Mobility_Score_Tracking_AppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF7ED1518A6FE3B006C1306 /* Bento_Mobility_Score_Tracking_AppTests.m */; };
+		CDF7ED2118A72764006C1306 /* TrackingModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF7ED2018A72764006C1306 /* TrackingModeViewController.m */; };
+		CDF7ED2418A75339006C1306 /* PlayerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF7ED2318A75339006C1306 /* PlayerCell.m */; };
+		CDF7ED2718A89577006C1306 /* PlayerInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF7ED2618A89577006C1306 /* PlayerInfo.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CDF7ED0D18A6FE3B006C1306 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDF7ECDF18A6FE3B006C1306 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CDF7ECE618A6FE3B006C1306;
+			remoteInfo = "Bento Mobility Score Tracking App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CDF7ECE718A6FE3B006C1306 /* Bento Mobility Score Tracking App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bento Mobility Score Tracking App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDF7ECEA18A6FE3B006C1306 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		CDF7ECEC18A6FE3B006C1306 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		CDF7ECEE18A6FE3B006C1306 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		CDF7ECF218A6FE3B006C1306 /* Bento Mobility Score Tracking App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Bento Mobility Score Tracking App-Info.plist"; sourceTree = "<group>"; };
+		CDF7ECF418A6FE3B006C1306 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CDF7ECF618A6FE3B006C1306 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CDF7ECF818A6FE3B006C1306 /* Bento Mobility Score Tracking App-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bento Mobility Score Tracking App-Prefix.pch"; sourceTree = "<group>"; };
+		CDF7ECF918A6FE3B006C1306 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CDF7ECFA18A6FE3B006C1306 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CDF7ECFD18A6FE3B006C1306 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CDF7ECFF18A6FE3B006C1306 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		CDF7ED0018A6FE3B006C1306 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		CDF7ED0218A6FE3B006C1306 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		CDF7ED0818A6FE3B006C1306 /* Bento Mobility Score Tracking AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bento Mobility Score Tracking AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDF7ED0918A6FE3B006C1306 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		CDF7ED1118A6FE3B006C1306 /* Bento Mobility Score Tracking AppTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Bento Mobility Score Tracking AppTests-Info.plist"; sourceTree = "<group>"; };
+		CDF7ED1318A6FE3B006C1306 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CDF7ED1518A6FE3B006C1306 /* Bento_Mobility_Score_Tracking_AppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Bento_Mobility_Score_Tracking_AppTests.m; sourceTree = "<group>"; };
+		CDF7ED1F18A72764006C1306 /* TrackingModeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackingModeViewController.h; sourceTree = "<group>"; };
+		CDF7ED2018A72764006C1306 /* TrackingModeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackingModeViewController.m; sourceTree = "<group>"; };
+		CDF7ED2218A75339006C1306 /* PlayerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerCell.h; sourceTree = "<group>"; };
+		CDF7ED2318A75339006C1306 /* PlayerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerCell.m; sourceTree = "<group>"; };
+		CDF7ED2518A89577006C1306 /* PlayerInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerInfo.h; path = ../PlayerInfo.h; sourceTree = "<group>"; };
+		CDF7ED2618A89577006C1306 /* PlayerInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayerInfo.m; path = ../PlayerInfo.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CDF7ECE418A6FE3B006C1306 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDF7ECED18A6FE3B006C1306 /* CoreGraphics.framework in Frameworks */,
+				CDF7ECEF18A6FE3B006C1306 /* UIKit.framework in Frameworks */,
+				CDF7ECEB18A6FE3B006C1306 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDF7ED0518A6FE3B006C1306 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDF7ED0A18A6FE3B006C1306 /* XCTest.framework in Frameworks */,
+				CDF7ED0C18A6FE3B006C1306 /* UIKit.framework in Frameworks */,
+				CDF7ED0B18A6FE3B006C1306 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CDF7ECDE18A6FE3B006C1306 = {
+			isa = PBXGroup;
+			children = (
+				CDF7ECF018A6FE3B006C1306 /* Bento Mobility Score Tracking App */,
+				CDF7ED0F18A6FE3B006C1306 /* Bento Mobility Score Tracking AppTests */,
+				CDF7ECE918A6FE3B006C1306 /* Frameworks */,
+				CDF7ECE818A6FE3B006C1306 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CDF7ECE818A6FE3B006C1306 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CDF7ECE718A6FE3B006C1306 /* Bento Mobility Score Tracking App.app */,
+				CDF7ED0818A6FE3B006C1306 /* Bento Mobility Score Tracking AppTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CDF7ECE918A6FE3B006C1306 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CDF7ECEA18A6FE3B006C1306 /* Foundation.framework */,
+				CDF7ECEC18A6FE3B006C1306 /* CoreGraphics.framework */,
+				CDF7ECEE18A6FE3B006C1306 /* UIKit.framework */,
+				CDF7ED0918A6FE3B006C1306 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CDF7ECF018A6FE3B006C1306 /* Bento Mobility Score Tracking App */ = {
+			isa = PBXGroup;
+			children = (
+				CDF7ECF918A6FE3B006C1306 /* AppDelegate.h */,
+				CDF7ECFA18A6FE3B006C1306 /* AppDelegate.m */,
+				CDF7ECFC18A6FE3B006C1306 /* Main.storyboard */,
+				CDF7ECFF18A6FE3B006C1306 /* ViewController.h */,
+				CDF7ED0018A6FE3B006C1306 /* ViewController.m */,
+				CDF7ED0218A6FE3B006C1306 /* Images.xcassets */,
+				CDF7ECF118A6FE3B006C1306 /* Supporting Files */,
+				CDF7ED1F18A72764006C1306 /* TrackingModeViewController.h */,
+				CDF7ED2018A72764006C1306 /* TrackingModeViewController.m */,
+				CDF7ED2218A75339006C1306 /* PlayerCell.h */,
+				CDF7ED2318A75339006C1306 /* PlayerCell.m */,
+			);
+			path = "Bento Mobility Score Tracking App";
+			sourceTree = "<group>";
+		};
+		CDF7ECF118A6FE3B006C1306 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CDF7ED2518A89577006C1306 /* PlayerInfo.h */,
+				CDF7ED2618A89577006C1306 /* PlayerInfo.m */,
+				CDF7ECF218A6FE3B006C1306 /* Bento Mobility Score Tracking App-Info.plist */,
+				CDF7ECF318A6FE3B006C1306 /* InfoPlist.strings */,
+				CDF7ECF618A6FE3B006C1306 /* main.m */,
+				CDF7ECF818A6FE3B006C1306 /* Bento Mobility Score Tracking App-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CDF7ED0F18A6FE3B006C1306 /* Bento Mobility Score Tracking AppTests */ = {
+			isa = PBXGroup;
+			children = (
+				CDF7ED1518A6FE3B006C1306 /* Bento_Mobility_Score_Tracking_AppTests.m */,
+				CDF7ED1018A6FE3B006C1306 /* Supporting Files */,
+			);
+			path = "Bento Mobility Score Tracking AppTests";
+			sourceTree = "<group>";
+		};
+		CDF7ED1018A6FE3B006C1306 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CDF7ED1118A6FE3B006C1306 /* Bento Mobility Score Tracking AppTests-Info.plist */,
+				CDF7ED1218A6FE3B006C1306 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CDF7ECE618A6FE3B006C1306 /* Bento Mobility Score Tracking App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CDF7ED1918A6FE3B006C1306 /* Build configuration list for PBXNativeTarget "Bento Mobility Score Tracking App" */;
+			buildPhases = (
+				CDF7ECE318A6FE3B006C1306 /* Sources */,
+				CDF7ECE418A6FE3B006C1306 /* Frameworks */,
+				CDF7ECE518A6FE3B006C1306 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Bento Mobility Score Tracking App";
+			productName = "Bento Mobility Score Tracking App";
+			productReference = CDF7ECE718A6FE3B006C1306 /* Bento Mobility Score Tracking App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CDF7ED0718A6FE3B006C1306 /* Bento Mobility Score Tracking AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CDF7ED1C18A6FE3B006C1306 /* Build configuration list for PBXNativeTarget "Bento Mobility Score Tracking AppTests" */;
+			buildPhases = (
+				CDF7ED0418A6FE3B006C1306 /* Sources */,
+				CDF7ED0518A6FE3B006C1306 /* Frameworks */,
+				CDF7ED0618A6FE3B006C1306 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CDF7ED0E18A6FE3B006C1306 /* PBXTargetDependency */,
+			);
+			name = "Bento Mobility Score Tracking AppTests";
+			productName = "Bento Mobility Score Tracking AppTests";
+			productReference = CDF7ED0818A6FE3B006C1306 /* Bento Mobility Score Tracking AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CDF7ECDF18A6FE3B006C1306 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Ravi Varsha Cheemanahalli Gopalakrishna";
+				TargetAttributes = {
+					CDF7ED0718A6FE3B006C1306 = {
+						TestTargetID = CDF7ECE618A6FE3B006C1306;
+					};
+				};
+			};
+			buildConfigurationList = CDF7ECE218A6FE3B006C1306 /* Build configuration list for PBXProject "Bento Mobility Score Tracking App" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CDF7ECDE18A6FE3B006C1306;
+			productRefGroup = CDF7ECE818A6FE3B006C1306 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CDF7ECE618A6FE3B006C1306 /* Bento Mobility Score Tracking App */,
+				CDF7ED0718A6FE3B006C1306 /* Bento Mobility Score Tracking AppTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CDF7ECE518A6FE3B006C1306 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDF7ED0318A6FE3B006C1306 /* Images.xcassets in Resources */,
+				CDF7ECF518A6FE3B006C1306 /* InfoPlist.strings in Resources */,
+				CDF7ECFE18A6FE3B006C1306 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDF7ED0618A6FE3B006C1306 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDF7ED1418A6FE3B006C1306 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CDF7ECE318A6FE3B006C1306 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDF7ED0118A6FE3B006C1306 /* ViewController.m in Sources */,
+				CDF7ECFB18A6FE3B006C1306 /* AppDelegate.m in Sources */,
+				CDF7ED2118A72764006C1306 /* TrackingModeViewController.m in Sources */,
+				CDF7ED2418A75339006C1306 /* PlayerCell.m in Sources */,
+				CDF7ED2718A89577006C1306 /* PlayerInfo.m in Sources */,
+				CDF7ECF718A6FE3B006C1306 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDF7ED0418A6FE3B006C1306 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDF7ED1618A6FE3B006C1306 /* Bento_Mobility_Score_Tracking_AppTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CDF7ED0E18A6FE3B006C1306 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CDF7ECE618A6FE3B006C1306 /* Bento Mobility Score Tracking App */;
+			targetProxy = CDF7ED0D18A6FE3B006C1306 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CDF7ECF318A6FE3B006C1306 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CDF7ECF418A6FE3B006C1306 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		CDF7ECFC18A6FE3B006C1306 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CDF7ECFD18A6FE3B006C1306 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CDF7ED1218A6FE3B006C1306 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CDF7ED1318A6FE3B006C1306 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CDF7ED1718A6FE3B006C1306 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		CDF7ED1818A6FE3B006C1306 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CDF7ED1A18A6FE3B006C1306 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Bento Mobility Score Tracking App/Bento Mobility Score Tracking App-Prefix.pch";
+				INFOPLIST_FILE = "Bento Mobility Score Tracking App/Bento Mobility Score Tracking App-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		CDF7ED1B18A6FE3B006C1306 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Bento Mobility Score Tracking App/Bento Mobility Score Tracking App-Prefix.pch";
+				INFOPLIST_FILE = "Bento Mobility Score Tracking App/Bento Mobility Score Tracking App-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		CDF7ED1D18A6FE3B006C1306 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Bento Mobility Score Tracking App.app/Bento Mobility Score Tracking App";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Bento Mobility Score Tracking App/Bento Mobility Score Tracking App-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Bento Mobility Score Tracking AppTests/Bento Mobility Score Tracking AppTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		CDF7ED1E18A6FE3B006C1306 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Bento Mobility Score Tracking App.app/Bento Mobility Score Tracking App";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Bento Mobility Score Tracking App/Bento Mobility Score Tracking App-Prefix.pch";
+				INFOPLIST_FILE = "Bento Mobility Score Tracking AppTests/Bento Mobility Score Tracking AppTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CDF7ECE218A6FE3B006C1306 /* Build configuration list for PBXProject "Bento Mobility Score Tracking App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDF7ED1718A6FE3B006C1306 /* Debug */,
+				CDF7ED1818A6FE3B006C1306 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CDF7ED1918A6FE3B006C1306 /* Build configuration list for PBXNativeTarget "Bento Mobility Score Tracking App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDF7ED1A18A6FE3B006C1306 /* Debug */,
+				CDF7ED1B18A6FE3B006C1306 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		CDF7ED1C18A6FE3B006C1306 /* Build configuration list for PBXNativeTarget "Bento Mobility Score Tracking AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDF7ED1D18A6FE3B006C1306 /* Debug */,
+				CDF7ED1E18A6FE3B006C1306 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CDF7ECDF18A6FE3B006C1306 /* Project object */;
+}
