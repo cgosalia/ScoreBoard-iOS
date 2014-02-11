@@ -27,6 +27,10 @@ PlayerCell *selectedCell;
 
 int playerId = 1;
 
+BOOL longIncr = false;
+
+BOOL longDecr = false;
+
 NSIndexPath *labelIndexPath;
 
 - (IBAction)incrementScoreByOne:(id)sender {
@@ -74,9 +78,10 @@ NSIndexPath *labelIndexPath;
 {
     [super viewDidLoad];
     
-    PlayerInfo *firstPlayer = [[PlayerInfo alloc] init];
     
-    firstPlayer.playerName = @"Player 1";
+    PlayerInfo *firstPlayer = [[PlayerInfo alloc] init];
+    NSString *combinedName = [NSString stringWithFormat:@"%@%@%@", @"Player (", [NSString stringWithFormat:@"%d",playerId++],@")"];
+    firstPlayer.playerName = combinedName;
     firstPlayer.score = 0;
     
     cellData = [[NSMutableArray alloc] initWithObjects:firstPlayer, nil];
@@ -115,7 +120,7 @@ NSIndexPath *labelIndexPath;
     static NSString *CellIdentifier = @"CellForPlayers";
     cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 
-    // Configure the cell...
+    // Configure the cell
     
     if (cell == nil) {
         cell = [[PlayerCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:CellIdentifier];
@@ -127,35 +132,133 @@ NSIndexPath *labelIndexPath;
     [cell.incrementScore setTitle:@"+" forState:normal];
     [cell.decrementScore setTitle:@"-" forState:normal];
     
+    // Configure double-tap gestures for editing label of player name
     UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
     [doubleTap setNumberOfTapsRequired:2];
     [cell.playerName addGestureRecognizer:doubleTap];
+    
+    
+    // Configure long press gesture for increment buttons
+    UILongPressGestureRecognizer *longPressIncr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressIncrement:)];
+    longPressIncr.minimumPressDuration = 1;  //1.0 seconds
+    [cell.incrementScore addGestureRecognizer:longPressIncr];
+
+    
+    // Configure long press gesture for decrement buttons
+    UILongPressGestureRecognizer *longPressDecr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressDecrement:)];
+    longPressDecr.minimumPressDuration = 1;  //1.0 seconds
+    [cell.decrementScore addGestureRecognizer:longPressDecr];
+    
     //cell.textLabel.text = [cellData objectAtIndex:indexPath.row];
     return cell;
 }
+
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+
+
+- (void)longPressIncrement:(UILongPressGestureRecognizer*)gesture {
+    if ( gesture.state == UIGestureRecognizerStateEnded ) {
+        NSLog(@"long press of incremnent");
+        UIView *uiView = (UIView *) gesture.view;
+        while(![uiView isKindOfClass: [UITableViewCell class]]) {
+            uiView = uiView.superview;
+        }
+        labelIndexPath = [self.tableView indexPathForCell:(UITableViewCell *)uiView];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Increment Score" message:@"Enter score value to add to current score" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+        UITextField *alertTextField = [alert textFieldAtIndex:0];
+        alertTextField.keyboardType = UIKeyboardTypeNumberPad;
+        [alert setTag:2];
+        alert.show;
+    }
+}
+
+
+- (void)longPressDecrement:(UILongPressGestureRecognizer*)gesture {
+    if ( gesture.state == UIGestureRecognizerStateEnded ) {
+        NSLog(@"long press of decrement");
+        UIView *uiView = (UIView *) gesture.view;
+        while(![uiView isKindOfClass: [UITableViewCell class]]) {
+            uiView = uiView.superview;
+        }
+        labelIndexPath = [self.tableView indexPathForCell:(UITableViewCell *)uiView];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Decrement Score" message:@"Enter score value to subtract from current score" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+        UITextField *alertTextField = [alert textFieldAtIndex:0];
+        alertTextField.keyboardType = UIKeyboardTypeNumberPad;
+        [alert setTag:3];
+        alert.show;
+    }
+}
+
 
 -(void) handleDoubleTap:(UITapGestureRecognizer *) gesture {
     UIView *uiView = (UIView *) gesture.view;
     while(![uiView isKindOfClass: [UITableViewCell class]]) {
         uiView = uiView.superview;
     }
-    labelIndexPath = [self.tableView indexPathForCell:uiView];
-    //labelOrigin = [cell.playerName convertPoint:CGPointZero toView:self.tableView];
-    NSString *Temp = cell.playerName.text;
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player Name" message:@"Enter name" delegate:self cancelButtonTitle:@"Cancel Rename" otherButtonTitles:@"Done", nil];
+    labelIndexPath = [self.tableView indexPathForCell:(UITableViewCell *)uiView];
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player Name" message:@"Enter a new name" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alert setTag:1];
     alert.show;
 }
 
 -(void) alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if(buttonIndex == 1) {
+    if(alertView.tag==1 && buttonIndex == 1) {
         UITextField *textField = [alertView textFieldAtIndex:0];
-        PlayerInfo *selectedPlayer = [cellData objectAtIndex:labelIndexPath.row];
-        PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
-        newPlayer.playerName = textField.text;
-        newPlayer.score = selectedPlayer.score;
-        [cellData replaceObjectAtIndex:labelIndexPath.row withObject:newPlayer];
-        [self.tableView reloadData];
+        if ([textField.text length]>0) {
+            PlayerInfo *selectedPlayer = [cellData objectAtIndex:labelIndexPath.row];
+            PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
+            newPlayer.playerName = textField.text;
+            newPlayer.score = selectedPlayer.score;
+            [cellData replaceObjectAtIndex:labelIndexPath.row withObject:newPlayer];
+            [self.tableView reloadData];
+        }
+    }
+    if(alertView.tag==2 && buttonIndex == 1 ) {
+        UITextField *textField = [alertView textFieldAtIndex:0];
+        if ([textField.text length]>0) {
+            PlayerInfo *selectedPlayer = [cellData objectAtIndex:labelIndexPath.row];
+            PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
+            int valueToIncr = [textField.text intValue];
+            int currentScore = selectedPlayer.score;
+            newPlayer.playerName = selectedPlayer.playerName;
+            newPlayer.score = currentScore+valueToIncr;
+            [cellData replaceObjectAtIndex:labelIndexPath.row withObject:newPlayer];
+            [self.tableView reloadData];
+        }
+    }
+    if(alertView.tag==3 && buttonIndex == 1 ) {
+        UITextField *textField = [alertView textFieldAtIndex:0];
+        if ([textField.text length]>0) {
+            PlayerInfo *selectedPlayer = [cellData objectAtIndex:labelIndexPath.row];
+            
+            int valueToDecr = [textField.text intValue];
+            int currentScore = selectedPlayer.score;
+            
+            if(currentScore-valueToDecr > 0) {
+                PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
+                newPlayer.playerName = selectedPlayer.playerName;
+                newPlayer.score = currentScore-valueToDecr;
+                [cellData replaceObjectAtIndex:labelIndexPath.row withObject:newPlayer];
+                
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid Score" message:@"Score cannot go below zero" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                alert.alertViewStyle = UIAlertViewStyleDefault;
+                [alert setTag:4];
+                alert.show;
+            }
+            [self.tableView reloadData];
+            
+        }
     }
 }
 
@@ -179,10 +282,8 @@ NSIndexPath *labelIndexPath;
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        
         [cellData removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -219,13 +320,27 @@ NSIndexPath *labelIndexPath;
  */
 
 
-
 - (IBAction)addPlayer:(id)sender {
     PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
-    newPlayer.playerName = @"New Player";
+    NSString *combinedName = [NSString stringWithFormat:@"%@%@%@", @"Player (", [NSString stringWithFormat:@"%d",playerId++],@")"];
+    newPlayer.playerName = combinedName;
     newPlayer.score = 0;
     [cellData addObject:newPlayer];
     [self.tableView reloadData];
-   
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString *sectionName;
+    switch (section)
+    {
+        case 0:
+            sectionName = NSLocalizedString(@"Editable Player Info", @"playerInfoSection");
+            break;
+        default:
+            sectionName = @"OTHER";
+            break;
+    }
+    return sectionName;
 }
 @end
