@@ -33,46 +33,6 @@ BOOL longDecr = false;
 
 NSIndexPath *labelIndexPath;
 
-- (IBAction)incrementScoreByOne:(id)sender {
-    
-    CGPoint btnOrigin = [sender convertPoint:CGPointZero toView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:btnOrigin];
-    PlayerInfo *selectedPlayer = [cellData objectAtIndex:indexPath.row];
-    int score = selectedPlayer.score;
-    score++;
-    PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
-    newPlayer.playerName = selectedPlayer.playerName;
-    newPlayer.score = score;
-    [cellData replaceObjectAtIndex:indexPath.row withObject:newPlayer];
-    [self.tableView reloadData];
-
-}
-
-- (IBAction)decrementScoreByOne:(id)sender {
-    
-    CGPoint btnOrigin = [sender convertPoint:CGPointZero toView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:btnOrigin];
-    PlayerInfo *selectedPlayer = [cellData objectAtIndex:indexPath.row];
-    int score = selectedPlayer.score;
-    if(score > 0) {
-    score--;
-    }
-    PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
-    newPlayer.playerName = selectedPlayer.playerName;
-    newPlayer.score = score;
-    [cellData replaceObjectAtIndex:indexPath.row withObject:newPlayer];
-    [self.tableView reloadData];
-}
-
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -80,6 +40,7 @@ NSIndexPath *labelIndexPath;
     
     
     PlayerInfo *firstPlayer = [[PlayerInfo alloc] init];
+
     NSString *combinedName = [NSString stringWithFormat:@"%@%@%@", @"Player (", [NSString stringWithFormat:@"%d",playerId++],@")"];
     firstPlayer.playerName = combinedName;
     firstPlayer.score = 0;
@@ -148,12 +109,50 @@ NSIndexPath *labelIndexPath;
     UILongPressGestureRecognizer *longPressDecr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressDecrement:)];
     longPressDecr.minimumPressDuration = 1;  //1.0 seconds
     [cell.decrementScore addGestureRecognizer:longPressDecr];
-    
     //cell.textLabel.text = [cellData objectAtIndex:indexPath.row];
     return cell;
 }
 
+- (IBAction)incrementScoreByOne:(id)sender {
+    
+    CGPoint btnOrigin = [sender convertPoint:CGPointZero toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:btnOrigin];
+    PlayerInfo *selectedPlayer = [cellData objectAtIndex:indexPath.row];
+    int score = selectedPlayer.score;
+    score++;
+    PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
+    newPlayer.playerName = selectedPlayer.playerName;
+    newPlayer.score = score;
+    [cellData replaceObjectAtIndex:indexPath.row withObject:newPlayer];
+    [self.tableView reloadData];
+    
+}
 
+- (IBAction)decrementScoreByOne:(id)sender {
+    
+    CGPoint btnOrigin = [sender convertPoint:CGPointZero toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:btnOrigin];
+    PlayerInfo *selectedPlayer = [cellData objectAtIndex:indexPath.row];
+    int score = selectedPlayer.score;
+    if(score > 0) {
+        score--;
+    }
+    PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
+    newPlayer.playerName = selectedPlayer.playerName;
+    newPlayer.score = score;
+    [cellData replaceObjectAtIndex:indexPath.row withObject:newPlayer];
+    [self.tableView reloadData];
+}
+
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return YES;
@@ -328,6 +327,12 @@ NSIndexPath *labelIndexPath;
     [cellData addObject:newPlayer];
     [self.tableView reloadData];
 }
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
+}
+
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
