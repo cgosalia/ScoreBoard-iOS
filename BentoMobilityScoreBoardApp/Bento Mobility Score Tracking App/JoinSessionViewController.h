@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Client.h"
 
-@interface JoinSessionViewController : UIViewController <UITextFieldDelegate>
+@interface JoinSessionViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource, UITextFieldDelegate, ClientDelegate>
 
 @property (strong, nonatomic) IBOutlet UITextField *ClientName;
 

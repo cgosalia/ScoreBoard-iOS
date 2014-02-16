@@ -16,6 +16,8 @@
 
 @synthesize session = _session;
 
+@synthesize delegate = _delegate;
+
 - (void)startSearchingForServersWithSessionID:(NSString *)sessionID
 {
 	_availableServers = [NSMutableArray arrayWithCapacity:10];
@@ -37,6 +39,36 @@
 #ifdef DEBUG
 	NSLog(@"Client: peer %@ changed state %d", peerID, state);
 #endif
+    
+	switch (state)
+	{
+            // The client has discovered a new server.
+		case GKPeerStateAvailable:
+			if (![_availableServers containsObject:peerID])
+			{
+				[_availableServers addObject:peerID];
+				[self.delegate toClient:self serverBecameAvailable:peerID];
+			}
+			break;
+            
+            // The client sees that a server goes away.
+		case GKPeerStateUnavailable:
+			if ([_availableServers containsObject:peerID])
+			{
+				[_availableServers removeObject:peerID];
+				[self.delegate toClient:self serverBecameAvailable:peerID];
+			}
+			break;
+            
+		case GKPeerStateConnected:
+			break;
+            
+		case GKPeerStateDisconnected:
+			break;
+            
+		case GKPeerStateConnecting:
+			break;
+	}
 }
 
 - (void)session:(GKSession *)session didReceiveConnectionRequestFromPeer:(NSString *)peerID
@@ -58,6 +90,21 @@
 #ifdef DEBUG
 	NSLog(@"Client: session failed %@", error);
 #endif
+}
+
+- (NSUInteger)availableServerCount
+{
+	return [_availableServers count];
+}
+
+- (NSString *)peerIDForAvailableServerAtIndex:(NSUInteger)index
+{
+	return [_availableServers objectAtIndex:index];
+}
+
+- (NSString *)displayNameForPeerID:(NSString *)peerID
+{
+	return [_session displayNameForPeer:peerID];
 }
 
 @end

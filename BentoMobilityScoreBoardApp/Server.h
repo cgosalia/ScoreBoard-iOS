@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Server : NSObject
+@interface Server : NSObject <GKSessionDelegate>
 
 @property (nonatomic, assign) int maxClients;
 @property (nonatomic, strong, readonly) NSArray *connectedClients;

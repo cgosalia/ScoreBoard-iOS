@@ -50,6 +50,7 @@
 	if (_client == nil)
 	{
 		_client = [[Client alloc] init];
+        _client.delegate = self;
 		[_client startSearchingForServersWithSessionID:SESSION_ID];
         
 		self.ClientName.placeholder = _client.session.displayName;
@@ -60,6 +61,38 @@
 -(BOOL) textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+- (void)toClient:(Client *)client serverBecameAvailable:(NSString *)peerID
+{
+	[self.clientListOfHosts reloadData];
+}
+
+- (void)toClient:(Client *)client serverBecameUnavailable:(NSString *)peerID
+{
+	[self.clientListOfHosts reloadData];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+	if (_client != nil)
+		return [_client availableServerCount];
+	else
+		return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	static NSString *CellIdentifier = @"CellIdentifier";
+    
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	if (cell == nil)
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    
+	NSString *peerID = [_client peerIDForAvailableServerAtIndex:indexPath.row];
+	cell.textLabel.text = [_client displayNameForPeerID:peerID];
+    
+	return cell;
 }
 
 @end

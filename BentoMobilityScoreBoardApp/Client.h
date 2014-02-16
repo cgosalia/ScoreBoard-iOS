@@ -8,10 +8,30 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Client : NSObject
+@class Client;
+
+@protocol ClientDelegate <NSObject>
+
+- (void)toClient:(Client *)client serverBecameAvailable:(NSString *)peerID;
+
+- (void)toClient:(Client *)client serverBecameUnavailable:(NSString *)peerID;
+
+@end
+
+
+@interface Client : NSObject <GKSessionDelegate>
 
 @property (nonatomic, strong, readonly) NSArray *availableServers;
+
 @property (nonatomic, strong, readonly) GKSession *session;
+
+@property (nonatomic, weak) id <ClientDelegate> delegate;
+
+- (NSUInteger)availableServerCount;
+
+- (NSString *)peerIDForAvailableServerAtIndex:(NSUInteger)index;
+
+- (NSString *)displayNameForPeerID:(NSString *)peerID;
 
 - (void)startSearchingForServersWithSessionID:(NSString *)sessionID;
 
