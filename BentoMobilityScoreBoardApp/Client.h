@@ -35,4 +35,6 @@
 
 - (void)startSearchingForServersWithSessionID:(NSString *)sessionID;
 
+- (void)connectToServerWithPeerID:(NSString *)peerID;
+
 @end

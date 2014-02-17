@@ -56,12 +56,49 @@
 	if (_server == nil)
 	{
 		_server = [[Server alloc] init];
+        _server.delegate = self;
 		_server.maxClients = 3;
 		[_server startAcceptingConnectionsForSessionID:SESSION_ID];
         
 		self.HostName.placeholder = _server.session.displayName;
 		[self.hostListOfClients reloadData];
 	}
+}
+
+- (void)toServer:(Server *)server clientDidConnect:(NSString *)peerID {
+	[self.hostListOfClients reloadData];
+}
+
+- (void)toServer:(Server *)server clientDidDisconnect:(NSString *)peerID
+{
+	[self.hostListOfClients reloadData];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+	if (_server != nil)
+		return [_server connectedClientCount];
+	else
+		return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	static NSString *CellIdentifier = @"CellIdentifier";
+    
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+//	if (cell == nil)
+//		cell = [[PeerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    
+	NSString *peerID = [_server peerIDForConnectedClientAtIndex:indexPath.row];
+	cell.textLabel.text = [_server displayNameForPeerID:peerID];
+    
+	return cell;
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return nil;
 }
 
 @end

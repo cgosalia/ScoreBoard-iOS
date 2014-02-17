@@ -95,4 +95,17 @@
 	return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+	if (_client != nil)
+	{
+		//[self.view addSubview:self.waitView];
+        
+		NSString *peerID = [_client peerIDForAvailableServerAtIndex:indexPath.row];
+		[_client connectToServerWithPeerID:peerID];
+	}
+}
+
 @end

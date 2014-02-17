@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Server.h"
 
-@interface HostSessionViewController : UIViewController <UITextFieldDelegate>
+@interface HostSessionViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, ServerDelegate>
 
 @property (strong, nonatomic) IBOutlet UITextField *HostName;
 
