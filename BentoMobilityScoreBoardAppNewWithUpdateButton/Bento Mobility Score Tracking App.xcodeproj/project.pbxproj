@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CD4A7EC518B73510001B2505 /* PlayerDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4A7EC418B73510001B2505 /* PlayerDetailViewController.m */; };
+		CD6D069818B9B2FF004F4059 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6D069718B9B2FF004F4059 /* SettingsViewController.m */; };
 		CDF7ECEB18A6FE3B006C1306 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF7ECEA18A6FE3B006C1306 /* Foundation.framework */; };
 		CDF7ECED18A6FE3B006C1306 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF7ECEC18A6FE3B006C1306 /* CoreGraphics.framework */; };
 		CDF7ECEF18A6FE3B006C1306 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF7ECEE18A6FE3B006C1306 /* UIKit.framework */; };
@@ -40,6 +41,8 @@
 /* Begin PBXFileReference section */
 		CD4A7EC318B73510001B2505 /* PlayerDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerDetailViewController.h; sourceTree = "<group>"; };
 		CD4A7EC418B73510001B2505 /* PlayerDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerDetailViewController.m; sourceTree = "<group>"; };
+		CD6D069618B9B2FF004F4059 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsViewController.h; path = ../SettingsViewController.h; sourceTree = "<group>"; };
+		CD6D069718B9B2FF004F4059 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsViewController.m; path = ../SettingsViewController.m; sourceTree = "<group>"; };
 		CDF7ECE718A6FE3B006C1306 /* Bento Mobility Score Tracking App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bento Mobility Score Tracking App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDF7ECEA18A6FE3B006C1306 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CDF7ECEC18A6FE3B006C1306 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -124,6 +127,8 @@
 		CDF7ECF018A6FE3B006C1306 /* Bento Mobility Score Tracking App */ = {
 			isa = PBXGroup;
 			children = (
+				CD6D069618B9B2FF004F4059 /* SettingsViewController.h */,
+				CD6D069718B9B2FF004F4059 /* SettingsViewController.m */,
 				CDF7ECF918A6FE3B006C1306 /* AppDelegate.h */,
 				CDF7ECFA18A6FE3B006C1306 /* AppDelegate.m */,
 				CDF7ECFC18A6FE3B006C1306 /* Main.storyboard */,
@@ -272,6 +277,7 @@
 				CDF7ED0118A6FE3B006C1306 /* ViewController.m in Sources */,
 				CDF7ECFB18A6FE3B006C1306 /* AppDelegate.m in Sources */,
 				CDF7ED2118A72764006C1306 /* TrackingModeViewController.m in Sources */,
+				CD6D069818B9B2FF004F4059 /* SettingsViewController.m in Sources */,
 				CD4A7EC518B73510001B2505 /* PlayerDetailViewController.m in Sources */,
 				CDF7ED2418A75339006C1306 /* PlayerCell.m in Sources */,
 				CDF7ED2718A89577006C1306 /* PlayerInfo.m in Sources */,

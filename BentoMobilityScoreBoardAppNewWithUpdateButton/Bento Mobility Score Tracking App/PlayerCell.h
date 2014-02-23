@@ -14,8 +14,4 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *playerScore;
 
-@property (strong, nonatomic) IBOutlet UIButton *incrementScore;
-
-@property (strong, nonatomic) IBOutlet UIButton *decrementScore;
-
 @end

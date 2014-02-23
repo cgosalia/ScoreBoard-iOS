@@ -47,7 +47,7 @@ NSIndexPath *labelIndexPath;
     newPlayer.score = score;
     [cellData replaceObjectAtIndex:indexPath.row withObject:newPlayer];
     [self.tableView reloadData];
-
+    
 }
 
 - (IBAction)decrementScoreByOne:(id)sender {
@@ -57,7 +57,7 @@ NSIndexPath *labelIndexPath;
     PlayerInfo *selectedPlayer = [cellData objectAtIndex:indexPath.row];
     int score = selectedPlayer.score;
     if(score > 0) {
-    score--;
+        score--;
     }
     PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
     newPlayer.playerName = selectedPlayer.playerName;
@@ -86,22 +86,77 @@ NSIndexPath *labelIndexPath;
     firstPlayer.score = 0;
     
     cellData = [[NSMutableArray alloc] initWithObjects:firstPlayer, nil];
-
-    settingsButton = [settingsButton initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(openSettingsPage:)];
+    
+    settingsButton = [settingsButton initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(goToSettings:)];
     UIFont *customFont = [UIFont fontWithName:@"Helvetica" size:25.0];
     NSDictionary *fontDictionary = @{UITextAttributeFont : customFont};
     [settingsButton setTitleTextAttributes:fontDictionary forState:UIControlStateNormal];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
+    
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    NSIndexPath *selectedRowIndexPath = [self.tableView indexPathForSelectedRow];
+    if (selectedRowIndexPath) {
+        [self.tableView deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
+    }
+}
+
+void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
+{
+    view.frame = CGRectOffset(view.frame, offsetX, offsetY);
+}
+
+#define kBOUNCE_DISTANCE 100.0
+
 -(void)handleSwipe:(UISwipeGestureRecognizer *) sender
 {
+    CGPoint location = [sender locationInView:self.tableView];
+    NSIndexPath *swipedIndexedPath = [self.tableView indexPathForRowAtPoint:location];
+    UITableViewCell *swipedCell = [self.tableView cellForRowAtIndexPath:swipedIndexedPath];
+    
+    CGFloat offsetX = 0.0, bounceDistance = 0.0;
+    switch (sender.direction) {
+            
+        case UISwipeGestureRecognizerDirectionLeft:
+            offsetX = swipedCell.contentView.frame.size.width;
+            bounceDistance = -kBOUNCE_DISTANCE;
+            break;
+        case UISwipeGestureRecognizerDirectionRight:
+            offsetX = -swipedCell.contentView.frame.size.width;
+            bounceDistance = kBOUNCE_DISTANCE;
+            break;
+        default:
+            NSLog(@"Invalid direction");
+            break;
+    }
+    
+    [UIView animateWithDuration:0.2
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionAllowUserInteraction
+                     animations:^{ LR_offsetView(swipedCell, offsetX, 0); }
+                     completion:^(BOOL f) {
+                         
+                         [UIView animateWithDuration:0.2 delay:0
+                                             options:UIViewAnimationCurveLinear
+                                          animations:^{ LR_offsetView(swipedCell, bounceDistance, 0); }
+                                          completion:^(BOOL f) {
+                                              
+                                              [UIView animateWithDuration:0.2 delay:0
+                                                                  options:UIViewAnimationCurveLinear
+                                                               animations:^{ LR_offsetView(swipedCell, -bounceDistance, 0); }
+                                                               completion:NULL];
+                                          }
+                          ];
+                     }];
+    
     if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
     {
-      //  NSLog(@"left");
+        //  NSLog(@"left");
         //do something
         CGPoint location = [sender locationInView:self.tableView];
         NSIndexPath *swipedIndexedPath = [self.tableView indexPathForRowAtPoint:location];
@@ -123,14 +178,16 @@ NSIndexPath *labelIndexPath;
         //UITableViewCell *swipedCell = [self.tableView cellForRowAtIndexPath:swipedIndexedPath];
         PlayerInfo *selectedPlayer = [cellData objectAtIndex:swipedIndexedPath.row];
         int score = selectedPlayer.score;
-        score--;
+        if(score > 0) {
+            score--;
+        }
         PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
         newPlayer.playerName = selectedPlayer.playerName;
         newPlayer.score = score;
         [cellData replaceObjectAtIndex:swipedIndexedPath.row withObject:newPlayer];
         [self.tableView reloadData];
     }
-        
+    
 }
 
 
@@ -160,19 +217,19 @@ NSIndexPath *labelIndexPath;
 {
     static NSString *CellIdentifier = @"CellForPlayers";
     cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-
+    
     // Configure the cell
     
     if (cell == nil) {
-        cell = [[PlayerCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:CellIdentifier];
+        cell = [[PlayerCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:CellIdentifier ];
     }
+    //        UILabel *customLabel = [[UILabel alloc] initWithFrame:CGRectMake(320.0, 0.0, 100.0, 92.0)];
+    //        [customLabel setBackgroundColor:[UIColor greenColor]];
+    //        [cell.contentView addSubview:customLabel];
     
     PlayerInfo *player = [cellData objectAtIndex:indexPath.row];
     cell.playerName.text = player.playerName;
     cell.playerScore.text = [NSString stringWithFormat:@"%d", player.score];
-    [cell.incrementScore setTitle:@"+" forState:normal];
-    [cell.decrementScore setTitle:@"-" forState:normal];
-    
     
     UISwipeGestureRecognizer* recognizer_right = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
     [recognizer_right setDirection:UISwipeGestureRecognizerDirectionRight];
@@ -182,7 +239,7 @@ NSIndexPath *labelIndexPath;
     [recognizer_left setDirection:UISwipeGestureRecognizerDirectionLeft];
     [self.tableView addGestureRecognizer:recognizer_left];
     
-
+    
     
     // Configure double-tap gestures for editing label of player name
     UITapGestureRecognizer *doubleTapForPlayerNameChange = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTapForPlayerNameChange:)];
@@ -200,19 +257,6 @@ NSIndexPath *labelIndexPath;
     [doubleTapScore setNumberOfTapsRequired:2];
     [cell addGestureRecognizer:doubleTapScore];
     
-    
-    
-    // Configure long press gesture for increment buttons
-    UILongPressGestureRecognizer *longPressIncr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressIncrement:)];
-    longPressIncr.minimumPressDuration = 3;  //1.0 seconds
-    [cell.incrementScore addGestureRecognizer:longPressIncr];
-    //[cell.playerScore addGestureRecognizer:longPressIncr];
-
-    
-    // Configure long press gesture for decrement buttons
-    UILongPressGestureRecognizer *longPressDecr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressDecrement:)];
-    longPressDecr.minimumPressDuration = 1;  //1.0 seconds
-    [cell.decrementScore addGestureRecognizer:longPressDecr];
     
     //cell.textLabel.text = [cellData objectAtIndex:indexPath.row];
     return cell;
@@ -284,6 +328,7 @@ NSIndexPath *labelIndexPath;
     [alert setTag:1];
     alert.show;
 }
+
 -(void) handleDoubleTapScore:(UITapGestureRecognizer *) gesture {
     UIView *uiView = (UIView *) gesture.view;
     while(![uiView isKindOfClass: [UITableViewCell class]]) {
@@ -378,16 +423,20 @@ NSIndexPath *labelIndexPath;
                 [cellData replaceObjectAtIndex:labelIndexPath.row withObject:newPlayer];
                 [self.tableView reloadData];
             }
-
+            
         }
     }
 }
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    selectedCell = [cellData objectAtIndex:indexPath.row];
-//    score = selectedCell.playerScore.text;
+    selectedCell = (PlayerCell *)[tableView cellForRowAtIndexPath:indexPath];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    ////    [UIView transitionFromView:selectedCell toView:selectedCell duration:1.0f options: UIViewAnimationOptionCurveLinear completion:NULL];
+    //    [UIView transitionWithView:selectedCell duration:1.0 options:UIViewAnimationOptionShowHideTransitionViews animations:NULL completion:NULL];
+    //    [UIView commitAnimations];
 }
+
 
 
 // Override to support conditional editing of the table view.
@@ -399,27 +448,29 @@ NSIndexPath *labelIndexPath;
 
 
 // Override to support editing the table view.
-/*- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [cellData removeObjectAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        
-    }
-}*/
+/*
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ 
+ 
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [cellData removeObjectAtIndex:indexPath.row];
+ [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ }
+ else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ 
+ }
+ }
+ */
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
 
 
 // Override to support conditional rearranging of the table view.
@@ -436,10 +487,15 @@ NSIndexPath *labelIndexPath;
 // In a story board-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    PlayerDetailViewController *playerDetailView = (PlayerDetailViewController *)segue.destinationViewController;
-    playerDetailView.receivedPlayerData = cellData;
-    playerDetailView.receivedIndexPath = [self.tableView indexPathForCell:sender];
-    playerDetailView.receivedTableView = self.tableView;
+    if ([segue.identifier isEqualToString:@"PlayerDetailsSegue"]) {
+        PlayerDetailViewController *playerDetailView = (PlayerDetailViewController *)segue.destinationViewController;
+        playerDetailView.receivedPlayerData = cellData;
+        playerDetailView.receivedIndexPath = [self.tableView indexPathForCell:sender];
+        playerDetailView.receivedTableView = self.tableView;
+    } else if ([segue.identifier isEqualToString:@"SettingsSegue"]) {
+        NSLog(@"going to settings page");
+    }
+    
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
@@ -469,6 +525,8 @@ NSIndexPath *labelIndexPath;
     }
     return sectionName;
 }
-- (IBAction)openSettingsPage:(id)sender {
+
+- (IBAction)goToSettings:(id)sender {
+    [self performSegueWithIdentifier:@"SettingsSegue" sender: sender];
 }
 @end

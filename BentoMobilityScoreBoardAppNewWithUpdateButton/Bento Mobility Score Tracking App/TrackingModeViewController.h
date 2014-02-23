@@ -16,4 +16,6 @@
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
 
+- (IBAction)goToSettings:(id)sender;
+
 @end
