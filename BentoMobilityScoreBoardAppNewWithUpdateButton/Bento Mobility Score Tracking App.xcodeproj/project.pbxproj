@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD10441318C3C0CC00566889 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = CD10441018C3C0CC00566889 /* help.png */; };
+		CD10441418C3C0CC00566889 /* minus.png in Resources */ = {isa = PBXBuildFile; fileRef = CD10441118C3C0CC00566889 /* minus.png */; };
+		CD10441518C3C0CC00566889 /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = CD10441218C3C0CC00566889 /* plus.png */; };
+		CD10441E18C3CD2000566889 /* BluetoothSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD10441D18C3CD2000566889 /* BluetoothSettingsViewController.m */; };
+		CD10442318C3D2BE00566889 /* ConnectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD10442018C3D2BE00566889 /* ConnectionsViewController.m */; };
+		CD10442418C3D2BE00566889 /* MCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD10442218C3D2BE00566889 /* MCManager.m */; };
 		CD4A7EC518B73510001B2505 /* PlayerDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4A7EC418B73510001B2505 /* PlayerDetailViewController.m */; };
 		CD6D069818B9B2FF004F4059 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6D069718B9B2FF004F4059 /* SettingsViewController.m */; };
 		CD8CFB1318C1A50800D0664B /* MCSwipeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD8CFB1218C1A50800D0664B /* MCSwipeTableViewCell.m */; };
@@ -42,6 +48,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CD10441018C3C0CC00566889 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = help.png; path = ../../../help.png; sourceTree = "<group>"; };
+		CD10441118C3C0CC00566889 /* minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = minus.png; path = ../../../minus.png; sourceTree = "<group>"; };
+		CD10441218C3C0CC00566889 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = plus.png; path = ../../../plus.png; sourceTree = "<group>"; };
+		CD10441C18C3CD2000566889 /* BluetoothSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothSettingsViewController.h; sourceTree = "<group>"; };
+		CD10441D18C3CD2000566889 /* BluetoothSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothSettingsViewController.m; sourceTree = "<group>"; };
+		CD10441F18C3D2BE00566889 /* ConnectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectionsViewController.h; path = ../ConnectionsViewController.h; sourceTree = "<group>"; };
+		CD10442018C3D2BE00566889 /* ConnectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConnectionsViewController.m; path = ../ConnectionsViewController.m; sourceTree = "<group>"; };
+		CD10442118C3D2BE00566889 /* MCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MCManager.h; path = ../MCManager.h; sourceTree = "<group>"; };
+		CD10442218C3D2BE00566889 /* MCManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MCManager.m; path = ../MCManager.m; sourceTree = "<group>"; };
 		CD4A7EC318B73510001B2505 /* PlayerDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerDetailViewController.h; sourceTree = "<group>"; };
 		CD4A7EC418B73510001B2505 /* PlayerDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerDetailViewController.m; sourceTree = "<group>"; };
 		CD6D069618B9B2FF004F4059 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsViewController.h; path = ../SettingsViewController.h; sourceTree = "<group>"; };
@@ -103,6 +118,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CD10440F18C3C01A00566889 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				CD10441018C3C0CC00566889 /* help.png */,
+				CD10441118C3C0CC00566889 /* minus.png */,
+				CD10441218C3C0CC00566889 /* plus.png */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
 		CD8CFB1018C1A15400D0664B /* SwipeCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -115,6 +140,7 @@
 		CDF7ECDE18A6FE3B006C1306 = {
 			isa = PBXGroup;
 			children = (
+				CD10440F18C3C01A00566889 /* images */,
 				CDF7ECF018A6FE3B006C1306 /* Bento Mobility Score Tracking App */,
 				CDF7ED0F18A6FE3B006C1306 /* Bento Mobility Score Tracking AppTests */,
 				CDF7ECE918A6FE3B006C1306 /* Frameworks */,
@@ -145,6 +171,10 @@
 		CDF7ECF018A6FE3B006C1306 /* Bento Mobility Score Tracking App */ = {
 			isa = PBXGroup;
 			children = (
+				CD10441F18C3D2BE00566889 /* ConnectionsViewController.h */,
+				CD10442018C3D2BE00566889 /* ConnectionsViewController.m */,
+				CD10442118C3D2BE00566889 /* MCManager.h */,
+				CD10442218C3D2BE00566889 /* MCManager.m */,
 				CD967C0B18C2ADAF00C17CD2 /* IncrDecrScoreViewController.h */,
 				CD967C0C18C2ADAF00C17CD2 /* IncrDecrScoreViewController.m */,
 				CD8CFB1718C295C000D0664B /* PresetSettingsViewController.h */,
@@ -165,6 +195,8 @@
 				CDF7ED2318A75339006C1306 /* PlayerCell.m */,
 				CD4A7EC318B73510001B2505 /* PlayerDetailViewController.h */,
 				CD4A7EC418B73510001B2505 /* PlayerDetailViewController.m */,
+				CD10441C18C3CD2000566889 /* BluetoothSettingsViewController.h */,
+				CD10441D18C3CD2000566889 /* BluetoothSettingsViewController.m */,
 			);
 			path = "Bento Mobility Score Tracking App";
 			sourceTree = "<group>";
@@ -276,9 +308,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD10441318C3C0CC00566889 /* help.png in Resources */,
 				CDF7ED0318A6FE3B006C1306 /* Images.xcassets in Resources */,
 				CDF7ECF518A6FE3B006C1306 /* InfoPlist.strings in Resources */,
+				CD10441418C3C0CC00566889 /* minus.png in Resources */,
 				CDF7ECFE18A6FE3B006C1306 /* Main.storyboard in Resources */,
+				CD10441518C3C0CC00566889 /* plus.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,11 +337,14 @@
 				CD8CFB1918C295C000D0664B /* PresetSettingsViewController.m in Sources */,
 				CD967C0D18C2ADAF00C17CD2 /* IncrDecrScoreViewController.m in Sources */,
 				CDF7ECFB18A6FE3B006C1306 /* AppDelegate.m in Sources */,
+				CD10442418C3D2BE00566889 /* MCManager.m in Sources */,
 				CDF7ED2118A72764006C1306 /* TrackingModeViewController.m in Sources */,
 				CD6D069818B9B2FF004F4059 /* SettingsViewController.m in Sources */,
 				CD4A7EC518B73510001B2505 /* PlayerDetailViewController.m in Sources */,
+				CD10442318C3D2BE00566889 /* ConnectionsViewController.m in Sources */,
 				CDF7ED2418A75339006C1306 /* PlayerCell.m in Sources */,
 				CDF7ED2718A89577006C1306 /* PlayerInfo.m in Sources */,
+				CD10441E18C3CD2000566889 /* BluetoothSettingsViewController.m in Sources */,
 				CDF7ECF718A6FE3B006C1306 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -166,21 +166,27 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
     return cell;
 }
 
+- (UIView *)viewWithImageName:(NSString *)imageName {
+    UIImage *image = [UIImage imageNamed:imageName];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView.contentMode = UIViewContentModeCenter;
+    return imageView;
+}
 
 #pragma mark - UITableViewDataSource
 
 - (void)configureCell:(PlayerCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UIView *leftNormalView = [self viewWithImageName:@"check"];
+    UIView *leftNormalView = [self viewWithImageName:@"minus"];
     UIColor *redColor = [UIColor colorWithRed:232.0 / 255.0 green:61.0 / 255.0 blue:14.0 / 255.0 alpha:1.0];
     
-    UIView *leftExtendedView = [self viewWithImageName:@"cross"];
+    UIView *leftExtendedView = [self viewWithImageName:@"help"];
     UIColor *brownColor = [UIColor colorWithRed:206.0 / 255.0 green:149.0 / 255.0 blue:98.0 / 255.0 alpha:1.0];
     
-    UIView *rightNormalView = [self viewWithImageName:@"clock"];
+    UIView *rightNormalView = [self viewWithImageName:@"plus"];
     UIColor *greenColor = [UIColor colorWithRed:85.0 / 255.0 green:213.0 / 255.0 blue:80.0 / 255.0 alpha:1.0];
     
-    UIView *rightExtendedView = [self viewWithImageName:@"list"];
+    UIView *rightExtendedView = [self viewWithImageName:@"help"];
     UIColor *yellowColor = [UIColor colorWithRed:254.0 / 255.0 green:217.0 / 255.0 blue:56.0 / 255.0 alpha:1.0];
     
     // Setting the default inactive state color to the tableView background color
@@ -235,13 +241,6 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
     // NSLog(@"Did swipe with percentage : %f", percentage);
 }
 
-
-- (UIView *)viewWithImageName:(NSString *)imageName {
-    UIImage *image = [UIImage imageNamed:imageName];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-    imageView.contentMode = UIViewContentModeCenter;
-    return imageView;
-}
 
 -(void) handleDoubleTapWithTwoFingers:(UITapGestureRecognizer *) gesture {
     CGPoint doubleTapLocation = [gesture locationInView:self.tableView];
