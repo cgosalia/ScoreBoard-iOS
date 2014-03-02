@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>0DDBAF13-CECB-4279-86D9-0FDF806E0222</string>
+	<string>598C2181-E39E-4B90-842E-7C2031AA42BF</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Bento Mobility Score Tracking App</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>FA332F39-D68F-42DB-A572-5B1970362137</key>
-		<string>https://github.iu.edu/ravichee/OOSM.git</string>
+		<key>54F66CFF-CDAA-4299-B381-F8A559D8BB59</key>
+		<string>https://github.iu.edu/ravichee/OOSM</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>BentoMobilityScoreBoardApp/Bento Mobility Score Tracking App.xcodeproj/project.xcworkspace</string>
+	<string>BentoMobilityScoreBoardAppNewWithUpdateButton/Bento Mobility Score Tracking App.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>FA332F39-D68F-42DB-A572-5B1970362137</key>
+		<key>54F66CFF-CDAA-4299-B381-F8A559D8BB59</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.iu.edu/ravichee/OOSM.git</string>
+	<string>https://github.iu.edu/ravichee/OOSM</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>FA332F39-D68F-42DB-A572-5B1970362137</string>
+	<string>54F66CFF-CDAA-4299-B381-F8A559D8BB59</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>FA332F39-D68F-42DB-A572-5B1970362137</string>
+			<string>54F66CFF-CDAA-4299-B381-F8A559D8BB59</string>
 			<key>IDESourceControlWCCName</key>
-			<string>App</string>
+			<string>OOSM</string>
 		</dict>
 	</array>
 </dict>

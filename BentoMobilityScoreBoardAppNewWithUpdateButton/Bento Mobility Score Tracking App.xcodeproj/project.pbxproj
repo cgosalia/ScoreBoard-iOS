@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F9C3E6C18C1536E00D37122 /* ConnectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F9C3E6B18C1536E00D37122 /* ConnectionsViewController.m */; };
+		9F9C3E6F18C155D500D37122 /* MCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F9C3E6E18C155D500D37122 /* MCManager.m */; };
 		CD4A7EC518B73510001B2505 /* PlayerDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4A7EC418B73510001B2505 /* PlayerDetailViewController.m */; };
 		CD6D069818B9B2FF004F4059 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6D069718B9B2FF004F4059 /* SettingsViewController.m */; };
 		CDF7ECEB18A6FE3B006C1306 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF7ECEA18A6FE3B006C1306 /* Foundation.framework */; };
@@ -39,6 +41,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9F9C3E6A18C1536E00D37122 /* ConnectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionsViewController.h; sourceTree = "<group>"; };
+		9F9C3E6B18C1536E00D37122 /* ConnectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionsViewController.m; sourceTree = "<group>"; };
+		9F9C3E6D18C155D500D37122 /* MCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MCManager.h; path = ../MCManager.h; sourceTree = "<group>"; };
+		9F9C3E6E18C155D500D37122 /* MCManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MCManager.m; path = ../MCManager.m; sourceTree = "<group>"; };
 		CD4A7EC318B73510001B2505 /* PlayerDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerDetailViewController.h; sourceTree = "<group>"; };
 		CD4A7EC418B73510001B2505 /* PlayerDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerDetailViewController.m; sourceTree = "<group>"; };
 		CD6D069618B9B2FF004F4059 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsViewController.h; path = ../SettingsViewController.h; sourceTree = "<group>"; };
@@ -129,6 +135,8 @@
 			children = (
 				CD6D069618B9B2FF004F4059 /* SettingsViewController.h */,
 				CD6D069718B9B2FF004F4059 /* SettingsViewController.m */,
+				9F9C3E6D18C155D500D37122 /* MCManager.h */,
+				9F9C3E6E18C155D500D37122 /* MCManager.m */,
 				CDF7ECF918A6FE3B006C1306 /* AppDelegate.h */,
 				CDF7ECFA18A6FE3B006C1306 /* AppDelegate.m */,
 				CDF7ECFC18A6FE3B006C1306 /* Main.storyboard */,
@@ -142,6 +150,8 @@
 				CDF7ED2318A75339006C1306 /* PlayerCell.m */,
 				CD4A7EC318B73510001B2505 /* PlayerDetailViewController.h */,
 				CD4A7EC418B73510001B2505 /* PlayerDetailViewController.m */,
+				9F9C3E6A18C1536E00D37122 /* ConnectionsViewController.h */,
+				9F9C3E6B18C1536E00D37122 /* ConnectionsViewController.m */,
 			);
 			path = "Bento Mobility Score Tracking App";
 			sourceTree = "<group>";
@@ -278,6 +288,8 @@
 				CDF7ECFB18A6FE3B006C1306 /* AppDelegate.m in Sources */,
 				CDF7ED2118A72764006C1306 /* TrackingModeViewController.m in Sources */,
 				CD6D069818B9B2FF004F4059 /* SettingsViewController.m in Sources */,
+				9F9C3E6C18C1536E00D37122 /* ConnectionsViewController.m in Sources */,
+				9F9C3E6F18C155D500D37122 /* MCManager.m in Sources */,
 				CD4A7EC518B73510001B2505 /* PlayerDetailViewController.m in Sources */,
 				CDF7ED2418A75339006C1306 /* PlayerCell.m in Sources */,
 				CDF7ED2718A89577006C1306 /* PlayerInfo.m in Sources */,
