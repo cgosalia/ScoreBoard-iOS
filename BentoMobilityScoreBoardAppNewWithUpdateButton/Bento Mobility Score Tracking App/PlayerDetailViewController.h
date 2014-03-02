@@ -18,8 +18,6 @@
 
 - (IBAction)savePlayerDetails:(id)sender;
 
-- (IBAction)updatePlayerDetails:(id)sender;
-
 @property (atomic) IBOutlet NSMutableArray *receivedPlayerData;
 
 @property (atomic, copy) IBOutlet NSIndexPath *receivedIndexPath;

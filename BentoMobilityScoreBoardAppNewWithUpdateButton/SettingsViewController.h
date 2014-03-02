@@ -8,10 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SettingsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
-
-- (IBAction)cancelSettings:(id)sender;
-
-- (IBAction)saveSettings:(id)sender;
+@interface SettingsViewController : UIViewController
 
 @end
