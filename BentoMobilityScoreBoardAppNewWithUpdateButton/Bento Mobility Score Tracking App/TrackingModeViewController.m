@@ -167,7 +167,8 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
 }
 
 - (UIView *)viewWithImageName:(NSString *)imageName {
-    UIImage *image = [UIImage imageNamed:imageName];
+    UIImage *image = [UIImage imageNamed:imageName ];
+    image = [UIImage imageWithCGImage:image.CGImage scale:6 orientation:image.imageOrientation];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     imageView.contentMode = UIViewContentModeCenter;
     return imageView;
@@ -200,7 +201,7 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
         [self decrementScoreBy:1 forCellAtIndex:indexPath];
     }];
     
-    [cell setSwipeGestureWithView:leftExtendedView color:brownColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState2 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
+    [cell setSwipeGestureWithView:leftExtendedView color:yellowColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState2 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
         NSLog(@"Did swipe \"Cross\" cell");
         incrementOrDecrementMassScore = false;
         [self performSegueWithIdentifier:@"incrDecrScoreSegue" sender: cell];
