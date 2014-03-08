@@ -10,7 +10,9 @@
 #import "AppDelegate.h"
 
 @interface SettingsViewController ()
+
 @property (nonatomic, strong) AppDelegate *appDelegate;
+
 @end
 
 
@@ -119,23 +121,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)cancelSettings:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 
-- (IBAction)saveSettings:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    int num = indexPath.row;
-    UITableViewCell *cell;
-   
-    return cell;
-}
 @end

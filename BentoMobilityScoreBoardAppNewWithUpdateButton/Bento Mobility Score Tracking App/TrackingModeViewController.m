@@ -10,6 +10,7 @@
 #import "PlayerCell.h"
 #import "PlayerInfo.h"
 #import "PlayerDetailViewController.h"
+#import "IncrDecrScoreViewController.h"
 
 @interface TrackingModeViewController ()
 
@@ -33,40 +34,34 @@ BOOL longIncr = false;
 
 BOOL longDecr = false;
 
+bool incrementOrDecrementMassScore;
+
 NSIndexPath *labelIndexPath;
 
-- (IBAction)incrementScoreByOne:(id)sender {
-    
-    CGPoint btnOrigin = [sender convertPoint:CGPointZero toView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:btnOrigin];
+-(void) incrementScoreBy:(int)value forCellAtIndex:(NSIndexPath *)indexPath {
     PlayerInfo *selectedPlayer = [cellData objectAtIndex:indexPath.row];
     int score = selectedPlayer.score;
-    score++;
+    score = score+value;
     PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
     newPlayer.playerName = selectedPlayer.playerName;
     newPlayer.score = score;
     [cellData replaceObjectAtIndex:indexPath.row withObject:newPlayer];
     [self.tableView reloadData];
-    
 }
 
-- (IBAction)decrementScoreByOne:(id)sender {
-    
-    CGPoint btnOrigin = [sender convertPoint:CGPointZero toView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:btnOrigin];
+-(void) decrementScoreBy:(int)value forCellAtIndex:(NSIndexPath *)indexPath {
     PlayerInfo *selectedPlayer = [cellData objectAtIndex:indexPath.row];
     int score = selectedPlayer.score;
-    if(score > 0) {
-        score--;
+    if((score-value) >= 0) {
+        score = score-value;
     }
     PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
     newPlayer.playerName = selectedPlayer.playerName;
     newPlayer.score = score;
     [cellData replaceObjectAtIndex:indexPath.row withObject:newPlayer];
     [self.tableView reloadData];
+    
 }
-
-
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -79,6 +74,12 @@ NSIndexPath *labelIndexPath;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    NSUserDefaults *settingsDefault = [NSUserDefaults standardUserDefaults];
+    [settingsDefault setInteger:5 forKey:@"preset1"];
+    [settingsDefault setInteger:10 forKey:@"preset2"];
+    [settingsDefault setInteger:50 forKey:@"preset3"];
+    [settingsDefault setInteger:100 forKey:@"preset4"];
     
     PlayerInfo *firstPlayer = [[PlayerInfo alloc] init];
     NSString *combinedName = [NSString stringWithFormat:@"%@%@%@", @"Player (", [NSString stringWithFormat:@"%d",playerId++],@")"];
@@ -96,6 +97,7 @@ NSIndexPath *labelIndexPath;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    [settingsDefault synchronize];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -109,85 +111,6 @@ NSIndexPath *labelIndexPath;
 void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
 {
     view.frame = CGRectOffset(view.frame, offsetX, offsetY);
-}
-
-#define kBOUNCE_DISTANCE 100.0
-
--(void)handleSwipe:(UISwipeGestureRecognizer *) sender
-{
-    CGPoint location = [sender locationInView:self.tableView];
-    NSIndexPath *swipedIndexedPath = [self.tableView indexPathForRowAtPoint:location];
-    UITableViewCell *swipedCell = [self.tableView cellForRowAtIndexPath:swipedIndexedPath];
-    
-    CGFloat offsetX = 0.0, bounceDistance = 0.0;
-    switch (sender.direction) {
-            
-        case UISwipeGestureRecognizerDirectionLeft:
-            offsetX = swipedCell.contentView.frame.size.width;
-            bounceDistance = -kBOUNCE_DISTANCE;
-            break;
-        case UISwipeGestureRecognizerDirectionRight:
-            offsetX = -swipedCell.contentView.frame.size.width;
-            bounceDistance = kBOUNCE_DISTANCE;
-            break;
-        default:
-            NSLog(@"Invalid direction");
-            break;
-    }
-    
-    [UIView animateWithDuration:0.2
-                          delay:0
-                        options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionAllowUserInteraction
-                     animations:^{ LR_offsetView(swipedCell, offsetX, 0); }
-                     completion:^(BOOL f) {
-                         
-                         [UIView animateWithDuration:0.2 delay:0
-                                             options:UIViewAnimationCurveLinear
-                                          animations:^{ LR_offsetView(swipedCell, bounceDistance, 0); }
-                                          completion:^(BOOL f) {
-                                              
-                                              [UIView animateWithDuration:0.2 delay:0
-                                                                  options:UIViewAnimationCurveLinear
-                                                               animations:^{ LR_offsetView(swipedCell, -bounceDistance, 0); }
-                                                               completion:NULL];
-                                          }
-                          ];
-                     }];
-    
-    if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
-    {
-        //  NSLog(@"left");
-        //do something
-        CGPoint location = [sender locationInView:self.tableView];
-        NSIndexPath *swipedIndexedPath = [self.tableView indexPathForRowAtPoint:location];
-        //UITableViewCell *swipedCell = [self.tableView cellForRowAtIndexPath:swipedIndexedPath];
-        PlayerInfo *selectedPlayer = [cellData objectAtIndex:swipedIndexedPath.row];
-        int score = selectedPlayer.score;
-        score++;
-        PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
-        newPlayer.playerName = selectedPlayer.playerName;
-        newPlayer.score = score;
-        [cellData replaceObjectAtIndex:swipedIndexedPath.row withObject:newPlayer];
-        [self.tableView reloadData];
-        
-    }
-    else if (sender.direction == UISwipeGestureRecognizerDirectionRight)
-    {
-        CGPoint location = [sender locationInView:self.tableView];
-        NSIndexPath *swipedIndexedPath = [self.tableView indexPathForRowAtPoint:location];
-        //UITableViewCell *swipedCell = [self.tableView cellForRowAtIndexPath:swipedIndexedPath];
-        PlayerInfo *selectedPlayer = [cellData objectAtIndex:swipedIndexedPath.row];
-        int score = selectedPlayer.score;
-        if(score > 0) {
-            score--;
-        }
-        PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
-        newPlayer.playerName = selectedPlayer.playerName;
-        newPlayer.score = score;
-        [cellData replaceObjectAtIndex:swipedIndexedPath.row withObject:newPlayer];
-        [self.tableView reloadData];
-    }
-    
 }
 
 
@@ -222,44 +145,102 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
     
     if (cell == nil) {
         cell = [[PlayerCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:CellIdentifier ];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
+        cell.contentView.backgroundColor = [UIColor whiteColor];
     }
-    //        UILabel *customLabel = [[UILabel alloc] initWithFrame:CGRectMake(320.0, 0.0, 100.0, 92.0)];
-    //        [customLabel setBackgroundColor:[UIColor greenColor]];
-    //        [cell.contentView addSubview:customLabel];
-    
     PlayerInfo *player = [cellData objectAtIndex:indexPath.row];
     cell.playerName.text = player.playerName;
     cell.playerScore.text = [NSString stringWithFormat:@"%d", player.score];
     
-    UISwipeGestureRecognizer* recognizer_right = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
-    [recognizer_right setDirection:UISwipeGestureRecognizerDirectionRight];
-    [self.tableView addGestureRecognizer:recognizer_right];
     
-    UISwipeGestureRecognizer* recognizer_left = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
-    [recognizer_left setDirection:UISwipeGestureRecognizerDirectionLeft];
-    [self.tableView addGestureRecognizer:recognizer_left];
-    
-    
-    
-    // Configure double-tap gestures for editing label of player name
-    UITapGestureRecognizer *doubleTapForPlayerNameChange = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTapForPlayerNameChange:)];
-    [doubleTapForPlayerNameChange setNumberOfTapsRequired:2];
-    [cell.playerName addGestureRecognizer:doubleTapForPlayerNameChange];
-    
-    // Configure double-tap with
-    UITapGestureRecognizer *doubleTapWithTwoFingers = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTapWithTwoFingers:)];
-    [doubleTapWithTwoFingers setNumberOfTouchesRequired:2];
-    [doubleTapWithTwoFingers setNumberOfTapsRequired:1];
-    [cell addGestureRecognizer:doubleTapWithTwoFingers];
-    
-    // Configure double-tap gestures for editing label of player name
-    UITapGestureRecognizer *doubleTapScore = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTapScore:)];
-    [doubleTapScore setNumberOfTapsRequired:2];
-    [cell addGestureRecognizer:doubleTapScore];
+    // Configure single tap with two fingers for opening detail disclosure screen
+    UITapGestureRecognizer *singleTapWithTwoFingers = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTapWithTwoFingers:)];
+    [singleTapWithTwoFingers setNumberOfTouchesRequired:2];
+    [singleTapWithTwoFingers setNumberOfTapsRequired:1];
+    [cell addGestureRecognizer:singleTapWithTwoFingers];
     
     
     //cell.textLabel.text = [cellData objectAtIndex:indexPath.row];
+    
+    [self configureCell:cell forRowAtIndexPath:indexPath];
     return cell;
+}
+
+
+#pragma mark - UITableViewDataSource
+
+- (void)configureCell:(PlayerCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UIView *leftNormalView = [self viewWithImageName:@"check"];
+    UIColor *redColor = [UIColor colorWithRed:232.0 / 255.0 green:61.0 / 255.0 blue:14.0 / 255.0 alpha:1.0];
+    
+    UIView *leftExtendedView = [self viewWithImageName:@"cross"];
+    UIColor *brownColor = [UIColor colorWithRed:206.0 / 255.0 green:149.0 / 255.0 blue:98.0 / 255.0 alpha:1.0];
+    
+    UIView *rightNormalView = [self viewWithImageName:@"clock"];
+    UIColor *greenColor = [UIColor colorWithRed:85.0 / 255.0 green:213.0 / 255.0 blue:80.0 / 255.0 alpha:1.0];
+    
+    UIView *rightExtendedView = [self viewWithImageName:@"list"];
+    UIColor *yellowColor = [UIColor colorWithRed:254.0 / 255.0 green:217.0 / 255.0 blue:56.0 / 255.0 alpha:1.0];
+    
+    // Setting the default inactive state color to the tableView background color
+    [cell setDefaultColor:self.tableView.backgroundView.backgroundColor];
+    
+    [cell setDelegate:self];
+    
+    
+    [cell setSwipeGestureWithView:leftNormalView color:redColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState1 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
+        NSLog(@"Did swipe \"Checkmark\" cell");
+        [self decrementScoreBy:1 forCellAtIndex:indexPath];
+    }];
+    
+    [cell setSwipeGestureWithView:leftExtendedView color:brownColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState2 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
+        NSLog(@"Did swipe \"Cross\" cell");
+        incrementOrDecrementMassScore = false;
+        [self performSegueWithIdentifier:@"incrDecrScoreSegue" sender: cell];
+        
+    }];
+    
+    [cell setSwipeGestureWithView:rightNormalView color:greenColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState3 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
+        NSLog(@"Did swipe \"Clock\" cell");
+        [self incrementScoreBy:1 forCellAtIndex:indexPath];
+        
+    }];
+    
+    [cell setSwipeGestureWithView:rightExtendedView color:yellowColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState4 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
+        NSLog(@"Did swipe \"List\" cell");
+        incrementOrDecrementMassScore = true;
+        [self performSegueWithIdentifier:@"incrDecrScoreSegue" sender: cell];
+    }];
+    
+    
+}
+
+
+#pragma mark - MCSwipeTableViewCellDelegate
+
+
+// When the user starts swiping the cell this method is called
+- (void)swipeTableViewCellDidStartSwiping:(MCSwipeTableViewCell *)cell {
+    // NSLog(@"Did start swiping the cell!");
+}
+
+// When the user ends swiping the cell this method is called
+- (void)swipeTableViewCellDidEndSwiping:(MCSwipeTableViewCell *)cell {
+    // NSLog(@"Did end swiping the cell!");
+}
+
+// When the user is dragging, this method is called and return the dragged percentage from the border
+- (void)swipeTableViewCell:(MCSwipeTableViewCell *)cell didSwipeWithPercentage:(CGFloat)percentage {
+    // NSLog(@"Did swipe with percentage : %f", percentage);
+}
+
+
+- (UIView *)viewWithImageName:(NSString *)imageName {
+    UIImage *image = [UIImage imageNamed:imageName];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView.contentMode = UIViewContentModeCenter;
+    return imageView;
 }
 
 -(void) handleDoubleTapWithTwoFingers:(UITapGestureRecognizer *) gesture {
@@ -314,35 +295,6 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
     }
 }
 
-
--(void) handleDoubleTapForPlayerNameChange:(UITapGestureRecognizer *) gesture {
-    //sNSLog(@"Her after double tap score");
-    UIView *uiView = (UIView *) gesture.view;
-    while(![uiView isKindOfClass: [UITableViewCell class]]) {
-        uiView = uiView.superview;
-    }
-    labelIndexPath = [self.tableView indexPathForCell:(UITableViewCell *)uiView];
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player Name" message:@"Enter a new name" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [alert setTag:1];
-    alert.show;
-}
-
--(void) handleDoubleTapScore:(UITapGestureRecognizer *) gesture {
-    UIView *uiView = (UIView *) gesture.view;
-    while(![uiView isKindOfClass: [UITableViewCell class]]) {
-        uiView = uiView.superview;
-    }
-    labelIndexPath = [self.tableView indexPathForCell:(UITableViewCell *)uiView];
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Change Score" message:@"Enter Score value: " delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", @"Subtract", nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    UITextField *alertTextField = [alert textFieldAtIndex:0];
-    alertTextField.keyboardType=UIKeyboardTypeNumberPad;
-    [alert setTag:4];
-    alert.show;
-}
 
 -(void) alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if(alertView.tag==1 && buttonIndex == 1) {
@@ -494,6 +446,12 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
         playerDetailView.receivedTableView = self.tableView;
     } else if ([segue.identifier isEqualToString:@"SettingsSegue"]) {
         NSLog(@"going to settings page");
+    } else if ([segue.identifier isEqualToString:@"incrDecrScoreSegue"]) {
+        IncrDecrScoreViewController *incrDecrScoreView = (IncrDecrScoreViewController *)segue.destinationViewController;
+        incrDecrScoreView.incrementOrDecrementFlag = incrementOrDecrementMassScore;
+        incrDecrScoreView.receivedPlayerData = cellData;
+        incrDecrScoreView.receivedIndexPath = [self.tableView indexPathForCell:sender];
+        incrDecrScoreView.receivedTableView = self.tableView;
     }
     
     // Get the new view controller using [segue destinationViewController].

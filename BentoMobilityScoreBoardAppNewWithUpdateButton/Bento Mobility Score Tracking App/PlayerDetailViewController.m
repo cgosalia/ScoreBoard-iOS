@@ -77,22 +77,6 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (IBAction)updatePlayerDetails:(id)sender {
-    if ([playerNameTextField.text length]>0) {
-        PlayerInfo *selectedPlayer = [receivedPlayerData objectAtIndex:receivedIndexPath.row];
-        if ((![selectedPlayer.playerName isEqualToString:playerNameTextField.text]) || (selectedPlayer.score != [playerScoreTextField.text intValue])) {
-            PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
-            newPlayer.playerName = playerNameTextField.text;
-            if ([playerScoreTextField.text length] > 0) {
-                newPlayer.score = [playerScoreTextField.text intValue];
-            }
-            [receivedPlayerData replaceObjectAtIndex:receivedIndexPath.row withObject:newPlayer];
-            [self.receivedTableView reloadData];
-        }
-    }
-
-}
-
 
 - (IBAction)cancelPlayerDetails:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];

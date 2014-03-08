@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MCSwipeTableViewCell.h"
 
-@interface PlayerCell : UITableViewCell
+@interface PlayerCell : MCSwipeTableViewCell
 
 @property (strong, nonatomic) IBOutlet UILabel *playerName;
 
