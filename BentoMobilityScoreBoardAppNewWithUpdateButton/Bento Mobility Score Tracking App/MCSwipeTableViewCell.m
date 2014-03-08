@@ -8,14 +8,14 @@
 
 #import "MCSwipeTableViewCell.h"
 
-static CGFloat const kMCStop1                       = 0.20; // Percentage limit to trigger the first action
-static CGFloat const kMCStop2                       = 0.75; // Percentage limit to trigger the second action
+static CGFloat const kMCStop1                       = 0.15; // Percentage limit to trigger the first action
+static CGFloat const kMCStop2                       = 0.55; // Percentage limit to trigger the second action
 static CGFloat const kMCBounceAmplitude             = 20.0; // Maximum bounce amplitude when using the MCSwipeTableViewCellModeSwitch mode
-static CGFloat const kMCDamping                     = 0.3;  // Damping of the spring animation
-static CGFloat const kMCVelocity                    = 0.6;  // Velocity of the spring animation
+static CGFloat const kMCDamping                     = 0.6;  // Damping of the spring animation
+static CGFloat const kMCVelocity                    = 0.2;  // Velocity of the spring animation
 static CGFloat const kMCAnimationDuration           = 0.2;  // Duration of the animation
 static NSTimeInterval const kMCBounceDuration1      = 0.2;  // Duration of the first part of the bounce animation
-static NSTimeInterval const kMCBounceDuration2      = 0.2;  // Duration of the second part of the bounce animation
+static NSTimeInterval const kMCBounceDuration2      = 0.9;  // Duration of the second part of the bounce animation
 static NSTimeInterval const kMCDurationLowLimit     = 0.25; // Lowest duration when swiping the cell because we try to simulate velocity
 static NSTimeInterval const kMCDurationHighLimit    = 0.1;  // Highest duration when swiping the cell because we try to simulate velocity
 
@@ -602,7 +602,7 @@ typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellDirection) {
     
     if ([UIView.class respondsToSelector:@selector(animateWithDuration:delay:usingSpringWithDamping:initialSpringVelocity:options:animations:completion:)]) {
         
-        [UIView animateWithDuration:_animationDuration delay:0.0 usingSpringWithDamping:_damping initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [UIView animateWithDuration:_animationDuration delay:0.1 usingSpringWithDamping:_damping initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             
             CGRect frame = _contentScreenshotView.frame;
             frame.origin.x = 0;
