@@ -8,7 +8,7 @@
 
 #import "MCSwipeTableViewCell.h"
 
-static CGFloat const kMCStop1                       = 0.05; // Percentage limit to trigger the first action
+static CGFloat const kMCStop1                       = 0.20; // Percentage limit to trigger the first action
 static CGFloat const kMCStop2                       = 0.75; // Percentage limit to trigger the second action
 static CGFloat const kMCBounceAmplitude             = 20.0; // Maximum bounce amplitude when using the MCSwipeTableViewCellModeSwitch mode
 static CGFloat const kMCDamping                     = 0.3;  // Damping of the spring animation
@@ -445,7 +445,7 @@ typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellDirection) {
     
     // Background Color
     
-    color = self.defaultColor ? self.defaultColor : [UIColor clearColor];
+    color = self.defaultColor ? self.defaultColor : [UIColor whiteColor];
     
     if (percentage > _firstTrigger && _modeForState1) {
         color = _color1;

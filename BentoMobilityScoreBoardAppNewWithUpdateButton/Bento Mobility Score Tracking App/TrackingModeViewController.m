@@ -11,8 +11,11 @@
 #import "PlayerInfo.h"
 #import "PlayerDetailViewController.h"
 #import "IncrDecrScoreViewController.h"
+#import "BluetoothSettingsViewController.h"
+#import "AppDelegate.h"
 
 @interface TrackingModeViewController ()
+@property (nonatomic, strong) AppDelegate *appDelegate;
 
 @end
 
@@ -47,6 +50,7 @@ NSIndexPath *labelIndexPath;
     newPlayer.score = score;
     [cellData replaceObjectAtIndex:indexPath.row withObject:newPlayer];
     [self.tableView reloadData];
+    [self sendMyMessage];
 }
 
 -(void) decrementScoreBy:(int)value forCellAtIndex:(NSIndexPath *)indexPath {
@@ -60,6 +64,7 @@ NSIndexPath *labelIndexPath;
     newPlayer.score = score;
     [cellData replaceObjectAtIndex:indexPath.row withObject:newPlayer];
     [self.tableView reloadData];
+    [self sendMyMessage];
     
 }
 - (id)initWithStyle:(UITableViewStyle)style
@@ -74,6 +79,14 @@ NSIndexPath *labelIndexPath;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    //_txtMsg.delegate = self;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceiveDataWithNotification:)
+                                                 name:@"MCDidReceiveDataNotification"
+                                               object:nil];
     
     NSUserDefaults *settingsDefault = [NSUserDefaults standardUserDefaults];
     [settingsDefault setInteger:5 forKey:@"preset1"];
@@ -98,6 +111,7 @@ NSIndexPath *labelIndexPath;
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     [settingsDefault synchronize];
+    //NSLog(@"check here reload rohit");
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -106,6 +120,8 @@ NSIndexPath *labelIndexPath;
     if (selectedRowIndexPath) {
         [self.tableView deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
     }
+    NSLog(@"check here reload rohit");
+    [self sendMyMessage];
 }
 
 void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
@@ -166,21 +182,28 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
     return cell;
 }
 
+- (UIView *)viewWithImageName:(NSString *)imageName {
+    UIImage *image = [UIImage imageNamed:imageName ];
+    image = [UIImage imageWithCGImage:image.CGImage scale:6 orientation:image.imageOrientation];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView.contentMode = UIViewContentModeCenter;
+    return imageView;
+}
 
 #pragma mark - UITableViewDataSource
 
 - (void)configureCell:(PlayerCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UIView *leftNormalView = [self viewWithImageName:@"check"];
+    UIView *leftNormalView = [self viewWithImageName:@"minus"];
     UIColor *redColor = [UIColor colorWithRed:232.0 / 255.0 green:61.0 / 255.0 blue:14.0 / 255.0 alpha:1.0];
     
-    UIView *leftExtendedView = [self viewWithImageName:@"cross"];
+    UIView *leftExtendedView = [self viewWithImageName:@"help"];
     UIColor *brownColor = [UIColor colorWithRed:206.0 / 255.0 green:149.0 / 255.0 blue:98.0 / 255.0 alpha:1.0];
     
-    UIView *rightNormalView = [self viewWithImageName:@"clock"];
+    UIView *rightNormalView = [self viewWithImageName:@"plus"];
     UIColor *greenColor = [UIColor colorWithRed:85.0 / 255.0 green:213.0 / 255.0 blue:80.0 / 255.0 alpha:1.0];
     
-    UIView *rightExtendedView = [self viewWithImageName:@"list"];
+    UIView *rightExtendedView = [self viewWithImageName:@"help"];
     UIColor *yellowColor = [UIColor colorWithRed:254.0 / 255.0 green:217.0 / 255.0 blue:56.0 / 255.0 alpha:1.0];
     
     // Setting the default inactive state color to the tableView background color
@@ -194,16 +217,17 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
         [self decrementScoreBy:1 forCellAtIndex:indexPath];
     }];
     
-    [cell setSwipeGestureWithView:leftExtendedView color:brownColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState2 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
+    [cell setSwipeGestureWithView:leftExtendedView color:yellowColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState2 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
         NSLog(@"Did swipe \"Cross\" cell");
         incrementOrDecrementMassScore = false;
         [self performSegueWithIdentifier:@"incrDecrScoreSegue" sender: cell];
-        
+        NSLog(@"ROhit swipe check");
     }];
     
     [cell setSwipeGestureWithView:rightNormalView color:greenColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState3 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
         NSLog(@"Did swipe \"Clock\" cell");
         [self incrementScoreBy:1 forCellAtIndex:indexPath];
+        NSLog(@"ROhit swipe check");
         
     }];
     
@@ -211,6 +235,7 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
         NSLog(@"Did swipe \"List\" cell");
         incrementOrDecrementMassScore = true;
         [self performSegueWithIdentifier:@"incrDecrScoreSegue" sender: cell];
+        NSLog(@"ROhit swipe check");
     }];
     
     
@@ -235,13 +260,6 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
     // NSLog(@"Did swipe with percentage : %f", percentage);
 }
 
-
-- (UIView *)viewWithImageName:(NSString *)imageName {
-    UIImage *image = [UIImage imageNamed:imageName];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-    imageView.contentMode = UIViewContentModeCenter;
-    return imageView;
-}
 
 -(void) handleDoubleTapWithTwoFingers:(UITapGestureRecognizer *) gesture {
     CGPoint doubleTapLocation = [gesture locationInView:self.tableView];
@@ -306,6 +324,7 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
             newPlayer.score = selectedPlayer.score;
             [cellData replaceObjectAtIndex:labelIndexPath.row withObject:newPlayer];
             [self.tableView reloadData];
+            [self sendMyMessage];
         }
     }
     else if(alertView.tag==2 && buttonIndex == 1 ) {
@@ -319,6 +338,7 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
             newPlayer.score = currentScore+valueToIncr;
             [cellData replaceObjectAtIndex:labelIndexPath.row withObject:newPlayer];
             [self.tableView reloadData];
+            [self sendMyMessage];
         }
     }
     else if(alertView.tag==3 && buttonIndex == 1 ) {
@@ -342,6 +362,7 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
                 alert.show;
             }
             [self.tableView reloadData];
+            [self sendMyMessage];
             
         }
     }
@@ -359,6 +380,7 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
                 newPlayer.score = currentScore+valueToIncr;
                 [cellData replaceObjectAtIndex:labelIndexPath.row withObject:newPlayer];
                 [self.tableView reloadData];
+                [self sendMyMessage];
             }
             
         }
@@ -374,6 +396,7 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
                 newPlayer.score = currentScore-valueToIncr;
                 [cellData replaceObjectAtIndex:labelIndexPath.row withObject:newPlayer];
                 [self.tableView reloadData];
+                [self sendMyMessage];
             }
             
         }
@@ -467,6 +490,7 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
     newPlayer.score = 0;
     [cellData addObject:newPlayer];
     [self.tableView reloadData];
+    [self sendMyMessage];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -487,4 +511,115 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
 - (IBAction)goToSettings:(id)sender {
     [self performSegueWithIdentifier:@"SettingsSegue" sender: sender];
 }
+
+-(void)sendMyMessage{
+    
+    NSInteger count = [self.cellData count];
+    NSMutableDictionary *toSend =[[NSMutableDictionary alloc] init];
+    PlayerInfo* player;
+    for (int i = 0;i<count; i++) {
+        
+        player=[self.cellData objectAtIndex:i];
+        //NSLog(@"%@  %d",player.playerName,player.score);
+        NSString *key = [NSString stringWithFormat:@"%d",i];
+        NSString *value = [NSString stringWithFormat:@"%@;#%d",player.playerName,player.score];
+//        toSend = [NSDictionary dictionaryWithObjectsAndKeys:player.playerName,@"Player_Name", player.score,@"Score", nil];
+        // NSLog(@"KEY: %@",key);
+        [toSend setObject:value forKey:key];
+    }
+    
+//    NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] init];
+//    for(int i = 0; i< count; i++)
+//    {
+//        player=[self.cellData objectAtIndex:i];
+//        //NSString *str = [NSString stringWithFormat:@"player_name:"];
+//        NSString *key = [NSString stringWithFormat:@"%d",i];
+//        NSString *str1 =[NSString stringWithFormat:@"player_name:%@,player_score:%d",player.playerName, player.score];
+//        //NSMutableString *temopString = @"player_name:%@, player_score: %d",player;
+//        NSDictionary *message=@{key:str1};
+//    }
+       //NSDictionary *d = [toSend copy];
+//
+//    //NSData *dataToSend = [_txtMsg.text dataUsingEncoding:NSUTF8StringEncoding];
+//    //NSString *dataToSend=_txtMsg.text;
+//   // NSDictionary *message=@{@"message":dataToSend};
+        NSData *messageData=[NSJSONSerialization dataWithJSONObject:toSend options:0 error:nil];
+        NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+        NSError *error=nil;
+//    
+//    /*NSData *JSONRequestData=NULL;
+//     if ([NSJSONSerialization isValidJSONObject:messageData]) {
+//     NSLog(@"Proper JSON Object");
+//     JSONRequestData = [NSJSONSerialization dataWithJSONObject:messageData options:kNilOptions error:&error];
+//     }
+//     else {
+//     NSLog(@"requestData was not a proper JSON object");
+//     
+//     }*/
+//    
+//    
+//    
+//    
+    // NSLog(allPeers[0]);
+    //NSLog(@"after printing array");
+    [_appDelegate.mcManager.session sendData:messageData
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+    
+    //setText:[stringByAppendingString:[NSString stringWithFormat:@"I wrote:\n%@\n\n", _txtMsg.text];
+    //[_txtMsg setText:@""];
+   // NSLog(@"Rohit here");
+    //[_txtMsg resignFirstResponder];
+}
+
+-(void)didReceiveDataWithNotification:(NSNotification *)notification{
+    //MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
+    //NSString *peerDisplayName = peerID.displayName;
+    
+    NSDictionary *receivedData = [notification userInfo];
+    NSInteger count = [receivedData count];
+    NSMutableArray *newCellData = [[NSMutableArray alloc] initWithObjects: nil];
+    //NSLog(@"here in receiving end ..........");
+    for(int i = 0 ;i<count ; i++){
+        NSString *key = [NSString stringWithFormat:@"%d",i];
+        NSString *value = [receivedData objectForKey:key];
+        //NSLog(@"Check this out man!!!!");
+        NSArray *combinedData = [value componentsSeparatedByString:@";#"];
+        NSString *playerName = [combinedData objectAtIndex:0];
+        NSString *playerScore = [combinedData objectAtIndex:1];
+        //NSLog(@"%@ this is separator %@",playerName,playerScore);
+        PlayerInfo *player = [[PlayerInfo alloc] init];
+        player.playerName = playerName;
+        player.score = [playerScore intValue];
+        [newCellData addObject:player];
+        
+    }
+    [self.cellData removeAllObjects];
+    [self.cellData addObjectsFromArray:newCellData];
+    dispatch_async(dispatch_get_main_queue(),^{[self.tableView reloadData];});
+    
+    //NSString *actualData=[receivedData valueForKey:@"message"];
+    //NSString *receivedText = [[NSString alloc] initWithData:actualData encoding:NSUTF8StringEncoding];
+    //NSLog(@"in did receive data with notification %@", receivedData );
+    
+   //dispatch_async(dispatch_get_main_queue(),^{ [self.herelabel setText:receivedData];});
+    //[self.herelabel setText:receivedText];
+    //@try {
+    //self.herelabel.text = receivedText;
+    //}
+    //@catch (NSException *exception) {
+    //  NSString *error = [exception description];
+    // NSLog(@"Here in exception %@",error);
+    //}
+    
+    
+    //[_tvChat performSelectorOnMainThread:@selector(setText:) withObject:[_tvChat.text stringByAppendingString:[NSString stringWithFormat:@"%@ wrote:\n%@\n\n", peerDisplayName, receivedText]] waitUntilDone:NO];
+}
+
+
 @end

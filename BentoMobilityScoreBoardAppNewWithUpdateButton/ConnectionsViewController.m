@@ -14,34 +14,47 @@
 
 @implementation ConnectionsViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
+-(IBAction)browseForDevices:(id)sender{
+    NSLog(@"browse");
+    [[_appDelegate mcManager] setupMCBrowser];
+    [[[_appDelegate mcManager] browser] setDelegate:self];
+    [self presentViewController:[[_appDelegate mcManager] browser] animated:YES completion:nil];
+}
+
+-(IBAction)toggleVisibility:(id)sender {
+    NSLog(@"toggle");
+    [_appDelegate.mcManager advertiseSelf:_swVisible.isOn];
+}
+
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithStyle:style];
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
     }
     return self;
 }
 
-- (IBAction)browseForDevices:(id)sender {
-    NSLog(@"Browse");
+-(void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController{
+    [_appDelegate.mcManager.browser dismissViewControllerAnimated:YES completion:nil];
 }
-- (IBAction)disconnect:(id)sender {
-    NSLog(@"disconnect");
-}
-- (IBAction)toggleVisibility:(id)sender {
-    NSLog(@"toggle");
+
+
+-(void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController{
+    [_appDelegate.mcManager.browser dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    _appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [[_appDelegate mcManager] setupPeerAndSessionWithDisplayName:[UIDevice currentDevice].name];
+    [[_appDelegate mcManager] advertiseSelf:_swVisible.isOn];
+    [_txtName setDelegate:self];
+    
+	// Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning
@@ -50,81 +63,24 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [_txtName resignFirstResponder];
     
-    // Configure the cell...
+    _appDelegate.mcManager.peerID = nil;
+    _appDelegate.mcManager.session = nil;
+    _appDelegate.mcManager.browser = nil;
     
-    return cell;
-}
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
+    if ([_swVisible isOn]) {
+        [_appDelegate.mcManager.advertiser stop];
+    }
+    _appDelegate.mcManager.advertiser = nil;
+    
+    
+    [_appDelegate.mcManager setupPeerAndSessionWithDisplayName:_txtName.text];
+    [_appDelegate.mcManager setupMCBrowser];
+    [_appDelegate.mcManager advertiseSelf:_swVisible.isOn];
+    
     return YES;
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 @end

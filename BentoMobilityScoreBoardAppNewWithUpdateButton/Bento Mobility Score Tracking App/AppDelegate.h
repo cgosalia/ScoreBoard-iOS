@@ -12,5 +12,7 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong,nonatomic) MCManager *mcManager;
+
+@property (strong, nonatomic) MCManager *mcManager;
+
 @end
