@@ -43,6 +43,8 @@
     [preset2 setText:[NSString stringWithFormat:@"%d", preset2Value]];
     [preset3 setText:[NSString stringWithFormat:@"%d", preset3Value]];
     [preset4 setText:[NSString stringWithFormat:@"%d", preset4Value]];
+    
+    
 	// Do any additional setup after loading the view.
 }
 

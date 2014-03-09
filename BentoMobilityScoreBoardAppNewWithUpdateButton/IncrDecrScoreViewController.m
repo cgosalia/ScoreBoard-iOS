@@ -102,6 +102,103 @@ NSInteger *preset4Value;
     [preset3 setTitle:[NSString stringWithFormat:@"%d", preset3Value] forState:UIControlStateNormal];
     [preset4 setTitle:[NSString stringWithFormat:@"%d", preset4Value] forState:UIControlStateNormal];
     
+    UITapGestureRecognizer *tapper = [[UITapGestureRecognizer alloc]
+                                      initWithTarget:self action:@selector(handleSingleTap:)];
+    tapper.cancelsTouchesInView = NO;
+    [self.view addGestureRecognizer:tapper];
+    
+    UILongPressGestureRecognizer *longPressPreset1 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOnPresetButton1:)];
+    UILongPressGestureRecognizer *longPressPreset2 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOnPresetButton2:)];
+    UILongPressGestureRecognizer *longPressPreset3 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOnPresetButton3:)];
+    UILongPressGestureRecognizer *longPressPreset4 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOnPresetButton4:)];
+    [self.preset1 addGestureRecognizer:longPressPreset1];
+    [self.preset2 addGestureRecognizer:longPressPreset2];
+    [self.preset3 addGestureRecognizer:longPressPreset3];
+    [self.preset4 addGestureRecognizer:longPressPreset4];
+}
+
+- (void)longPressOnPresetButton1:(UILongPressGestureRecognizer*)gesture {
+    
+    if ( gesture.state == UIGestureRecognizerStateBegan ) {
+        [self createAlertViewsWith:[NSString stringWithFormat:@"%d", preset1Value] withTag:1];
+    }
+}
+
+- (void)longPressOnPresetButton2:(UILongPressGestureRecognizer*)gesture {
+    if ( gesture.state == UIGestureRecognizerStateBegan ) {
+        [self createAlertViewsWith:[NSString stringWithFormat:@"%d", preset2Value] withTag:2];
+    }
+}
+- (void)longPressOnPresetButton3:(UILongPressGestureRecognizer*)gesture {
+    if ( gesture.state == UIGestureRecognizerStateBegan ) {
+        [self createAlertViewsWith:[NSString stringWithFormat:@"%d", preset3Value] withTag:3];
+    }}
+- (void)longPressOnPresetButton4:(UILongPressGestureRecognizer*)gesture {
+    if ( gesture.state == UIGestureRecognizerStateBegan ) {
+        [self createAlertViewsWith:[NSString stringWithFormat:@"%d", preset4Value] withTag:4];
+    }
+}
+
+
+-(void) createAlertViewsWith:(NSString *)value withTag:(int)num {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Change Preset" message:@"Enter preset score amount for this button" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Save", nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UITextField *alertTextField = [alert textFieldAtIndex:0];
+    alertTextField.text = value;
+    alertTextField.keyboardType = UIKeyboardTypeNumberPad;
+    [alert setTag:num];
+    alert.show;
+}
+
+-(void) alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if(alertView.tag==1 && buttonIndex == 1) {
+        UITextField *textField = [alertView textFieldAtIndex:0];
+        if ([textField.text length]>0) {
+            preset1Value = [textField.text integerValue];
+            [preset1 setTitle:textField.text forState:UIControlStateNormal];
+            [self savePresetFor:@"preset1" with:preset1Value];
+        }
+    }
+    else if(alertView.tag==2 && buttonIndex == 1 ) {
+        UITextField *textField = [alertView textFieldAtIndex:0];
+        if ([textField.text length]>0) {
+            preset2Value = [textField.text integerValue];
+            [preset2 setTitle:textField.text forState:UIControlStateNormal];
+            [self savePresetFor:@"preset2" with:preset2Value];
+        }
+    }
+    else if(alertView.tag==3 && buttonIndex == 1 ) {
+        UITextField *textField = [alertView textFieldAtIndex:0];
+        if ([textField.text length]>0) {
+            preset3Value = [textField.text integerValue];
+            [preset3 setTitle:textField.text forState:UIControlStateNormal];
+            [self savePresetFor:@"preset3" with:preset3Value];
+        }
+    }
+    else if(alertView.tag == 4)
+    {
+        UITextField *textField = [alertView textFieldAtIndex:0];
+        if ([textField.text length]>0) {
+            preset4Value = [textField.text integerValue];
+            [preset4 setTitle:textField.text forState:UIControlStateNormal];
+            [self savePresetFor:@"preset4" with:preset4Value];
+        }
+        
+        
+    }
+}
+
+
+- (void)savePresetFor:(NSString *)preset with:(NSInteger)value {
+    
+    NSUserDefaults *settingsDefault = [NSUserDefaults standardUserDefaults];
+    [settingsDefault setInteger:value forKey:preset];
+    
+}
+
+- (void)handleSingleTap:(UITapGestureRecognizer *) sender
+{
+    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -125,85 +222,40 @@ NSInteger *preset4Value;
     
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
-- (IBAction)incrDecrByPreset1:(id)sender {
+
+-(void) updatePresetBy:(NSInteger)presetVal {
     [infoLabel setHidden:YES];
     if(incrementOrDecrementFlag) {
         int currentTotalScore = [totalScore.text intValue];
-        int presetValue = preset1Value;
+        int presetValue = presetVal;
         int totalScr = currentTotalScore+presetValue;
         [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
     } else {
         int currentTotalScore = [totalScore.text intValue];
-        int presetValue = preset1Value;
+        int presetValue = presetVal;
         int totalScr = currentTotalScore-presetValue;
-        if(totalScr >= 0) {
-            [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
-        } else {
-            [infoLabel setHidden:NO];
-            [infoLabel setText:@"Score cannot be less than zero."];
-            [infoLabel setBackgroundColor:[UIColor lightGrayColor]];
-        }
+        [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
+//        if(totalScr >= 0) {
+//            [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
+//        } else {
+//            [infoLabel setHidden:NO];
+//            [infoLabel setText:@"Score cannot be less than zero."];
+//            [infoLabel setBackgroundColor:[UIColor lightGrayColor]];
+//        }
     }
-    
 }
+- (IBAction)incrDecrByPreset1:(id)sender {
+    [self updatePresetBy:preset1Value];
+}
+
 - (IBAction)incrDecrByPreset2:(id)sender {
-    [infoLabel setHidden:YES];
-    if(incrementOrDecrementFlag) {
-        int currentTotalScore = [totalScore.text intValue];
-        int presetValue = preset2Value;
-        int totalScr = currentTotalScore+presetValue;
-        [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
-    } else {
-        int currentTotalScore = [totalScore.text intValue];
-        int presetValue = preset2Value;
-        int totalScr = currentTotalScore-presetValue;
-        if(totalScr >= 0) {
-            [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
-        } else {
-            [infoLabel setHidden:NO];
-            [infoLabel setText:@"Score cannot be less than zero."];
-            [infoLabel setBackgroundColor:[UIColor lightGrayColor]];
-        }
-    }
+    [self updatePresetBy:preset2Value];
 }
 - (IBAction)incrDecrByPreset3:(id)sender {
-    [infoLabel setHidden:YES];
-    if(incrementOrDecrementFlag) {
-        int currentTotalScore = [totalScore.text intValue];
-        int presetValue = preset3Value;
-        int totalScr = currentTotalScore+presetValue;
-        [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
-    } else {
-        int currentTotalScore = [totalScore.text intValue];
-        int presetValue = preset3Value;
-        int totalScr = currentTotalScore-presetValue;
-        if(totalScr >= 0) {
-            [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
-        } else {
-            [infoLabel setHidden:NO];
-            [infoLabel setText:@"Score cannot be less than zero."];
-            [infoLabel setBackgroundColor:[UIColor lightGrayColor]];
-        }
-    }
+    [self updatePresetBy:preset3Value];
 }
 - (IBAction)incrDecrByPreset4:(id)sender {
-    [infoLabel setHidden:YES];
-    if(incrementOrDecrementFlag) {
-        int currentTotalScore = [totalScore.text intValue];
-        int presetValue = preset4Value;
-        int totalScr = currentTotalScore+presetValue;
-        [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
-    } else {
-        int currentTotalScore = [totalScore.text intValue];
-        int presetValue = preset4Value;
-        int totalScr = currentTotalScore-presetValue;
-        if(totalScr >= 0) {
-            [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
-        } else {
-            [infoLabel setHidden:NO];
-            [infoLabel setText:@"Score cannot be less than zero."];
-            [infoLabel setBackgroundColor:[UIColor lightGrayColor]];
-        }
-    }
+    [self updatePresetBy:preset4Value];
 }
+
 @end

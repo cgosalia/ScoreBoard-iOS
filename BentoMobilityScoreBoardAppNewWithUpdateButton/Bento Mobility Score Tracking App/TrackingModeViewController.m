@@ -56,9 +56,9 @@ NSIndexPath *labelIndexPath;
 -(void) decrementScoreBy:(int)value forCellAtIndex:(NSIndexPath *)indexPath {
     PlayerInfo *selectedPlayer = [cellData objectAtIndex:indexPath.row];
     int score = selectedPlayer.score;
-    if((score-value) >= 0) {
+//    if((score-value) >= 0) {
         score = score-value;
-    }
+//    }
     PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
     newPlayer.playerName = selectedPlayer.playerName;
     newPlayer.score = score;
@@ -89,10 +89,10 @@ NSIndexPath *labelIndexPath;
                                                object:nil];
     
     NSUserDefaults *settingsDefault = [NSUserDefaults standardUserDefaults];
-    [settingsDefault setInteger:5 forKey:@"preset1"];
-    [settingsDefault setInteger:10 forKey:@"preset2"];
-    [settingsDefault setInteger:50 forKey:@"preset3"];
-    [settingsDefault setInteger:100 forKey:@"preset4"];
+    [settingsDefault setInteger:1 forKey:@"preset1"];
+    [settingsDefault setInteger:5 forKey:@"preset2"];
+    [settingsDefault setInteger:10 forKey:@"preset3"];
+    [settingsDefault setInteger:25 forKey:@"preset4"];
     
     PlayerInfo *firstPlayer = [[PlayerInfo alloc] init];
     NSString *combinedName = [NSString stringWithFormat:@"%@%@%@", @"Player (", [NSString stringWithFormat:@"%d",playerId++],@")"];
@@ -170,10 +170,15 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
     
     
     // Configure single tap with two fingers for opening detail disclosure screen
-    UITapGestureRecognizer *singleTapWithTwoFingers = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTapWithTwoFingers:)];
+    UITapGestureRecognizer *singleTapWithTwoFingers = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesturesOnCell:)];
     [singleTapWithTwoFingers setNumberOfTouchesRequired:2];
     [singleTapWithTwoFingers setNumberOfTapsRequired:1];
     [cell addGestureRecognizer:singleTapWithTwoFingers];
+    
+    
+    UITapGestureRecognizer *doubleTapWithOneFinger = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesturesOnCell:)];
+    [doubleTapWithOneFinger setNumberOfTapsRequired:2];
+    [cell addGestureRecognizer:doubleTapWithOneFinger];
     
     
     //cell.textLabel.text = [cellData objectAtIndex:indexPath.row];
@@ -189,6 +194,7 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
     imageView.contentMode = UIViewContentModeCenter;
     return imageView;
 }
+
 
 #pragma mark - UITableViewDataSource
 
@@ -261,9 +267,9 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
 }
 
 
--(void) handleDoubleTapWithTwoFingers:(UITapGestureRecognizer *) gesture {
-    CGPoint doubleTapLocation = [gesture locationInView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:doubleTapLocation];
+-(void) handleTapGesturesOnCell:(UITapGestureRecognizer *) gesture {
+    CGPoint tapLocation = [gesture locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:tapLocation];
     UITableViewCell *tappedCell = [self.tableView cellForRowAtIndexPath:indexPath];
     [self performSegueWithIdentifier:@"PlayerDetailsSegue" sender: tappedCell];
 }

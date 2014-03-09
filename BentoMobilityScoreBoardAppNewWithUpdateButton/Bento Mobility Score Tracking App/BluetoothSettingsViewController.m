@@ -29,7 +29,6 @@
     
     //NSData *dataToSend = [_txtMsg.text dataUsingEncoding:NSUTF8StringEncoding];
     NSString *dataToSend=_txtMsg.text;
-    
     NSDictionary *message=@{@"message":dataToSend};
     NSData *messageData=[NSJSONSerialization dataWithJSONObject:message options:0 error:nil];
     NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
