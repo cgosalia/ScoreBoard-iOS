@@ -52,9 +52,9 @@ NSIndexPath *labelIndexPath;
 -(void) decrementScoreBy:(int)value forCellAtIndex:(NSIndexPath *)indexPath {
     PlayerInfo *selectedPlayer = [cellData objectAtIndex:indexPath.row];
     int score = selectedPlayer.score;
-    if((score-value) >= 0) {
+//    if((score-value) >= 0) {
         score = score-value;
-    }
+//    }
     PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
     newPlayer.playerName = selectedPlayer.playerName;
     newPlayer.score = score;

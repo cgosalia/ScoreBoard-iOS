@@ -222,85 +222,40 @@ NSInteger *preset4Value;
     
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
-- (IBAction)incrDecrByPreset1:(id)sender {
+
+-(void) updatePresetBy:(NSInteger)presetVal {
     [infoLabel setHidden:YES];
     if(incrementOrDecrementFlag) {
         int currentTotalScore = [totalScore.text intValue];
-        int presetValue = preset1Value;
+        int presetValue = presetVal;
         int totalScr = currentTotalScore+presetValue;
         [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
     } else {
         int currentTotalScore = [totalScore.text intValue];
-        int presetValue = preset1Value;
+        int presetValue = presetVal;
         int totalScr = currentTotalScore-presetValue;
-        if(totalScr >= 0) {
-            [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
-        } else {
-            [infoLabel setHidden:NO];
-            [infoLabel setText:@"Score cannot be less than zero."];
-            [infoLabel setBackgroundColor:[UIColor lightGrayColor]];
-        }
+        [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
+//        if(totalScr >= 0) {
+//            [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
+//        } else {
+//            [infoLabel setHidden:NO];
+//            [infoLabel setText:@"Score cannot be less than zero."];
+//            [infoLabel setBackgroundColor:[UIColor lightGrayColor]];
+//        }
     }
-    
 }
+- (IBAction)incrDecrByPreset1:(id)sender {
+    [self updatePresetBy:preset1Value];
+}
+
 - (IBAction)incrDecrByPreset2:(id)sender {
-    [infoLabel setHidden:YES];
-    if(incrementOrDecrementFlag) {
-        int currentTotalScore = [totalScore.text intValue];
-        int presetValue = preset2Value;
-        int totalScr = currentTotalScore+presetValue;
-        [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
-    } else {
-        int currentTotalScore = [totalScore.text intValue];
-        int presetValue = preset2Value;
-        int totalScr = currentTotalScore-presetValue;
-        if(totalScr >= 0) {
-            [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
-        } else {
-            [infoLabel setHidden:NO];
-            [infoLabel setText:@"Score cannot be less than zero."];
-            [infoLabel setBackgroundColor:[UIColor lightGrayColor]];
-        }
-    }
+    [self updatePresetBy:preset2Value];
 }
 - (IBAction)incrDecrByPreset3:(id)sender {
-    [infoLabel setHidden:YES];
-    if(incrementOrDecrementFlag) {
-        int currentTotalScore = [totalScore.text intValue];
-        int presetValue = preset3Value;
-        int totalScr = currentTotalScore+presetValue;
-        [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
-    } else {
-        int currentTotalScore = [totalScore.text intValue];
-        int presetValue = preset3Value;
-        int totalScr = currentTotalScore-presetValue;
-        if(totalScr >= 0) {
-            [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
-        } else {
-            [infoLabel setHidden:NO];
-            [infoLabel setText:@"Score cannot be less than zero."];
-            [infoLabel setBackgroundColor:[UIColor lightGrayColor]];
-        }
-    }
+    [self updatePresetBy:preset3Value];
 }
 - (IBAction)incrDecrByPreset4:(id)sender {
-    [infoLabel setHidden:YES];
-    if(incrementOrDecrementFlag) {
-        int currentTotalScore = [totalScore.text intValue];
-        int presetValue = preset4Value;
-        int totalScr = currentTotalScore+presetValue;
-        [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
-    } else {
-        int currentTotalScore = [totalScore.text intValue];
-        int presetValue = preset4Value;
-        int totalScr = currentTotalScore-presetValue;
-        if(totalScr >= 0) {
-            [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
-        } else {
-            [infoLabel setHidden:NO];
-            [infoLabel setText:@"Score cannot be less than zero."];
-            [infoLabel setBackgroundColor:[UIColor lightGrayColor]];
-        }
-    }
+    [self updatePresetBy:preset4Value];
 }
+
 @end
