@@ -390,9 +390,6 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     selectedCell = (PlayerCell *)[tableView cellForRowAtIndexPath:indexPath];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    ////    [UIView transitionFromView:selectedCell toView:selectedCell duration:1.0f options: UIViewAnimationOptionCurveLinear completion:NULL];
-    //    [UIView transitionWithView:selectedCell duration:1.0 options:UIViewAnimationOptionShowHideTransitionViews animations:NULL completion:NULL];
-    //    [UIView commitAnimations];
 }
 
 
