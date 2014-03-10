@@ -8,6 +8,7 @@
 
 #import "IncrDecrScoreViewController.h"
 #import "PlayerInfo.h"
+#import "Stack.h"
 
 @interface IncrDecrScoreViewController ()
 
@@ -49,6 +50,8 @@ NSInteger *preset3Value;
 
 NSInteger *preset4Value;
 
+Stack *stack;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -61,6 +64,8 @@ NSInteger *preset4Value;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    stack = [[Stack alloc] init];
+    
     NSUserDefaults *settingsDefaults = [NSUserDefaults standardUserDefaults];
     UIColor *redColor = [UIColor colorWithRed:232.0 / 255.0 green:61.0 / 255.0 blue:14.0 / 255.0 alpha:1.0];
     UIColor *greenColor = [UIColor colorWithRed:85.0 / 255.0 green:200.0 / 255.0 blue:80.0 / 255.0 alpha:1.0];
@@ -115,6 +120,8 @@ NSInteger *preset4Value;
     [self.preset2 addGestureRecognizer:longPressPreset2];
     [self.preset3 addGestureRecognizer:longPressPreset3];
     [self.preset4 addGestureRecognizer:longPressPreset4];
+    [self.undoButton setTitle:@"\u21BA" forState:UIControlStateNormal];
+    [self.undoButton setEnabled:NO];
 }
 
 - (void)longPressOnPresetButton1:(UILongPressGestureRecognizer*)gesture {
@@ -225,24 +232,25 @@ NSInteger *preset4Value;
 
 -(void) updatePresetBy:(NSInteger)presetVal {
     [infoLabel setHidden:YES];
+    [stack push:totalScore.text];
+    int currentTotalScore = [totalScore.text intValue];
+    int presetValue = presetVal;
+    int totalScr = 0;
     if(incrementOrDecrementFlag) {
-        int currentTotalScore = [totalScore.text intValue];
-        int presetValue = presetVal;
-        int totalScr = currentTotalScore+presetValue;
+        totalScr = currentTotalScore+presetValue;
         [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
     } else {
-        int currentTotalScore = [totalScore.text intValue];
-        int presetValue = presetVal;
-        int totalScr = currentTotalScore-presetValue;
+        totalScr = currentTotalScore-presetValue;
         [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
-//        if(totalScr >= 0) {
-//            [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
-//        } else {
-//            [infoLabel setHidden:NO];
-//            [infoLabel setText:@"Score cannot be less than zero."];
-//            [infoLabel setBackgroundColor:[UIColor lightGrayColor]];
-//        }
+        //        if(totalScr >= 0) {
+        //            [totalScore setText:[NSString stringWithFormat:@"%d", totalScr]];
+        //        } else {
+        //            [infoLabel setHidden:NO];
+        //            [infoLabel setText:@"Score cannot be less than zero."];
+        //            [infoLabel setBackgroundColor:[UIColor lightGrayColor]];
+        //        }
     }
+    [self.undoButton setEnabled:YES];
 }
 - (IBAction)incrDecrByPreset1:(id)sender {
     [self updatePresetBy:preset1Value];
@@ -258,4 +266,12 @@ NSInteger *preset4Value;
     [self updatePresetBy:preset4Value];
 }
 
+- (IBAction)undoScoreChange:(id)sender {
+    NSString *previousScore = (NSString *)stack.pop;
+    if(previousScore != nil) {
+        [totalScore setText:previousScore];
+    } else {
+        [self.undoButton setEnabled:NO];
+    }
+}
 @end

@@ -4,6 +4,7 @@
 //
 //  Created by Ravi Varsha Cheemanahalli Gopalakrishna on 3/1/14.
 //  Copyright (c) 2014 Ravi Varsha Cheemanahalli Gopalakrishna. All rights reserved.
+//  Copyright (c) 2014 Ali Karagoz.  See LICENSE for MCSwipeTableViewCell file for more info.
 //
 
 #import <UIKit/UIKit.h>

@@ -49,4 +49,8 @@
 
 @property (atomic) IBOutlet UITableView *receivedTableView;
 
+- (IBAction)undoScoreChange:(id)sender;
+
+@property (strong, nonatomic) IBOutlet UIButton *undoButton;
+
 @end

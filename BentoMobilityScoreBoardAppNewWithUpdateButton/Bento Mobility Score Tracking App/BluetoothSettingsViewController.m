@@ -75,17 +75,7 @@
     NSLog(@"in did receive data with notification %@", receivedData );
     
     dispatch_async(dispatch_get_main_queue(),^{ [self.herelabel setText:receivedData];});
-    //[self.herelabel setText:receivedText];
-    //@try {
-    //self.herelabel.text = receivedText;
-    //}
-    //@catch (NSException *exception) {
-    //  NSString *error = [exception description];
-    // NSLog(@"Here in exception %@",error);
-    //}
-    
-    
-    //[_tvChat performSelectorOnMainThread:@selector(setText:) withObject:[_tvChat.text stringByAppendingString:[NSString stringWithFormat:@"%@ wrote:\n%@\n\n", peerDisplayName, receivedText]] waitUntilDone:NO];
+
 }
 - (IBAction)sendData:(id)sender {
     [self sendMyMessage];
@@ -106,7 +96,11 @@
                                              selector:@selector(didReceiveDataWithNotification:)
                                                  name:@"MCDidReceiveDataNotification"
                                                object:nil];
-    NSLog(@"here in view did load");
+    
+    UITapGestureRecognizer *tapper = [[UITapGestureRecognizer alloc]
+                                      initWithTarget:self action:@selector(handleSingleTap:)];
+    tapper.cancelsTouchesInView = NO;
+    [self.view addGestureRecognizer:tapper];
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
@@ -130,6 +124,11 @@
     UITableViewCell *cell;
     
     return cell;
+}
+
+- (void)handleSingleTap:(UITapGestureRecognizer *) sender
+{
+    [self.view endEditing:YES];
 }
 
 @end

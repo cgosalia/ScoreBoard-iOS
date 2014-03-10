@@ -10,4 +10,7 @@
 
 @interface SettingsViewController : UIViewController
 
+- (IBAction)defaultPresets:(id)sender;
+
+
 @end

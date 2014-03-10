@@ -4,12 +4,15 @@
 //
 //  Created by Ravi Varsha Cheemanahalli Gopalakrishna on 3/1/14.
 //  Copyright (c) 2014 Ravi Varsha Cheemanahalli Gopalakrishna. All rights reserved.
+//  Copyright (c) 2014 Ali Karagoz.  See LICENSE for MCSwipeTableViewCell file for more info.
 //
 
 #import "MCSwipeTableViewCell.h"
 
+
 static CGFloat const kMCStop1                       = 0.15; // Percentage limit to trigger the first action
 static CGFloat const kMCStop2                       = 0.55; // Percentage limit to trigger the second action
+
 static CGFloat const kMCBounceAmplitude             = 20.0; // Maximum bounce amplitude when using the MCSwipeTableViewCellModeSwitch mode
 static CGFloat const kMCDamping                     = 0.6;  // Damping of the spring animation
 static CGFloat const kMCVelocity                    = 0.2;  // Velocity of the spring animation
