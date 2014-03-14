@@ -229,28 +229,27 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
     
     [cell setSwipeGestureWithView:leftNormalView color:redColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState1 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
         NSLog(@"Did swipe \"Checkmark\" cell");
+        //[cell setupSwipingViewBackgroundColor:redColor];
         [self decrementScoreBy:1 forCellAtIndex:indexPath];
+
     }];
     
     [cell setSwipeGestureWithView:leftExtendedView color:yellowColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState2 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
         NSLog(@"Did swipe \"Cross\" cell");
         incrementOrDecrementMassScore = false;
         [self performSegueWithIdentifier:@"incrDecrScoreSegue" sender: cell];
-        NSLog(@"ROhit swipe check");
     }];
     
     [cell setSwipeGestureWithView:rightNormalView color:greenColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState3 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
         NSLog(@"Did swipe \"Clock\" cell");
+        //[cell setupSwipingViewBackgroundColor:greenColor];
         [self incrementScoreBy:1 forCellAtIndex:indexPath];
-        NSLog(@"ROhit swipe check");
-        
     }];
     
     [cell setSwipeGestureWithView:rightExtendedView color:yellowColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState4 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
         NSLog(@"Did swipe \"List\" cell");
         incrementOrDecrementMassScore = true;
         [self performSegueWithIdentifier:@"incrDecrScoreSegue" sender: cell];
-        NSLog(@"ROhit swipe check");
     }];
 }
 

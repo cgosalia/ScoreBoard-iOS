@@ -177,6 +177,8 @@ typedef void (^MCSwipeCompletionBlock)(MCSwipeTableViewCell *cell, MCSwipeTableV
  */
 - (void)swipeToOriginWithCompletion:(void(^)(void))completion;
 
+- (void) setupSwipingViewBackgroundColor:(UIColor *) color;
+
 @end
 
 

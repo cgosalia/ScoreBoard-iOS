@@ -21,6 +21,7 @@ static NSTimeInterval const kMCBounceDuration1      = 0.2;  // Duration of the f
 static NSTimeInterval const kMCBounceDuration2      = 0.9;  // Duration of the second part of the bounce animation
 static NSTimeInterval const kMCDurationLowLimit     = 0.25; // Lowest duration when swiping the cell because we try to simulate velocity
 static NSTimeInterval const kMCDurationHighLimit    = 0.1;  // Highest duration when swiping the cell because we try to simulate velocity
+UIColor *swipingViewBackgroundColor;
 
 typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellDirection) {
     MCSwipeTableViewCellDirectionLeft = 0,
@@ -254,6 +255,10 @@ typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellDirection) {
     }
 }
 
+- (void) setupSwipingViewBackgroundColor:(UIColor *) color {
+    swipingViewBackgroundColor = color;
+}
+
 #pragma mark - Handle Gestures
 
 - (void)handlePanGestureRecognizer:(UIPanGestureRecognizer *)gesture {
@@ -447,8 +452,16 @@ typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellDirection) {
     UIColor *color;
     
     // Background Color
+    MCSwipeTableViewCellDirection direction = [self directionWithPercentage:percentage];
+    if(direction == MCSwipeTableViewCellDirectionLeft) {
+        swipingViewBackgroundColor = _color3;
+    }
     
-    color = self.defaultColor ? self.defaultColor : [UIColor whiteColor];
+    if(direction == MCSwipeTableViewCellDirectionRight) {
+        swipingViewBackgroundColor = _color1;
+    }
+    
+    color = self.defaultColor ? self.defaultColor : swipingViewBackgroundColor;
     
     if (percentage > _firstTrigger && _modeForState1) {
         color = _color1;
@@ -543,10 +556,12 @@ typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellDirection) {
     else {
         if (_direction == MCSwipeTableViewCellDirectionRight) {
             position.x = [self offsetWithPercentage:(_firstTrigger / 2) relativeToWidth:CGRectGetWidth(self.bounds)];
+            [self setupSwipingViewBackgroundColor:[UIColor redColor]];
         }
         
         else if (_direction == MCSwipeTableViewCellDirectionLeft) {
             position.x = CGRectGetWidth(self.bounds) - [self offsetWithPercentage:(_firstTrigger / 2) relativeToWidth:CGRectGetWidth(self.bounds)];
+                        [self setupSwipingViewBackgroundColor:[UIColor greenColor]];
         }
         
         else {
