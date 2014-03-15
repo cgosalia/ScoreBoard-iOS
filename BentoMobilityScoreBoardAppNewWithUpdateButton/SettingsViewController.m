@@ -7,6 +7,7 @@
 //
 
 #import "SettingsViewController.h"
+#import "ScoreBoardViewController.h"
 
 @interface SettingsViewController ()
 
@@ -16,6 +17,9 @@
 
 UIAlertView *progressAlert;
 
+//UIViewController *scoreboardController = nil;
+
+@synthesize receivedSBViewController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -29,6 +33,8 @@ UIAlertView *progressAlert;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
 	// Do any additional setup after loading the view.
     
 }
@@ -61,6 +67,15 @@ UIAlertView *progressAlert;
 	[activityView startAnimating];
 	[progressAlert show];
 
+}
+
+- (IBAction)goToScoreBoard:(id)sender {
+//    if(scoreboardController == nil) {
+//        scoreboardController = (ScoreBoardViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"ScoreBoardView"];
+//        
+//    }
+    //scoreboardController = receivedSBViewController;
+    [self.navigationController pushViewController:receivedSBViewController animated:YES];
 }
 
 - (void) checkTimer:(NSTimer *)timer

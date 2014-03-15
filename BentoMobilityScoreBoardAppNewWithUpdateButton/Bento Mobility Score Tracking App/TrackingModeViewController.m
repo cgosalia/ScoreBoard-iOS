@@ -13,6 +13,8 @@
 #import "IncrDecrScoreViewController.h"
 #import "BluetoothSettingsViewController.h"
 #import "AppDelegate.h"
+#import "ScoreBoardViewController.h"
+#import "SettingsViewController.h"
 
 @interface TrackingModeViewController ()
 @property (nonatomic, strong) AppDelegate *appDelegate;
@@ -40,6 +42,12 @@ BOOL longDecr = false;
 bool incrementOrDecrementMassScore;
 
 NSIndexPath *labelIndexPath;
+
+NSNotification *notificationForScoreBoard;
+
+NSMutableDictionary *trackingModeDataSource;
+
+UIViewController *scoreboardController = nil;
 
 -(void) incrementScoreBy:(int)value forCellAtIndex:(NSIndexPath *)indexPath {
     PlayerInfo *selectedPlayer = [cellData objectAtIndex:indexPath.row];
@@ -87,7 +95,21 @@ NSIndexPath *labelIndexPath;
                                              selector:@selector(didReceiveDataWithNotification:)
                                                  name:@"MCDidReceiveDataNotification"
                                                object:nil];
+    trackingModeDataSource = [[NSMutableDictionary alloc] init];
+    notificationForScoreBoard = [NSNotification notificationWithName:@"PlayerInfoChangedNotification"
+                                                                   object:self
+                                                                 userInfo:trackingModeDataSource];
+
+    if(scoreboardController == nil) {
+        scoreboardController = (ScoreBoardViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"ScoreBoardView"];
+        
+    }
     
+    [[NSNotificationCenter defaultCenter] addObserver:scoreboardController
+                                             selector:@selector(updateScoreBoard:)
+                                                 name:@"PlayerInfoChangedNotification"
+                                               object:nil];
+
     NSUserDefaults *settingsDefault = [NSUserDefaults standardUserDefaults];
     [settingsDefault setInteger:1 forKey:@"preset1"];
     [settingsDefault setInteger:5 forKey:@"preset2"];
@@ -105,13 +127,14 @@ NSIndexPath *labelIndexPath;
     UIFont *customFont = [UIFont fontWithName:@"Helvetica" size:25.0];
     NSDictionary *fontDictionary = @{UITextAttributeFont : customFont};
     [settingsButton setTitleTextAttributes:fontDictionary forState:UIControlStateNormal];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
     [settingsDefault synchronize];
-    //NSLog(@"check here reload rohit");
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -120,7 +143,7 @@ NSIndexPath *labelIndexPath;
     if (selectedRowIndexPath) {
         [self.tableView deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
     }
-    NSLog(@"check here reload rohit");
+    
     [self sendMyMessage];
 }
 
@@ -152,6 +175,8 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
     return cellData.count;
 }
 
+PlayerInfo *player;
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"CellForPlayers";
@@ -164,7 +189,7 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
         [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
         cell.contentView.backgroundColor = [UIColor whiteColor];
     }
-    PlayerInfo *player = [cellData objectAtIndex:indexPath.row];
+    player = [cellData objectAtIndex:indexPath.row];
     cell.playerName.text = player.playerName;
     cell.playerScore.text = [NSString stringWithFormat:@"%d", player.score];
     
@@ -182,8 +207,9 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
     
     
     //cell.textLabel.text = [cellData objectAtIndex:indexPath.row];
-    
     [self configureCell:cell forRowAtIndexPath:indexPath];
+    [trackingModeDataSource setObject:cellData forKey:@"trackingModeDS"];
+    [[NSNotificationCenter defaultCenter] postNotification:notificationForScoreBoard];
     return cell;
 }
 
@@ -228,26 +254,20 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
     
     
     [cell setSwipeGestureWithView:leftNormalView color:redColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState1 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
-        NSLog(@"Did swipe \"Checkmark\" cell");
-        //[cell setupSwipingViewBackgroundColor:redColor];
         [self decrementScoreBy:1 forCellAtIndex:indexPath];
 
     }];
     
     [cell setSwipeGestureWithView:leftExtendedView color:yellowColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState2 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
-        NSLog(@"Did swipe \"Cross\" cell");
         incrementOrDecrementMassScore = false;
         [self performSegueWithIdentifier:@"incrDecrScoreSegue" sender: cell];
     }];
     
     [cell setSwipeGestureWithView:rightNormalView color:greenColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState3 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
-        NSLog(@"Did swipe \"Clock\" cell");
-        //[cell setupSwipingViewBackgroundColor:greenColor];
         [self incrementScoreBy:1 forCellAtIndex:indexPath];
     }];
     
     [cell setSwipeGestureWithView:rightExtendedView color:yellowColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState4 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
-        NSLog(@"Did swipe \"List\" cell");
         incrementOrDecrementMassScore = true;
         [self performSegueWithIdentifier:@"incrDecrScoreSegue" sender: cell];
     }];
@@ -287,9 +307,8 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
 
 
 - (void)longPressIncrement:(UILongPressGestureRecognizer*)gesture {
-    NSLog(@"here in long press");
     if ( gesture.state == UIGestureRecognizerStateEnded ) {
-        NSLog(@"long press of incremnent");
+
         UIView *uiView = (UIView *) gesture.view;
         while(![uiView isKindOfClass: [UITableViewCell class]]) {
             uiView = uiView.superview;
@@ -309,7 +328,6 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
 
 - (void)longPressDecrement:(UILongPressGestureRecognizer*)gesture {
     if ( gesture.state == UIGestureRecognizerStateEnded ) {
-        NSLog(@"long press of decrement");
         UIView *uiView = (UIView *) gesture.view;
         while(![uiView isKindOfClass: [UITableViewCell class]]) {
             uiView = uiView.superview;
@@ -477,6 +495,8 @@ void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
         playerDetailView.receivedIndexPath = [self.tableView indexPathForCell:sender];
         playerDetailView.receivedTableView = self.tableView;
     } else if ([segue.identifier isEqualToString:@"SettingsSegue"]) {
+        SettingsViewController *settingsController = (SettingsViewController *)segue.destinationViewController;
+        settingsController.receivedSBViewController = scoreboardController;
         NSLog(@"going to settings page");
     } else if ([segue.identifier isEqualToString:@"incrDecrScoreSegue"]) {
         IncrDecrScoreViewController *incrDecrScoreView = (IncrDecrScoreViewController *)segue.destinationViewController;
