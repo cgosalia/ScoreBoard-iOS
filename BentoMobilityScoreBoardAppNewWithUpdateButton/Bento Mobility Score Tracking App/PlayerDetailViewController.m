@@ -26,6 +26,9 @@
 
 @synthesize receivedTableView;
 
+UIAlertView *progressAlert;
+
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -63,11 +66,8 @@
 }
 
 - (IBAction)deletePlayer:(id)sender {
-    NSLog(@"here");
-    NSLog(@"Rec: %@",[NSString stringWithFormat:@"%d",(int)receivedIndexPath.row]);
-    [receivedPlayerData removeObjectAtIndex:receivedIndexPath.row];
-    [receivedTableView deleteRowsAtIndexPaths:@[receivedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-    [self.navigationController popViewControllerAnimated:YES];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Delete Player" message: @"Do you want to delete this player information?" delegate: self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes",nil];
+    [alert show];
 }
 
 
@@ -92,4 +92,66 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void) checkTimer:(NSTimer *)timer
+{
+	[progressAlert dismissWithClickedButtonIndex:-1 animated:YES];
+    [timer invalidate];
+    
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    if (buttonIndex == 1) {
+        [receivedPlayerData removeObjectAtIndex:receivedIndexPath.row];
+        [receivedTableView deleteRowsAtIndexPaths:@[receivedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self.receivedTableView reloadData];
+        NSString *playerName = playerNameTextField.text;
+        progressAlert = [[UIAlertView alloc] initWithTitle:nil
+                                                   message:[NSString stringWithFormat:@"Player \"%@\" information deleted", playerName]
+                                                  delegate: self
+                                         cancelButtonTitle: nil
+                                         otherButtonTitles: nil];
+        [NSTimer scheduledTimerWithTimeInterval: 1.0f target: self selector:@selector(checkTimer:) userInfo: nil repeats: YES];
+        UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        activityView.frame = CGRectMake(139.0f-18.0f, 78.0f, 37.0f, 37.0f);
+        [progressAlert addSubview:activityView];
+        [activityView startAnimating];
+        [progressAlert show];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    NSLog(@"Image taken");
+    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+    self.imageView.image = chosenImage;
+    
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (IBAction)addPhoto:(id)sender {
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        
+        UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                              message:@"Device has no camera"
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles: nil];
+        
+        [myAlertView show];
+        
+    } else {
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    
+    [self presentViewController:picker animated:YES completion:NULL];
+    }
+}
 @end

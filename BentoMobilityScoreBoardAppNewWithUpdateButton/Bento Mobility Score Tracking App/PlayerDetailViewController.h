@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PlayerDetailViewController : UIViewController
+@interface PlayerDetailViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UITextField *playerNameTextField;
 
@@ -25,5 +25,9 @@
 @property (atomic) IBOutlet UITableView *receivedTableView;
 
 - (IBAction)cancelPlayerDetails:(id)sender;
+
+@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+
+- (IBAction)addPhoto:(id)sender;
 
 @end

@@ -16,7 +16,7 @@
 
 @implementation ScoreBoardViewController
 
-@synthesize dataSource;
+@synthesize dataSrc;
 
 @synthesize collectionView;
 
@@ -28,8 +28,8 @@ PlayerCollectionCell *cell;
     if (self) {
         // Custom initialization
     }
-   
-
+    
+    
     return self;
 }
 
@@ -54,33 +54,40 @@ PlayerCollectionCell *cell;
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+ {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 #pragma mark - UICollectionView Datasource
 // 1
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
-    return [dataSource count];
+    return [dataSrc count];
 }
 // 2
 - (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
-//    return [self.searches count];
+    //    return [self.searches count];
     return 1;
 }
 // 3
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     cell = [cv dequeueReusableCellWithReuseIdentifier:@"ScoreBoardPlayerCell" forIndexPath:indexPath];
-    PlayerInfo *player = [dataSource objectAtIndex:indexPath.row];
+    PlayerInfo *player = [dataSrc objectAtIndex:indexPath.row];
     cell.playerName.text = player.playerName;
     cell.playerScore.text = [NSString stringWithFormat:@"%d", player.score];
-    
+    //[cell.layer setBorderColor:[UIColor colorWithRed:213.0/255.0f green:210.0/255.0f blue:199.0/255.0f alpha:1.0f].CGColor];
+    //[cell.layer setBorderWidth:0.5f];
+    //[cell.layer setCornerRadius:0.1f];
+    //[cell.layer setMasksToBounds:NO];
+//    [cell.layer setShadowOffset:CGSizeMake(0, 1)];
+//    [cell.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
+//    [cell.layer setShadowRadius:8.0];
+//    [cell.layer setShadowOpacity:0.8];
     //cell.backgroundColor = [UIColor whiteColor];
     return cell;
 }
@@ -105,7 +112,8 @@ PlayerCollectionCell *cell;
 #pragma mark – UICollectionViewDelegateFlowLayout
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return cell.frame.size;
+    CGSize size = CGSizeMake(320, 60);
+    return size;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
@@ -114,10 +122,27 @@ PlayerCollectionCell *cell;
 
 - (void)updateScoreBoard:(NSNotification *)notification
 {
-    NSLog(@"Reacting to notification %@ from object %@ with userInfo %@", notification, notification.object, notification.userInfo);
-    dataSource = [notification.userInfo objectForKey:@"trackingModeDS"];
+    //NSLog(@"Reacting to notification %@ from object %@ with userInfo %@", notification, notification.object, notification.userInfo);
+    NSMutableArray *tempArray = [notification.userInfo objectForKey:@"trackingModeDS"];
+    dataSrc = [[NSMutableArray alloc] init];
+    
+    for(int i=0;i<[tempArray count];i++) {
+        PlayerInfo *temp = [[tempArray objectAtIndex:i] copy];
+        [dataSrc addObject:temp];
+    }
+    
+    [dataSrc sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        int scr1 = [(PlayerInfo *)obj1 score];
+        int scr2 = [(PlayerInfo *)obj2 score];
+        if(scr1 < scr2)
+            return 1;
+        else if(scr1 > scr2)
+            return -1;
+        else
+            return 0;
+    }];
     [self.collectionView reloadData];
-    //Implement your own logic here
+    
 }
 
 

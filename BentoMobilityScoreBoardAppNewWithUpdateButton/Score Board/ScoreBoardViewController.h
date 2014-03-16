@@ -12,7 +12,7 @@
 
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 
-@property(nonatomic, strong) NSMutableArray *dataSource;
+@property(nonatomic, strong) NSMutableArray *dataSrc;
 
 - (void)updateScoreBoard:(NSNotification *)notification;
 

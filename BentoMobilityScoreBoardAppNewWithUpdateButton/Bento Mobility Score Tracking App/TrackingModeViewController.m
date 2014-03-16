@@ -227,7 +227,6 @@ PlayerInfo *player;
     label.text = labelName;
     [labelView addSubview:label];
     return label;
-    
 }
 
 
