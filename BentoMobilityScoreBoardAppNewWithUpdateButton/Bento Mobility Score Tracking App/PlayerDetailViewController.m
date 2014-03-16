@@ -72,6 +72,7 @@
 
 
 - (IBAction)savePlayerDetails:(id)sender {
+    @try{
     if ([playerNameTextField.text length]>0) {
         PlayerInfo *selectedPlayer = [receivedPlayerData objectAtIndex:receivedIndexPath.row];
         if ((![selectedPlayer.playerName isEqualToString:playerNameTextField.text]) || (selectedPlayer.score != [playerScoreTextField.text intValue])) {
@@ -85,8 +86,26 @@
         }
     }
     [self.navigationController popViewControllerAnimated:YES];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception.reason);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player has been deleted" message:nil delegate:self cancelButtonTitle:@"Go to the track mode" otherButtonTitles:nil];
+         //optional - add more buttons:
+        //[alert addButtonWithTitle:@"Yes"];
+        [alert show];
+     //   [self.view makeToast:@"Player has been deleted"
+       //             duration:2.0
+         //           position:@"bottom"];
+    }
+    
+    
 }
-
+- (void)alertView:(UIAlertView *)alertView
+clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 0){
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
 
 - (IBAction)cancelPlayerDetails:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];

@@ -24,6 +24,7 @@
 
 @property (atomic) IBOutlet UITableView *receivedTableView;
 
+
 - (IBAction)cancelPlayerDetails:(id)sender;
 
 @end
