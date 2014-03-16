@@ -7,10 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
+#import <MultipeerConnectivity/MultipeerConnectivity.h>
 #import "ScoreBoardViewController.h"
 
-@interface SettingsViewController : UIViewController
+@interface SettingsViewController : UIViewController<MCBrowserViewControllerDelegate,UITextViewDelegate>
 
+
+@property (strong, nonatomic) UITextField *gameName;
+
+@property (nonatomic, strong) AppDelegate *appDelegate;
 - (IBAction)defaultPresets:(id)sender;
 
 - (IBAction)goToScoreBoard:(id)sender;

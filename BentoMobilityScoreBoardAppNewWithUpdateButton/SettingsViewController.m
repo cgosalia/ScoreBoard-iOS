@@ -33,10 +33,29 @@ UIAlertView *progressAlert;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    @try {
+//        [[_appDelegate mcManager] advertiseSelf:YES];
+//    }
+//    @catch (NSException *exception) {
+//        NSLog(@"here in vewdid load exception");
+//    }
     
+
+   // [[_appDelegate mcManager] setupPeerAndSessionWithDisplayName:[UIDevice currentDevice].name];
+    
+
     
 	// Do any additional setup after loading the view.
     
+}
+
+- (IBAction)startGame:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Start Game" message:@"Enter Name of Game" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Start Game",nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    self.gameName = [alert textFieldAtIndex:0];
+    [alert setTag:1];
+    [alert show];
 }
 
 - (void)didReceiveMemoryWarning
@@ -49,6 +68,7 @@ UIAlertView *progressAlert;
 
 - (IBAction)defaultPresets:(id)sender {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Restore Preset Values " message: @"Do you want to reset preset button values to 1 5 10 and 25?" delegate: self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes",nil];
+    [alert setTag:2];
     [alert show];
     
     
@@ -67,7 +87,7 @@ UIAlertView *progressAlert;
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     
-    if (buttonIndex == 1) {
+    if (buttonIndex == 1 && alertView.tag==2) {
         NSUserDefaults *settingsDefault = [NSUserDefaults standardUserDefaults];
         [settingsDefault setInteger:1 forKey:@"preset1"];
         [settingsDefault setInteger:5 forKey:@"preset2"];
@@ -85,5 +105,22 @@ UIAlertView *progressAlert;
         [activityView startAnimating];
         [progressAlert show];
     }
+    if(buttonIndex == 1 && alertView.tag==1)
+    {
+        _appDelegate.mcManager.peerID = nil;
+        _appDelegate.mcManager.session = nil;
+        _appDelegate.mcManager.browser = nil;
+        
+        _appDelegate.mcManager.advertiser = nil;
+        
+        
+        [_appDelegate.mcManager setupPeerAndSessionWithDisplayName:_gameName.text];
+        [_appDelegate.mcManager setupMCBrowser];
+        [_appDelegate.mcManager advertiseSelf:YES];
+        NSLog(@"string entered=%@",self.gameName.text);
+        
+    }
+    
+    
 }
 @end
