@@ -33,12 +33,49 @@ UIAlertView *progressAlert;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    @try {
+//        [[_appDelegate mcManager] advertiseSelf:YES];
+//    }
+//    @catch (NSException *exception) {
+//        NSLog(@"here in vewdid load exception");
+//    }
     
+
+   // [[_appDelegate mcManager] setupPeerAndSessionWithDisplayName:[UIDevice currentDevice].name];
+    
+
     
 	// Do any additional setup after loading the view.
     
 }
 
+- (IBAction)startGame:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Start Game" message:@"Enter Name of Game" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Start Game",nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    self.gameName = [alert textFieldAtIndex:0];
+    [alert show];
+}
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 1)
+    {
+                _appDelegate.mcManager.peerID = nil;
+        _appDelegate.mcManager.session = nil;
+        _appDelegate.mcManager.browser = nil;
+       
+        _appDelegate.mcManager.advertiser = nil;
+        
+        
+        [_appDelegate.mcManager setupPeerAndSessionWithDisplayName:_gameName.text];
+        [_appDelegate.mcManager setupMCBrowser];
+        [_appDelegate.mcManager advertiseSelf:YES];
+
+        
+           }
+    
+        NSLog(@"string entered=%@",self.gameName.text);
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
