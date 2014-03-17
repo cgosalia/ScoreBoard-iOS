@@ -50,6 +50,8 @@ NSMutableDictionary *trackingModeDataSource;
 
 UIViewController *scoreboardController = nil;
 
+NSMutableDictionary *isPlayerBeingEdited;
+
 -(void) incrementScoreBy:(int)value forCellAtIndex:(NSIndexPath *)indexPath {
     PlayerInfo *selectedPlayer = [cellData objectAtIndex:indexPath.row];
     int score = selectedPlayer.score;
@@ -117,13 +119,16 @@ UIViewController *scoreboardController = nil;
     [settingsDefault setInteger:10 forKey:@"preset3"];
     [settingsDefault setInteger:25 forKey:@"preset4"];
     
+    isPlayerBeingEdited = [[NSMutableDictionary alloc] init];
     PlayerInfo *firstPlayer = [[PlayerInfo alloc] init];
+    
     NSString *combinedName = [NSString stringWithFormat:@"%@%@%@", @"Player (", [NSString stringWithFormat:@"%d",playerId++],@")"];
     firstPlayer.playerName = combinedName;
     firstPlayer.score = 0;
     firstPlayer.playerImg = [UIImage imageNamed:@"unknownperson"];
-    cellData = [[NSMutableArray alloc] initWithObjects:firstPlayer, nil];
     
+    cellData = [[NSMutableArray alloc] initWithObjects:firstPlayer, nil];
+    isPlayerBeingEdited[firstPlayer] = @NO;
     settingsButton = [settingsButton initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(goToSettings:)];
     UIFont *customFont = [UIFont fontWithName:@"Helvetica" size:25.0];
     NSDictionary *fontDictionary = @{UITextAttributeFont : customFont};
@@ -292,11 +297,33 @@ PlayerInfo *player;
     // NSLog(@"Did swipe with percentage : %f", percentage);
 }
 
+UIAlertView *progressAlert;
+
+- (void) checkTimer:(NSTimer *)timer
+{
+	[progressAlert dismissWithClickedButtonIndex:-1 animated:YES];
+    [timer invalidate];
+}
 
 -(void) handleTapGesturesOnCell:(UITapGestureRecognizer *) gesture {
     CGPoint tapLocation = [gesture locationInView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:tapLocation];
     UITableViewCell *tappedCell = [self.tableView cellForRowAtIndexPath:indexPath];
+    PlayerInfo *player = [cellData objectAtIndex:indexPath.row];
+    if (isPlayerBeingEdited[player]) {
+        progressAlert = [[UIAlertView alloc] initWithTitle:@"Unable to get to details"
+                                                   message:@"This player is being edited."
+                                                  delegate: self
+                                         cancelButtonTitle: nil
+                                         otherButtonTitles: nil];
+        [NSTimer scheduledTimerWithTimeInterval: 1.0f target: self selector:@selector(checkTimer:) userInfo: nil repeats: YES];
+        UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        activityView.frame = CGRectMake(139.0f-18.0f, 78.0f, 37.0f, 37.0f);
+        [progressAlert addSubview:activityView];
+        [activityView startAnimating];
+        [progressAlert show];
+        return;
+    }
     [self performSegueWithIdentifier:@"PlayerDetailsSegue" sender: tappedCell];
 }
 
@@ -519,6 +546,7 @@ PlayerInfo *player;
     newPlayer.score = 0;
     newPlayer.playerImg = [UIImage imageNamed:@"unknownperson"];
     [cellData addObject:newPlayer];
+    isPlayerBeingEdited[newPlayer] = @NO;
     [self.tableView reloadData];
     [self sendMyMessage];
 }

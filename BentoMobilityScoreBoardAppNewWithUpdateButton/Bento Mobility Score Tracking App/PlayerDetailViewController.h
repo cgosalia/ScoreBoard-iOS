@@ -24,11 +24,14 @@
 
 @property (atomic) IBOutlet UITableView *receivedTableView;
 
+@property (atomic, copy) IBOutlet NSMutableDictionary *receivedIsPlayerBeingEdited;
 
 - (IBAction)cancelPlayerDetails:(id)sender;
 
 @property (strong, nonatomic) IBOutlet UIImageView *playerImageView;
 
 - (IBAction)addPhoto:(id)sender;
+
+
 
 @end

@@ -26,11 +26,15 @@
 
 @synthesize receivedTableView;
 
+@synthesize receivedIsPlayerBeingEdited;
+
 @synthesize playerImageView;
 
 UIAlertView *progressAlert;
 
 bool imageChanged;
+
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -48,6 +52,7 @@ bool imageChanged;
     playerNameTextField.text = [playerInfo playerName];
     playerScoreTextField.text = [NSString stringWithFormat:@"%d",[playerInfo score]];
     playerImageView.image = [playerInfo playerImg];
+    [self setPlayerInEditingMode:playerInfo];
     imageChanged = false;
     NSLog(@"Rec: %@",[NSString stringWithFormat:@"%d",(int)receivedIndexPath.row]);
     
@@ -72,6 +77,7 @@ bool imageChanged;
 
 - (IBAction)deletePlayer:(id)sender {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Delete Player" message: @"Do you want to delete this player information?" delegate: self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes",nil];
+    [alert setTag:1];
     [alert show];
 }
 
@@ -88,9 +94,13 @@ bool imageChanged;
                 }
                 if(imageChanged) {
                     newPlayer.playerImg = self.playerImageView.image;
+                } else {
+                    newPlayer.playerImg = selectedPlayer.playerImg;
                 }
                 [receivedPlayerData replaceObjectAtIndex:receivedIndexPath.row withObject:newPlayer];
+                [receivedIsPlayerBeingEdited removeObjectForKey:selectedPlayer];
                 [self.receivedTableView reloadData];
+                [self setPlayerInEditDoneMode:newPlayer];
             }
         }
         
@@ -99,12 +109,8 @@ bool imageChanged;
     @catch (NSException *exception) {
         NSLog(@"%@",exception.reason);
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player has been deleted" message:nil delegate:self cancelButtonTitle:@"Go to the track mode" otherButtonTitles:nil];
-        //optional - add more buttons:
-        //[alert addButtonWithTitle:@"Yes"];
+        [alert setTag:2];
         [alert show];
-        //   [self.view makeToast:@"Player has been deleted"
-        //             duration:2.0
-        //           position:@"bottom"];
     }
     
     
@@ -112,6 +118,8 @@ bool imageChanged;
 
 
 - (IBAction)cancelPlayerDetails:(id)sender {
+    PlayerInfo *playerInfo = [receivedPlayerData objectAtIndex:receivedIndexPath.row];
+    [self setPlayerInEditDoneMode:playerInfo];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -124,7 +132,9 @@ bool imageChanged;
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     
-    if (buttonIndex == 1) {
+    if (buttonIndex == 1 && alertView.tag==1) {
+        PlayerInfo *playerInfo = [receivedPlayerData objectAtIndex:receivedIndexPath.row];
+        [receivedIsPlayerBeingEdited removeObjectForKey:playerInfo];
         [receivedPlayerData removeObjectAtIndex:receivedIndexPath.row];
         [receivedTableView deleteRowsAtIndexPaths:@[receivedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         [self.receivedTableView reloadData];
@@ -140,9 +150,10 @@ bool imageChanged;
         [progressAlert addSubview:activityView];
         [activityView startAnimating];
         [progressAlert show];
+        
         [self.navigationController popViewControllerAnimated:YES];
     }
-    if (buttonIndex == 0){
+    if (buttonIndex == 0 && alertView.tag==2){
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
@@ -158,6 +169,14 @@ bool imageChanged;
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+-(void) setPlayerInEditingMode:(PlayerInfo *)player {
+    receivedIsPlayerBeingEdited[player] = @YES;
+}
+
+-(void) setPlayerInEditDoneMode:(PlayerInfo *)player {
+    receivedIsPlayerBeingEdited[player] = @NO;
 }
 
 - (IBAction)addPhoto:(id)sender {
