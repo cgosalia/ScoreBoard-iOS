@@ -82,26 +82,37 @@ bool imageChanged;
 }
 
 
+- (void)updatePlayerNameAndScore:(PlayerInfo *)selectedPlayer newPlayer:(PlayerInfo *)newPlayer {
+    if ([playerNameTextField.text length]>0) {
+        newPlayer.playerName = playerNameTextField.text;
+    } else {
+        newPlayer.playerName = selectedPlayer.playerName;
+    }
+    
+    if ([playerScoreTextField.text length] > 0) {
+        newPlayer.score = [playerScoreTextField.text intValue];
+    }
+    
+    [self.receivedTableView reloadData];
+    [self setPlayerInEditDoneMode:newPlayer];
+}
+
 - (IBAction)savePlayerDetails:(id)sender {
     @try{
         PlayerInfo *selectedPlayer = [receivedPlayerData objectAtIndex:receivedIndexPath.row];
         PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
-        if ([playerNameTextField.text length]>0) {
+        if ([playerNameTextField.text length]>0 || imageChanged) {
             if ((![selectedPlayer.playerName isEqualToString:playerNameTextField.text]) || (selectedPlayer.score != [playerScoreTextField.text intValue])) {
-                newPlayer.playerName = playerNameTextField.text;
-                if ([playerScoreTextField.text length] > 0) {
-                    newPlayer.score = [playerScoreTextField.text intValue];
-                }
-                if(imageChanged) {
-                    newPlayer.playerImg = self.playerImageView.image;
-                } else {
-                    newPlayer.playerImg = selectedPlayer.playerImg;
-                }
-                [receivedPlayerData replaceObjectAtIndex:receivedIndexPath.row withObject:newPlayer];
-                [receivedIsPlayerBeingEdited removeObjectForKey:selectedPlayer];
-                [self.receivedTableView reloadData];
-                [self setPlayerInEditDoneMode:newPlayer];
+                [self updatePlayerNameAndScore:selectedPlayer newPlayer:newPlayer];
             }
+            if(imageChanged) {
+                newPlayer.playerImg = self.playerImageView.image;
+                [self updatePlayerNameAndScore:selectedPlayer newPlayer:newPlayer];
+            } else {
+                newPlayer.playerImg = selectedPlayer.playerImg;
+            }
+            [receivedPlayerData replaceObjectAtIndex:receivedIndexPath.row withObject:newPlayer];
+            [receivedIsPlayerBeingEdited removeObjectForKey:selectedPlayer];
         }
         
         [self.navigationController popViewControllerAnimated:YES];
@@ -127,7 +138,6 @@ bool imageChanged;
 {
 	[progressAlert dismissWithClickedButtonIndex:-1 animated:YES];
     [timer invalidate];
-    
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

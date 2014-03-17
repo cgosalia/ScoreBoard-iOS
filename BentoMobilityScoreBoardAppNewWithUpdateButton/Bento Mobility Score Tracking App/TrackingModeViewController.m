@@ -59,6 +59,7 @@ NSMutableDictionary *isPlayerBeingEdited;
     PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
     newPlayer.playerName = selectedPlayer.playerName;
     newPlayer.score = score;
+    newPlayer.playerImg = selectedPlayer.playerImg;
     [cellData replaceObjectAtIndex:indexPath.row withObject:newPlayer];
     [self.tableView reloadData];
     [self sendMyMessage];
@@ -67,12 +68,13 @@ NSMutableDictionary *isPlayerBeingEdited;
 -(void) decrementScoreBy:(int)value forCellAtIndex:(NSIndexPath *)indexPath {
     PlayerInfo *selectedPlayer = [cellData objectAtIndex:indexPath.row];
     int score = selectedPlayer.score;
-//    if((score-value) >= 0) {
-        score = score-value;
-//    }
+    //    if((score-value) >= 0) {
+    score = score-value;
+    //    }
     PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
     newPlayer.playerName = selectedPlayer.playerName;
     newPlayer.score = score;
+    newPlayer.playerImg = selectedPlayer.playerImg;
     [cellData replaceObjectAtIndex:indexPath.row withObject:newPlayer];
     [self.tableView reloadData];
     [self sendMyMessage];
@@ -100,9 +102,9 @@ NSMutableDictionary *isPlayerBeingEdited;
                                                object:nil];
     trackingModeDataSource = [[NSMutableDictionary alloc] init];
     notificationForScoreBoard = [NSNotification notificationWithName:@"PlayerInfoChangedNotification"
-                                                                   object:self
-                                                                 userInfo:trackingModeDataSource];
-
+                                                              object:self
+                                                            userInfo:trackingModeDataSource];
+    
     if(scoreboardController == nil) {
         scoreboardController = (ScoreBoardViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"ScoreBoardView"];
         
@@ -112,7 +114,7 @@ NSMutableDictionary *isPlayerBeingEdited;
                                              selector:@selector(updateScoreBoard:)
                                                  name:@"PlayerInfoChangedNotification"
                                                object:nil];
-
+    
     NSUserDefaults *settingsDefault = [NSUserDefaults standardUserDefaults];
     [settingsDefault setInteger:1 forKey:@"preset1"];
     [settingsDefault setInteger:5 forKey:@"preset2"];
@@ -206,13 +208,9 @@ PlayerInfo *player;
     [singleTapWithTwoFingers setNumberOfTapsRequired:1];
     [cell addGestureRecognizer:singleTapWithTwoFingers];
     
-    
     UITapGestureRecognizer *doubleTapWithOneFinger = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesturesOnCell:)];
     [doubleTapWithOneFinger setNumberOfTapsRequired:2];
     [cell addGestureRecognizer:doubleTapWithOneFinger];
-    
-    
-    //cell.textLabel.text = [cellData objectAtIndex:indexPath.row];
     [self configureCell:cell forRowAtIndexPath:indexPath];
     [trackingModeDataSource setObject:cellData forKey:@"trackingModeDS"];
     [[NSNotificationCenter defaultCenter] postNotification:notificationForScoreBoard];
@@ -260,7 +258,7 @@ PlayerInfo *player;
     
     [cell setSwipeGestureWithView:leftNormalView color:redColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState1 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
         [self decrementScoreBy:1 forCellAtIndex:indexPath];
-
+        
     }];
     
     [cell setSwipeGestureWithView:leftExtendedView color:yellowColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState2 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
@@ -335,7 +333,7 @@ UIAlertView *progressAlert;
 
 - (void)longPressIncrement:(UILongPressGestureRecognizer*)gesture {
     if ( gesture.state == UIGestureRecognizerStateEnded ) {
-
+        
         UIView *uiView = (UIView *) gesture.view;
         while(![uiView isKindOfClass: [UITableViewCell class]]) {
             uiView = uiView.superview;
@@ -347,7 +345,7 @@ UIAlertView *progressAlert;
         UITextField *alertTextField = [alert textFieldAtIndex:0];
         alertTextField.keyboardType = UIKeyboardTypeNumberPad;
         [alert setTag:2];
-        alert.show;
+        [alert show];
     }
     
 }
@@ -360,13 +358,12 @@ UIAlertView *progressAlert;
             uiView = uiView.superview;
         }
         labelIndexPath = [self.tableView indexPathForCell:(UITableViewCell *)uiView];
-        
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Decrement Score" message:@"Enter score value to subtract from current score" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
         UITextField *alertTextField = [alert textFieldAtIndex:0];
         alertTextField.keyboardType = UIKeyboardTypeNumberPad;
         [alert setTag:3];
-        alert.show;
+        [alert show];
     }
 }
 
@@ -402,25 +399,21 @@ UIAlertView *progressAlert;
         UITextField *textField = [alertView textFieldAtIndex:0];
         if ([textField.text length]>0) {
             PlayerInfo *selectedPlayer = [cellData objectAtIndex:labelIndexPath.row];
-            
             int valueToDecr = [textField.text intValue];
             int currentScore = selectedPlayer.score;
-            
             if(currentScore-valueToDecr > 0) {
                 PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
                 newPlayer.playerName = selectedPlayer.playerName;
                 newPlayer.score = currentScore-valueToDecr;
                 [cellData replaceObjectAtIndex:labelIndexPath.row withObject:newPlayer];
-                
             } else {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid Score" message:@"Score cannot go below zero" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 alert.alertViewStyle = UIAlertViewStyleDefault;
                 [alert setTag:4];
-                alert.show;
+                [alert show];
             }
             [self.tableView reloadData];
             [self sendMyMessage];
-            
         }
     }
     else if(alertView.tag == 4)
@@ -439,7 +432,6 @@ UIAlertView *progressAlert;
                 [self.tableView reloadData];
                 [self sendMyMessage];
             }
-            
         }
         if(buttonIndex == 2)
         {
@@ -455,7 +447,6 @@ UIAlertView *progressAlert;
                 [self.tableView reloadData];
                 [self sendMyMessage];
             }
-            
         }
     }
 }
@@ -524,7 +515,6 @@ UIAlertView *progressAlert;
     } else if ([segue.identifier isEqualToString:@"SettingsSegue"]) {
         SettingsViewController *settingsController = (SettingsViewController *)segue.destinationViewController;
         settingsController.receivedSBViewController = scoreboardController;
-        NSLog(@"going to settings page");
     } else if ([segue.identifier isEqualToString:@"incrDecrScoreSegue"]) {
         IncrDecrScoreViewController *incrDecrScoreView = (IncrDecrScoreViewController *)segue.destinationViewController;
         incrDecrScoreView.incrementOrDecrementFlag = incrementOrDecrementMassScore;
@@ -532,9 +522,6 @@ UIAlertView *progressAlert;
         incrDecrScoreView.receivedIndexPath = [self.tableView indexPathForCell:sender];
         incrDecrScoreView.receivedTableView = self.tableView;
     }
-    
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
 
 
@@ -576,19 +563,15 @@ UIAlertView *progressAlert;
     NSMutableDictionary *toSend =[[NSMutableDictionary alloc] init];
     PlayerInfo* player;
     for (int i = 0;i<count; i++) {
-        
         player=[self.cellData objectAtIndex:i];
-        //NSLog(@"%@  %d",player.playerName,player.score);
         NSString *key = [NSString stringWithFormat:@"%d",i];
         NSString *value = [NSString stringWithFormat:@"%@;#%d",player.playerName,player.score];
         [toSend setObject:value forKey:key];
     }
+    NSData *messageData=[NSJSONSerialization dataWithJSONObject:toSend options:0 error:nil];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error=nil;
     
-
-        NSData *messageData=[NSJSONSerialization dataWithJSONObject:toSend options:0 error:nil];
-        NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
-        NSError *error=nil;
-
     [_appDelegate.mcManager.session sendData:messageData
                                      toPeers:allPeers
                                     withMode:MCSessionSendDataReliable
@@ -597,25 +580,20 @@ UIAlertView *progressAlert;
     if (error) {
         NSLog(@"%@", [error localizedDescription]);
     }
-  
+    
 }
 
 -(void)didReceiveDataWithNotification:(NSNotification *)notification{
-    //MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
-    //NSString *peerDisplayName = peerID.displayName;
     
     NSDictionary *receivedData = [notification userInfo];
     NSInteger count = [receivedData count];
     NSMutableArray *newCellData = [[NSMutableArray alloc] initWithObjects: nil];
-    //NSLog(@"here in receiving end ..........");
     for(int i = 0 ;i<count ; i++){
         NSString *key = [NSString stringWithFormat:@"%d",i];
         NSString *value = [receivedData objectForKey:key];
-        //NSLog(@"Check this out man!!!!");
         NSArray *combinedData = [value componentsSeparatedByString:@";#"];
         NSString *playerName = [combinedData objectAtIndex:0];
         NSString *playerScore = [combinedData objectAtIndex:1];
-        //NSLog(@"%@ this is separator %@",playerName,playerScore);
         PlayerInfo *player = [[PlayerInfo alloc] init];
         player.playerName = playerName;
         player.score = [playerScore intValue];

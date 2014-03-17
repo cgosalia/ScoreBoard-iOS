@@ -220,10 +220,10 @@ Stack *stack;
 
 - (IBAction)doneIncrDecr:(id)sender {
     PlayerInfo *selectedPlayer = [receivedPlayerData objectAtIndex:receivedIndexPath.row];
-    
     PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
     newPlayer.playerName = selectedPlayer.playerName;
     newPlayer.score = [totalScore.text intValue];
+    newPlayer.playerImg = selectedPlayer.playerImg;
     [receivedPlayerData replaceObjectAtIndex:receivedIndexPath.row withObject:newPlayer];
     [self.receivedTableView reloadData];
     

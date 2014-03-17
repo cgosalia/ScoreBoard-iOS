@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
-            timestampString = "416726899.571024"
+            timestampString = "416734187.679792"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "335"
-            endingLineNumber = "335"
+            startingLineNumber = "333"
+            endingLineNumber = "333"
             landmarkName = "@implementation TrackingModeViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
-            timestampString = "416726899.571024"
+            timestampString = "416734187.679792"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "337"
-            endingLineNumber = "337"
+            startingLineNumber = "335"
+            endingLineNumber = "335"
             landmarkName = "-longPressIncrement:"
             landmarkType = "5">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
-            timestampString = "416726095.833948"
+            timestampString = "416732578.624125"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
             landmarkName = "-tableView:numberOfRowsInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
-            timestampString = "416726899.571024"
+            timestampString = "416734187.679792"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "491"
-            endingLineNumber = "491"
+            startingLineNumber = "482"
+            endingLineNumber = "482"
             landmarkName = "@implementation TrackingModeViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
-            timestampString = "416726095.833948"
+            timestampString = "416732578.624125"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
             landmarkName = "-initWithStyle:"
             landmarkType = "5">
          </BreakpointContent>
@@ -105,22 +105,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Bento Mobility Score Tracking App/PlayerDetailViewController.m"
-            timestampString = "416726095.833948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
-            landmarkName = "-savePlayerDetails:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/PlayerCell.h"
             timestampString = "415344267.935237"
             startingColumnNumber = "9223372036854775807"
@@ -138,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
-            timestampString = "416726899.571024"
+            timestampString = "416734187.679792"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "488"
-            endingLineNumber = "488"
+            startingLineNumber = "479"
+            endingLineNumber = "479"
             landmarkName = "@implementation TrackingModeViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -154,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
-            timestampString = "416726899.571024"
+            timestampString = "416734187.679792"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "494"
-            endingLineNumber = "494"
+            startingLineNumber = "485"
+            endingLineNumber = "485"
             landmarkName = "@implementation TrackingModeViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -170,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
-            timestampString = "416726095.833948"
+            timestampString = "416732578.624125"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -186,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
-            timestampString = "416726095.833948"
+            timestampString = "416734187.679792"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "237"
-            endingLineNumber = "237"
+            startingLineNumber = "235"
+            endingLineNumber = "235"
             landmarkName = "@implementation TrackingModeViewController"
             landmarkType = "3">
             <Locations>
@@ -328,11 +312,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
-            timestampString = "416726899.571024"
+            timestampString = "416734187.679792"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "486"
-            endingLineNumber = "486"
+            startingLineNumber = "477"
+            endingLineNumber = "477"
             landmarkName = "@implementation TrackingModeViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -424,11 +408,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
-            timestampString = "416726095.833948"
+            timestampString = "416732578.624125"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
+            startingLineNumber = "190"
+            endingLineNumber = "190"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -440,11 +424,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
-            timestampString = "416726095.833948"
+            timestampString = "416734187.679792"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "236"
-            endingLineNumber = "236"
+            startingLineNumber = "234"
+            endingLineNumber = "234"
             landmarkName = "-viewWithLabelName:"
             landmarkType = "5">
          </BreakpointContent>
@@ -564,11 +548,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
-            timestampString = "416726095.833948"
+            timestampString = "416732578.624125"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "175"
-            endingLineNumber = "175"
+            startingLineNumber = "177"
+            endingLineNumber = "177"
             landmarkName = "-numberOfSectionsInTableView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -580,11 +564,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
-            timestampString = "416726095.833948"
+            timestampString = "416732578.624125"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "181"
-            endingLineNumber = "181"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
             landmarkName = "-tableView:numberOfRowsInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -708,11 +692,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
-            timestampString = "416726095.833948"
+            timestampString = "416732578.624125"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
             landmarkName = "@implementation TrackingModeViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -788,11 +772,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/PlayerDetailViewController.m"
-            timestampString = "416726363.799392"
+            timestampString = "416731886.057251"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "167"
-            endingLineNumber = "167"
+            startingLineNumber = "177"
+            endingLineNumber = "177"
             landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
             landmarkType = "5">
          </BreakpointContent>
@@ -804,11 +788,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/PlayerDetailViewController.m"
-            timestampString = "416726363.799392"
+            timestampString = "416731886.057251"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "139"
-            endingLineNumber = "139"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
             landmarkName = "-alertView:clickedButtonAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -820,11 +804,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/PlayerDetailViewController.m"
-            timestampString = "416726363.799392"
+            timestampString = "416731886.057251"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
             landmarkName = "-alertView:clickedButtonAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -884,12 +868,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
-            timestampString = "416726899.571024"
+            timestampString = "416734187.679792"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "312"
-            endingLineNumber = "312"
+            startingLineNumber = "310"
+            endingLineNumber = "310"
             landmarkName = "-handleTapGesturesOnCell:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Bento Mobility Score Tracking App/TrackingModeViewController.m"
+            timestampString = "416734187.679792"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "366"
+            endingLineNumber = "366"
+            landmarkName = "-longPressDecrement:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
