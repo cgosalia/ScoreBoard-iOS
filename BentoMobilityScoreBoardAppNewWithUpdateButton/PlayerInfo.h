@@ -14,4 +14,6 @@
 
 @property int score;
 
+@property UIImage *playerImg;
+
 @end

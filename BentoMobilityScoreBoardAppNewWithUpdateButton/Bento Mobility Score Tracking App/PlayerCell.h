@@ -15,4 +15,6 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *playerScore;
 
+@property (strong, nonatomic) IBOutlet UIImageView *playerImage;
+
 @end

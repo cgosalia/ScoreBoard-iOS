@@ -26,8 +26,11 @@
 
 @synthesize receivedTableView;
 
+@synthesize playerImageView;
+
 UIAlertView *progressAlert;
 
+bool imageChanged;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,6 +47,8 @@ UIAlertView *progressAlert;
     PlayerInfo *playerInfo = [receivedPlayerData objectAtIndex:receivedIndexPath.row];
     playerNameTextField.text = [playerInfo playerName];
     playerScoreTextField.text = [NSString stringWithFormat:@"%d",[playerInfo score]];
+    playerImageView.image = [playerInfo playerImg];
+    imageChanged = false;
     NSLog(@"Rec: %@",[NSString stringWithFormat:@"%d",(int)receivedIndexPath.row]);
     
     UITapGestureRecognizer *tapper = [[UITapGestureRecognizer alloc]
@@ -73,29 +78,33 @@ UIAlertView *progressAlert;
 
 - (IBAction)savePlayerDetails:(id)sender {
     @try{
-    if ([playerNameTextField.text length]>0) {
         PlayerInfo *selectedPlayer = [receivedPlayerData objectAtIndex:receivedIndexPath.row];
-        if ((![selectedPlayer.playerName isEqualToString:playerNameTextField.text]) || (selectedPlayer.score != [playerScoreTextField.text intValue])) {
-            PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
-            newPlayer.playerName = playerNameTextField.text;
-            if ([playerScoreTextField.text length] > 0) {
-                newPlayer.score = [playerScoreTextField.text intValue];
+        PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
+        if ([playerNameTextField.text length]>0) {
+            if ((![selectedPlayer.playerName isEqualToString:playerNameTextField.text]) || (selectedPlayer.score != [playerScoreTextField.text intValue])) {
+                newPlayer.playerName = playerNameTextField.text;
+                if ([playerScoreTextField.text length] > 0) {
+                    newPlayer.score = [playerScoreTextField.text intValue];
+                }
+                if(imageChanged) {
+                    newPlayer.playerImg = self.playerImageView.image;
+                }
+                [receivedPlayerData replaceObjectAtIndex:receivedIndexPath.row withObject:newPlayer];
+                [self.receivedTableView reloadData];
             }
-            [receivedPlayerData replaceObjectAtIndex:receivedIndexPath.row withObject:newPlayer];
-            [self.receivedTableView reloadData];
         }
-    }
-    [self.navigationController popViewControllerAnimated:YES];
+        
+        [self.navigationController popViewControllerAnimated:YES];
     }
     @catch (NSException *exception) {
         NSLog(@"%@",exception.reason);
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player has been deleted" message:nil delegate:self cancelButtonTitle:@"Go to the track mode" otherButtonTitles:nil];
-         //optional - add more buttons:
+        //optional - add more buttons:
         //[alert addButtonWithTitle:@"Yes"];
         [alert show];
-     //   [self.view makeToast:@"Player has been deleted"
-       //             duration:2.0
-         //           position:@"bottom"];
+        //   [self.view makeToast:@"Player has been deleted"
+        //             duration:2.0
+        //           position:@"bottom"];
     }
     
     
@@ -142,8 +151,8 @@ UIAlertView *progressAlert;
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     NSLog(@"Image taken");
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
-    self.imageView.image = chosenImage;
-    
+    self.playerImageView.image = chosenImage;
+    imageChanged = true;
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
@@ -163,12 +172,12 @@ UIAlertView *progressAlert;
         [myAlertView show];
         
     } else {
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    picker.allowsEditing = YES;
-    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    
-    [self presentViewController:picker animated:YES completion:NULL];
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.delegate = self;
+        picker.allowsEditing = YES;
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        
+        [self presentViewController:picker animated:YES completion:NULL];
     }
 }
 @end

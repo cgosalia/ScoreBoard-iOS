@@ -80,6 +80,7 @@ PlayerCollectionCell *cell;
     PlayerInfo *player = [dataSrc objectAtIndex:indexPath.row];
     cell.playerName.text = player.playerName;
     cell.playerScore.text = [NSString stringWithFormat:@"%d", player.score];
+    cell.playerImage.image = player.playerImg;
     //[cell.layer setBorderColor:[UIColor colorWithRed:213.0/255.0f green:210.0/255.0f blue:199.0/255.0f alpha:1.0f].CGColor];
     //[cell.layer setBorderWidth:0.5f];
     //[cell.layer setCornerRadius:0.1f];

@@ -14,12 +14,14 @@
 
 @synthesize score;
 
+@synthesize playerImg;
 
 -(id) copyWithZone:(NSZone *)zone {
     id copy = [[[self class] alloc] init];
     if(copy) {
         [copy setPlayerName:self.playerName];
         [copy setScore:self.score];
+        [copy setPlayerImg:self.playerImg];
     }
     return copy;
 }

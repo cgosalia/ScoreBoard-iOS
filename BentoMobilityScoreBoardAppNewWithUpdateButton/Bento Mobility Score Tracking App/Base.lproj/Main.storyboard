@@ -199,6 +199,7 @@
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
                                 <connections>
+                                    <outlet property="playerImage" destination="WZu-be-Cqh" id="Jvm-HZ-hF3"/>
                                     <outlet property="playerName" destination="7Ui-gV-Ded" id="A83-qV-vcj"/>
                                     <outlet property="playerScore" destination="aC5-rP-j9T" id="lGe-HS-Osf"/>
                                     <segue destination="G3i-7R-UQE" kind="push" identifier="PlayerDetailsSegue" trigger="accessoryAction" id="6SC-3K-ODB"/>
@@ -318,7 +319,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="imageView" destination="PhJ-YL-OtB" id="bAn-63-pQp"/>
+                        <outlet property="playerImageView" destination="PhJ-YL-OtB" id="q9E-oI-sg9"/>
                         <outlet property="playerNameTextField" destination="PRy-Nu-2cH" id="qmt-AA-ccX"/>
                         <outlet property="playerScoreTextField" destination="1os-AF-9Ty" id="8nr-go-9gr"/>
                     </connections>
@@ -419,6 +420,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
+                                            <outlet property="playerImage" destination="mUn-i3-V3v" id="WnX-W7-eXw"/>
                                             <outlet property="playerName" destination="OPW-me-RXO" id="Qpj-vd-hG5"/>
                                             <outlet property="playerScore" destination="UuM-fx-onQ" id="sK3-kG-uni"/>
                                         </connections>

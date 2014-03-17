@@ -17,6 +17,7 @@
 #import "SettingsViewController.h"
 
 @interface TrackingModeViewController ()
+
 @property (nonatomic, strong) AppDelegate *appDelegate;
 
 @end
@@ -120,7 +121,7 @@ UIViewController *scoreboardController = nil;
     NSString *combinedName = [NSString stringWithFormat:@"%@%@%@", @"Player (", [NSString stringWithFormat:@"%d",playerId++],@")"];
     firstPlayer.playerName = combinedName;
     firstPlayer.score = 0;
-    
+    firstPlayer.playerImg = [UIImage imageNamed:@"unknownperson"];
     cellData = [[NSMutableArray alloc] initWithObjects:firstPlayer, nil];
     
     settingsButton = [settingsButton initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(goToSettings:)];
@@ -192,7 +193,7 @@ PlayerInfo *player;
     player = [cellData objectAtIndex:indexPath.row];
     cell.playerName.text = player.playerName;
     cell.playerScore.text = [NSString stringWithFormat:@"%d", player.score];
-    
+    cell.playerImage.image = player.playerImg;
     
     // Configure single tap with two fingers for opening detail disclosure screen
     UITapGestureRecognizer *singleTapWithTwoFingers = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesturesOnCell:)];
@@ -516,6 +517,7 @@ PlayerInfo *player;
     NSString *combinedName = [NSString stringWithFormat:@"%@%@%@", @"Player (", [NSString stringWithFormat:@"%d",playerId++],@")"];
     newPlayer.playerName = combinedName;
     newPlayer.score = 0;
+    newPlayer.playerImg = [UIImage imageNamed:@"unknownperson"];
     [cellData addObject:newPlayer];
     [self.tableView reloadData];
     [self sendMyMessage];
@@ -551,45 +553,14 @@ PlayerInfo *player;
         //NSLog(@"%@  %d",player.playerName,player.score);
         NSString *key = [NSString stringWithFormat:@"%d",i];
         NSString *value = [NSString stringWithFormat:@"%@;#%d",player.playerName,player.score];
-//        toSend = [NSDictionary dictionaryWithObjectsAndKeys:player.playerName,@"Player_Name", player.score,@"Score", nil];
-        // NSLog(@"KEY: %@",key);
         [toSend setObject:value forKey:key];
     }
     
-//    NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] init];
-//    for(int i = 0; i< count; i++)
-//    {
-//        player=[self.cellData objectAtIndex:i];
-//        //NSString *str = [NSString stringWithFormat:@"player_name:"];
-//        NSString *key = [NSString stringWithFormat:@"%d",i];
-//        NSString *str1 =[NSString stringWithFormat:@"player_name:%@,player_score:%d",player.playerName, player.score];
-//        //NSMutableString *temopString = @"player_name:%@, player_score: %d",player;
-//        NSDictionary *message=@{key:str1};
-//    }
-       //NSDictionary *d = [toSend copy];
-//
-//    //NSData *dataToSend = [_txtMsg.text dataUsingEncoding:NSUTF8StringEncoding];
-//    //NSString *dataToSend=_txtMsg.text;
-//   // NSDictionary *message=@{@"message":dataToSend};
+
         NSData *messageData=[NSJSONSerialization dataWithJSONObject:toSend options:0 error:nil];
         NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
         NSError *error=nil;
-//    
-//    /*NSData *JSONRequestData=NULL;
-//     if ([NSJSONSerialization isValidJSONObject:messageData]) {
-//     NSLog(@"Proper JSON Object");
-//     JSONRequestData = [NSJSONSerialization dataWithJSONObject:messageData options:kNilOptions error:&error];
-//     }
-//     else {
-//     NSLog(@"requestData was not a proper JSON object");
-//     
-//     }*/
-//    
-//    
-//    
-//    
-    // NSLog(allPeers[0]);
-    //NSLog(@"after printing array");
+
     [_appDelegate.mcManager.session sendData:messageData
                                      toPeers:allPeers
                                     withMode:MCSessionSendDataReliable
@@ -598,11 +569,7 @@ PlayerInfo *player;
     if (error) {
         NSLog(@"%@", [error localizedDescription]);
     }
-    
-    //setText:[stringByAppendingString:[NSString stringWithFormat:@"I wrote:\n%@\n\n", _txtMsg.text];
-    //[_txtMsg setText:@""];
-   // NSLog(@"Rohit here");
-    //[_txtMsg resignFirstResponder];
+  
 }
 
 -(void)didReceiveDataWithNotification:(NSNotification *)notification{
@@ -631,22 +598,6 @@ PlayerInfo *player;
     [self.cellData addObjectsFromArray:newCellData];
     dispatch_async(dispatch_get_main_queue(),^{[self.tableView reloadData];});
     
-    //NSString *actualData=[receivedData valueForKey:@"message"];
-    //NSString *receivedText = [[NSString alloc] initWithData:actualData encoding:NSUTF8StringEncoding];
-    //NSLog(@"in did receive data with notification %@", receivedData );
-    
-   //dispatch_async(dispatch_get_main_queue(),^{ [self.herelabel setText:receivedData];});
-    //[self.herelabel setText:receivedText];
-    //@try {
-    //self.herelabel.text = receivedText;
-    //}
-    //@catch (NSException *exception) {
-    //  NSString *error = [exception description];
-    // NSLog(@"Here in exception %@",error);
-    //}
-    
-    
-    //[_tvChat performSelectorOnMainThread:@selector(setText:) withObject:[_tvChat.text stringByAppendingString:[NSString stringWithFormat:@"%@ wrote:\n%@\n\n", peerDisplayName, receivedText]] waitUntilDone:NO];
 }
 
 

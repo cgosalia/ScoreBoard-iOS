@@ -27,7 +27,7 @@
 
 - (IBAction)cancelPlayerDetails:(id)sender;
 
-@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (strong, nonatomic) IBOutlet UIImageView *playerImageView;
 
 - (IBAction)addPhoto:(id)sender;
 
