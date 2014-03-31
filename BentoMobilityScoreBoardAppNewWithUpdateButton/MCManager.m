@@ -25,7 +25,7 @@
 }
 
 -(void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state{
-    
+   
 }
 
 
@@ -42,7 +42,6 @@
         NSLog(@"error decoding message %@",error);
     else
     {
-    NSLog(@"Before aishwarya was upset %@",thisData);
     [[NSNotificationCenter defaultCenter] postNotificationName:@"MCDidReceiveDataNotification"
                                                         object:nil
                                                       userInfo:receivedData];
@@ -75,6 +74,7 @@
 -(void)setupMCBrowser{
     _browser = [[MCBrowserViewController alloc] initWithServiceType:@"score-files" session:_session];
 }
+
 -(void)advertiseSelf:(BOOL)shouldAdvertise{
     if (shouldAdvertise) {
         _advertiser = [[MCAdvertiserAssistant alloc] initWithServiceType:@"score-files"

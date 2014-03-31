@@ -65,7 +65,7 @@
 }
 
 
--(void)didReceiveDataWithNotification:(NSNotification *)notification{
+-(void)didReceiveDataWithNotificationBluetooth:(NSNotification *)notification{
     //MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
     //NSString *peerDisplayName = peerID.displayName;
     

@@ -8,6 +8,7 @@
 
 #import "PlayerDetailViewController.h"
 #import "PlayerInfo.h"
+#import "Message.h"
 
 
 @interface PlayerDetailViewController ()
@@ -113,6 +114,7 @@ bool imageChanged;
             }
             [receivedPlayerData replaceObjectAtIndex:receivedIndexPath.row withObject:newPlayer];
             [receivedIsPlayerBeingEdited removeObjectForKey:selectedPlayer];
+        [Message send:receivedPlayerData];
         }
         
         [self.navigationController popViewControllerAnimated:YES];

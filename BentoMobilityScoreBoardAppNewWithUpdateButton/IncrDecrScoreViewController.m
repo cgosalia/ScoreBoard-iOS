@@ -9,6 +9,7 @@
 #import "IncrDecrScoreViewController.h"
 #import "PlayerInfo.h"
 #import "Stack.h"
+#import "Message.h"
 
 @interface IncrDecrScoreViewController ()
 
@@ -226,7 +227,7 @@ Stack *stack;
     newPlayer.playerImg = selectedPlayer.playerImg;
     [receivedPlayerData replaceObjectAtIndex:receivedIndexPath.row withObject:newPlayer];
     [self.receivedTableView reloadData];
-    
+    [Message send:receivedPlayerData];
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface PlayerInfo : NSObject <NSCopying>
+@interface PlayerInfo : NSObject <NSCopying, NSCoding>
 
 @property NSString *playerName;
 

@@ -8,6 +8,8 @@
 
 #import "SettingsViewController.h"
 #import "ScoreBoardViewController.h"
+#import "SessionController.h"
+#import "DiscoveryInfo.h"
 
 @interface SettingsViewController ()
 
@@ -17,9 +19,15 @@
 
 UIAlertView *progressAlert;
 
-//UIViewController *scoreboardController = nil;
-
 @synthesize receivedSBViewController;
+
+@synthesize receivedTableView;
+
+NSMutableArray *gameNames;
+
+SessionController *sessionController;
+
+DiscoveryInfo *discoveryInfo;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -34,19 +42,7 @@ UIAlertView *progressAlert;
 {
     [super viewDidLoad];
     _appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    @try {
-//        [[_appDelegate mcManager] advertiseSelf:YES];
-//    }
-//    @catch (NSException *exception) {
-//        NSLog(@"here in vewdid load exception");
-//    }
-    
-
-   // [[_appDelegate mcManager] setupPeerAndSessionWithDisplayName:[UIDevice currentDevice].name];
-    
-
-    
-	// Do any additional setup after loading the view.
+    gameNames = [[NSMutableArray alloc] init];
     
 }
 
@@ -56,6 +52,8 @@ UIAlertView *progressAlert;
     self.gameName = [alert textFieldAtIndex:0];
     [alert setTag:1];
     [alert show];
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -107,20 +105,37 @@ UIAlertView *progressAlert;
     }
     if(buttonIndex == 1 && alertView.tag==1)
     {
-        _appDelegate.mcManager.peerID = nil;
-        _appDelegate.mcManager.session = nil;
-        _appDelegate.mcManager.browser = nil;
+//        _appDelegate.mcManager.peerID = nil;
+//        _appDelegate.mcManager.session = nil;
+//        _appDelegate.mcManager.browser = nil;
+//        
+//        _appDelegate.mcManager.advertiser = nil;
+//        
+//        
+//        [_appDelegate.mcManager setupPeerAndSessionWithDisplayName:_gameName.text];
+//        [_appDelegate.mcManager setupMCBrowser];
+//        [_appDelegate.mcManager advertiseSelf:YES];
+        discoveryInfo = [DiscoveryInfo getInstance];
+        [discoveryInfo setDiscoveryInfoWithKey:@"gamename" andValue:self.gameName.text];
         
-        _appDelegate.mcManager.advertiser = nil;
+        [gameNames addObject:self.gameName.text];
         
+        sessionController = [SessionController sharedSessionController];
+        [sessionController startAdvertizerServices];
         
-        [_appDelegate.mcManager setupPeerAndSessionWithDisplayName:_gameName.text];
-        [_appDelegate.mcManager setupMCBrowser];
-        [_appDelegate.mcManager advertiseSelf:YES];
-        NSLog(@"string entered=%@",self.gameName.text);
+        [self.receivedTableView reloadData];
         
     }
     
     
 }
+
+
+- (NSString *) stringForGameNameAt:(int)section {
+    if([gameNames count] == 0) {
+        return NULL;
+    }
+    return [gameNames objectAtIndex:section];
+}
+
 @end

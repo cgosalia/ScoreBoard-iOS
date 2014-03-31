@@ -26,4 +26,21 @@
     return copy;
 }
 
+- (void)encodeWithCoder:(NSCoder *)coder
+{
+    [coder encodeObject:playerName forKey:@"name"];
+    [coder encodeInt:score forKey:@"score"];
+    [coder encodeObject:playerImg forKey:@"image"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super init];
+    if (self) {
+        playerName = [coder decodeObjectForKey:@"name"];
+        score = [coder decodeIntegerForKey:@"score"];
+        playerImg = [coder decodeObjectForKey:@"image"];
+    }
+    return self;
+}
 @end

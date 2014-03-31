@@ -20,7 +20,7 @@
 
 - (IBAction)cancelSend:(id)sender;
 
--(void)didReceiveDataWithNotification:(NSNotification *)notification;
+-(void)didReceiveDataWithNotificationBluetooth:(NSNotification *)notification;
 
 
 @end
