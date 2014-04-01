@@ -13,17 +13,24 @@
 
 @implementation Message
 
+/* Send player info object as data.  Method archives player-info objects and collects in a dictionary which
+ in turn is archived before sending.  The collection and the player-info are ns coding complaint.
+ */
 + (void) send:(NSMutableArray *)data {
+    
     NSData *archivedPlayerInfo;
     NSInteger count = [data count];
+    
     PlayerDictionary *playerInfoDictionary = [[PlayerDictionary alloc] init];
     PlayerInfo* player;
+    
     for (int i = 0;i<count; i++) {
         player=[data objectAtIndex:i];
         archivedPlayerInfo = [NSKeyedArchiver archivedDataWithRootObject:player];
         NSString *key = [NSString stringWithFormat:@"%d",i];
         [playerInfoDictionary add:key value:archivedPlayerInfo];
     }
+    
     NSData *messageData = [NSKeyedArchiver archivedDataWithRootObject:playerInfoDictionary];
     SessionController *sessionController = [SessionController sharedSessionController];
     [sessionController sendMessages:messageData];

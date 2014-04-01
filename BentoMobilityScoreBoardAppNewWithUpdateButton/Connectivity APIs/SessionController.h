@@ -16,10 +16,11 @@
 A SessionController creates the MCSession that peers will be invited/join
 into, as well as creating service advertisers and browsers.
 
-MCSessionDelegate calls occur on a private operation queue. If your app
+MCSessionDelegate calls occur on a private operation queue. If app
 needs to perform an action on a particular run loop or operation queue,
-its delegate method should explicitly dispatch or schedule that work
+its delegate method should explicitly dispatch or schedule that work.
 */
+
 @interface SessionController : NSObject <MCSessionDelegate, MCNearbyServiceBrowserDelegate, MCNearbyServiceAdvertiserDelegate>
 
 @property (nonatomic, weak) id<SessionControllerDelegate> delegate;
@@ -34,14 +35,19 @@ its delegate method should explicitly dispatch or schedule that work
 // Helper method for human readable printing of MCSessionState. This state is per peer.
 - (NSString *)stringForPeerConnectionState:(MCSessionState)state;
 
+// Get singleton of the session controller shared across the app.
 + (id)sharedSessionController;
 
+// Initialize and advertize services
 - (void) startAdvertizerServices;
 
+// Initialize and browse for services
 - (void) startBrowserServices;
 
+// Delegated.  Invite peer to connect
 - (void) invitePeerWith:(MCPeerID *)peerID;
 
+// Delegated.  Send data as 'message'.
 -(void) sendMessages:(NSData *)data;
 
 @end

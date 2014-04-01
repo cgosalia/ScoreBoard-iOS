@@ -12,7 +12,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    _mcManager = [[MCManager alloc] init];
     return YES;
 }
 							
@@ -32,8 +31,6 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    NSLog(@"Entered forground");
-   // [[self mcManager] setupPeerAndSessionWithDisplayName:[UIDevice currentDevice].name];
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 

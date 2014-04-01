@@ -24,7 +24,7 @@
 
 @implementation SessionController
 
-static NSString * const kMCSessionServiceType = @"mcsessionp2p";
+static NSString * const sessionServiceType = @"bmsbmcsession";
 
 NSArray *ArrayInvitationHandler;
 
@@ -103,8 +103,6 @@ DiscoveryInfo *discoveryInfo;
     // Create the session that peers will be invited/join into.
     _session = [[MCSession alloc] initWithPeer:self.peerID];
     self.session.delegate = self;
-    
-    
 }
 
 
@@ -126,7 +124,7 @@ DiscoveryInfo *discoveryInfo;
 {
     // Create the service browser
     _serviceBrowser = [[MCNearbyServiceBrowser alloc] initWithPeer:self.peerID
-                                                       serviceType:kMCSessionServiceType];
+                                                       serviceType:sessionServiceType];
     self.serviceBrowser.delegate = self;
     [self.serviceBrowser startBrowsingForPeers];
 }
@@ -136,7 +134,7 @@ DiscoveryInfo *discoveryInfo;
     // Create the service advertiser
     _serviceAdvertiser = [[MCNearbyServiceAdvertiser alloc] initWithPeer:self.peerID
                                                            discoveryInfo:[discoveryInfo getDiscoveryInfo]
-                                                             serviceType:kMCSessionServiceType];
+                                                             serviceType:sessionServiceType];
     self.serviceAdvertiser.delegate = self;
 
     [self.serviceAdvertiser startAdvertisingPeer];

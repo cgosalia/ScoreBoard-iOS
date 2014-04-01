@@ -111,7 +111,7 @@ NSString *gameNameAliasSectionHeader;
     //_txtMsg.delegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didReceiveDataWithNotification:)
+                                             selector:@selector(receiveDataOn:)
                                                  name:@"MCDidReceiveDataNotification"
                                                object:nil];
     
@@ -143,6 +143,7 @@ NSString *gameNameAliasSectionHeader;
     [settingsDefault setInteger:25 forKey:@"preset4"];
     
     isPlayerBeingEdited = [[NSMutableDictionary alloc] init];
+    
     PlayerInfo *firstPlayer = [[PlayerInfo alloc] init];
     
     NSString *combinedName = [NSString stringWithFormat:@"%@%@%@", @"Player (", [NSString stringWithFormat:@"%d",playerId++],@")"];
@@ -172,8 +173,6 @@ NSString *gameNameAliasSectionHeader;
     if (selectedRowIndexPath) {
         [self.tableView deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
     }
-    
-    //[self sendMyMessage];
 }
 
 void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
@@ -521,6 +520,47 @@ UIAlertView *progressAlert;
     return YES;
 }
 
+- (IBAction)addPlayer:(id)sender {
+    PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
+    NSString *combinedName = [NSString stringWithFormat:@"%@%@%@", @"Player (", [NSString stringWithFormat:@"%d",playerId++],@")"];
+    newPlayer.playerName = combinedName;
+    newPlayer.score = 0;
+    newPlayer.playerImg = [UIImage imageNamed:@"unknownperson"];
+    [cellData addObject:newPlayer];
+    isPlayerBeingEdited[newPlayer] = @NO;
+    [self.tableView reloadData];
+    [self sendMessage];
+}
+
+
+-(void)sendMessage {
+    [Message send:self.cellData];
+}
+
+- (void)updateModelWith:(NSMutableDictionary *)receivedData {
+    NSInteger count = [receivedData count];
+    NSMutableArray *newCellData = [[NSMutableArray alloc] initWithObjects: nil];
+    for(int i = 0 ;i<count ; i++){
+        NSString *key = [NSString stringWithFormat:@"%d",i];
+        NSData *playerData = [receivedData objectForKey:key];
+        PlayerInfo *receivedPlayer =[NSKeyedUnarchiver unarchiveObjectWithData:playerData];
+        PlayerInfo *player = [[PlayerInfo alloc] init];
+        player.playerName = receivedPlayer.playerName;
+        player.score = receivedPlayer.score;
+        player.playerImg = receivedPlayer.playerImg;
+        [newCellData addObject:player];
+    }
+    [self.cellData removeAllObjects];
+    [self.cellData addObjectsFromArray:newCellData];
+}
+
+
+-(void)receiveDataOn:(NSNotification *)notification{
+    NSMutableDictionary *receivedData = [notification userInfo];
+    [self updateModelWith:receivedData];
+    dispatch_async(dispatch_get_main_queue(),^{[self.tableView reloadData];});
+}
+
 SettingsViewController *settingsController;
 
 #pragma mark - Navigation
@@ -546,19 +586,8 @@ SettingsViewController *settingsController;
         incrDecrScoreView.receivedTableView = self.tableView;
     }
 }
-
-
-
-- (IBAction)addPlayer:(id)sender {
-    PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
-    NSString *combinedName = [NSString stringWithFormat:@"%@%@%@", @"Player (", [NSString stringWithFormat:@"%d",playerId++],@")"];
-    newPlayer.playerName = combinedName;
-    newPlayer.score = 0;
-    newPlayer.playerImg = [UIImage imageNamed:@"unknownperson"];
-    [cellData addObject:newPlayer];
-    isPlayerBeingEdited[newPlayer] = @NO;
-    [self.tableView reloadData];
-    [self sendMessage];
+- (IBAction)goToSettings:(id)sender {
+    [self performSegueWithIdentifier:@"SettingsSegue" sender: sender];
 }
 
 
@@ -578,7 +607,7 @@ SettingsViewController *settingsController;
                 if ( gameName != nil) {
                     sectionName = gameName;
                 } else {
-                    sectionName = NSLocalizedString(@"Game", @"playerInfoSection");
+                    sectionName = NSLocalizedString(@"New Game", @"playerInfoSection");
                 }
             }
             break;
@@ -587,36 +616,6 @@ SettingsViewController *settingsController;
             break;
     }
     return sectionName;
-}
-
-- (IBAction)goToSettings:(id)sender {
-    [self performSegueWithIdentifier:@"SettingsSegue" sender: sender];
-}
-
-
-
--(void)sendMessage {
-    [Message send:self.cellData];
-}
-
--(void)didReceiveDataWithNotification:(NSNotification *)notification{
-    NSMutableDictionary *receivedData = [notification userInfo];
-    NSInteger count = [receivedData count];
-    NSMutableArray *newCellData = [[NSMutableArray alloc] initWithObjects: nil];
-    for(int i = 0 ;i<count ; i++){
-        NSString *key = [NSString stringWithFormat:@"%d",i];
-        NSData *playerData = [receivedData objectForKey:key];
-        PlayerInfo *receivedPlayer =[NSKeyedUnarchiver unarchiveObjectWithData:playerData];
-        PlayerInfo *player = [[PlayerInfo alloc] init];
-        player.playerName = receivedPlayer.playerName;
-        player.score = receivedPlayer.score;
-        player.playerImg = receivedPlayer.playerImg;
-        [newCellData addObject:player];
-    }
-    [self.cellData removeAllObjects];
-    [self.cellData addObjectsFromArray:newCellData];
-    dispatch_async(dispatch_get_main_queue(),^{[self.tableView reloadData];});
-    
 }
 
 

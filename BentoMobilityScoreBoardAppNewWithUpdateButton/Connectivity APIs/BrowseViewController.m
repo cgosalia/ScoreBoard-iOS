@@ -23,8 +23,6 @@ NSMutableOrderedSet *disconnectedGamesNameSet;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    //_sessionController = [[SessionController alloc] init];
     _sessionController = [SessionController sharedSessionController];
     self.sessionController.delegate = self;
     [self.sessionController startBrowserServices];
@@ -32,7 +30,7 @@ NSMutableOrderedSet *disconnectedGamesNameSet;
     connectedGamesNameSet = [[NSMutableOrderedSet alloc] init];
     disconnectedGamesNameSet = [[NSMutableOrderedSet alloc] init];
     [self sessionDidChangeState];
-    self.title = [NSString stringWithFormat:@"Browse"];
+    self.title = [NSString stringWithFormat:@"Browse Games"];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -72,7 +70,6 @@ NSMutableOrderedSet *disconnectedGamesNameSet;
         if (gameNameString != nil) {
             [connectingGamesNameSet addObject:gameNameString];
         }
-        
     }
     
     NSArray *connectedPeers = self.sessionController.connectedPeers;
@@ -82,7 +79,6 @@ NSMutableOrderedSet *disconnectedGamesNameSet;
         if (gameNameString != nil) {
             [connectedGamesNameSet addObject:gameNameString];
         }
-
     }
     
     NSArray *disconnectedPeers = self.sessionController.disconnectedPeers;
@@ -93,7 +89,6 @@ NSMutableOrderedSet *disconnectedGamesNameSet;
             if(![connectedGamesNameSet containsObject:gameNameString]) {
                 [disconnectedGamesNameSet addObject:gameNameString];
             }
-            
         }
     }
     

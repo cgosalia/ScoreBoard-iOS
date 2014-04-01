@@ -28,8 +28,6 @@ PlayerCollectionCell *cell;
     if (self) {
         // Custom initialization
     }
-    
-    
     return self;
 }
 
@@ -81,18 +79,9 @@ PlayerCollectionCell *cell;
     cell.playerName.text = player.playerName;
     cell.playerScore.text = [NSString stringWithFormat:@"%d", player.score];
     cell.playerImage.image = player.playerImg;
-    //[cell.layer setBorderColor:[UIColor colorWithRed:213.0/255.0f green:210.0/255.0f blue:199.0/255.0f alpha:1.0f].CGColor];
-    //[cell.layer setBorderWidth:0.5f];
-    //[cell.layer setCornerRadius:0.1f];
-    //[cell.layer setMasksToBounds:NO];
-//    [cell.layer setShadowOffset:CGSizeMake(0, 1)];
-//    [cell.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
-//    [cell.layer setShadowRadius:8.0];
-//    [cell.layer setShadowOpacity:0.8];
-    //cell.backgroundColor = [UIColor whiteColor];
     return cell;
 }
-// 4
+
 /*- (UICollectionReusableView *)collectionView:
  (UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
  {
@@ -123,7 +112,7 @@ PlayerCollectionCell *cell;
 
 - (void)updateScoreBoard:(NSNotification *)notification
 {
-    //NSLog(@"Reacting to notification %@ from object %@ with userInfo %@", notification, notification.object, notification.userInfo);
+    // NSLog(@"Reacting to notification %@ from object %@ with userInfo %@", notification, notification.object, notification.userInfo);
     NSMutableArray *tempArray = [notification.userInfo objectForKey:@"trackingModeDS"];
     dataSrc = [[NSMutableArray alloc] init];
     
