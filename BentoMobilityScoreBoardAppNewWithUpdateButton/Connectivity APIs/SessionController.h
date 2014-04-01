@@ -1,4 +1,10 @@
-
+//
+//  SessionController.h
+//  Bento Mobility Score Tracking App
+//
+//  Created by Ravi Varsha Cheemanahalli Gopalakrishna on 3/28/14.
+//  Copyright (c) 2014 Ravi Varsha Cheemanahalli Gopalakrishna. All rights reserved.
+//
 
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 
@@ -23,6 +29,7 @@ its delegate method should explicitly dispatch or schedule that work
 @property (nonatomic, readonly) NSArray *connectedPeers;
 @property (nonatomic, readonly) NSArray *disconnectedPeers;
 @property NSDictionary *discoveryInformationDictionary;
+@property (retain) NSMutableDictionary *peerIDToGameMap;
 
 // Helper method for human readable printing of MCSessionState. This state is per peer.
 - (NSString *)stringForPeerConnectionState:(MCSessionState)state;

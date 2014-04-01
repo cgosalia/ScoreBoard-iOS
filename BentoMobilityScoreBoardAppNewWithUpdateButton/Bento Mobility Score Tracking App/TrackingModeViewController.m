@@ -18,6 +18,7 @@
 #import "SessionController.h"
 #import "PlayerDictionary.h"
 #import "Message.h"
+#import "DiscoveryInfo.h"
 
 @interface TrackingModeViewController ()
 
@@ -560,21 +561,24 @@ SettingsViewController *settingsController;
     [self sendMessage];
 }
 
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *sectionName;
+    DiscoveryInfo *discoveryInfo;
     switch (section)
     {
         case 0:
             if (settingsController == nil) {
-                sectionName = NSLocalizedString(@"Game", @"playerInfoSection");
+                sectionName = NSLocalizedString(@"New Game", @"playerInfoSection");
             } else {
-                [self setGameName:[settingsController stringForGameNameAt:section]];
-                
-                if ([self getGameName]==NULL) {
-                    sectionName = @"abc";
+                discoveryInfo = [DiscoveryInfo getInstance];
+                NSDictionary *dict = [discoveryInfo getDiscoveryInfo];
+                NSString *gameName =[dict objectForKey:@"gamename"];
+                if ( gameName != nil) {
+                    sectionName = gameName;
                 } else {
-                sectionName = [self getGameName];
+                    sectionName = NSLocalizedString(@"Game", @"playerInfoSection");
                 }
             }
             break;

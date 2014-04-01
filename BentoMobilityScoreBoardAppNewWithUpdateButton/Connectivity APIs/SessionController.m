@@ -1,4 +1,10 @@
-
+//
+//  SessionController.m
+//  Bento Mobility Score Tracking App
+//
+//  Created by Ravi Varsha Cheemanahalli Gopalakrishna on 3/28/14.
+//  Copyright (c) 2014 Ravi Varsha Cheemanahalli Gopalakrishna. All rights reserved.
+//
 
 #import "SessionController.h"
 #import "PlayerDictionary.h"
@@ -70,6 +76,7 @@ DiscoveryInfo *discoveryInfo;
         _disconnectedPeers = [self.disconnectedPeersOrderedSet array];
         
         _displayName = self.session.myPeerID.displayName;
+        _peerIDToGameMap = [[NSMutableDictionary alloc] init];
         [self setupSession];
     }
     
@@ -96,17 +103,8 @@ DiscoveryInfo *discoveryInfo;
     // Create the session that peers will be invited/join into.
     _session = [[MCSession alloc] initWithPeer:self.peerID];
     self.session.delegate = self;
-    discoveryInfo = [DiscoveryInfo getInstance];
-    // Create the service advertiser
-    _serviceAdvertiser = [[MCNearbyServiceAdvertiser alloc] initWithPeer:self.peerID
-                                                           discoveryInfo:[discoveryInfo getDiscoveryInfo]
-                                                             serviceType:kMCSessionServiceType];
-    self.serviceAdvertiser.delegate = self;
     
-    // Create the service browser
-    _serviceBrowser = [[MCNearbyServiceBrowser alloc] initWithPeer:self.peerID
-                                                       serviceType:kMCSessionServiceType];
-    self.serviceBrowser.delegate = self;
+    
 }
 
 
@@ -126,10 +124,21 @@ DiscoveryInfo *discoveryInfo;
 
 - (void) startBrowserServices
 {
+    // Create the service browser
+    _serviceBrowser = [[MCNearbyServiceBrowser alloc] initWithPeer:self.peerID
+                                                       serviceType:kMCSessionServiceType];
+    self.serviceBrowser.delegate = self;
     [self.serviceBrowser startBrowsingForPeers];
 }
 
 - (void) startAdvertizerServices {
+    discoveryInfo = [DiscoveryInfo getInstance];
+    // Create the service advertiser
+    _serviceAdvertiser = [[MCNearbyServiceAdvertiser alloc] initWithPeer:self.peerID
+                                                           discoveryInfo:[discoveryInfo getDiscoveryInfo]
+                                                             serviceType:kMCSessionServiceType];
+    self.serviceAdvertiser.delegate = self;
+
     [self.serviceAdvertiser startAdvertisingPeer];
 }
 
@@ -199,6 +208,7 @@ DiscoveryInfo *discoveryInfo;
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"NewPeerJoined"
                                                                     object:nil
                                                                   userInfo:nil];
+                accepted = false;
             }
             break;
         }
@@ -271,6 +281,11 @@ DiscoveryInfo *discoveryInfo;
     certificateHandler(YES);
 }
 
+-(void) mapPeerID:(MCPeerID *) peerID toGameName:(NSString *)gameName {
+    [_peerIDToGameMap setObject:gameName forKey:peerID];
+    NSLog(@"");
+}
+
 #pragma mark - MCNearbyServiceBrowserDelegate protocol conformance
 
 // Found a nearby advertising peer
@@ -284,6 +299,9 @@ DiscoveryInfo *discoveryInfo;
     
     [self.disconnectedPeersOrderedSet addObject:peerID];
     self.discoveryInformationDictionary = info;
+    [self mapPeerID:peerID toGameName:[info objectForKey:@"gamename"]];
+    discoveryInfo = [DiscoveryInfo getInstance];
+    [discoveryInfo setDiscoveryInfoWithKey:@"gamename" andValue:[info objectForKey:@"gamename"]];
     [self updateDelegate];
 }
 

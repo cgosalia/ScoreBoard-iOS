@@ -150,6 +150,7 @@ bool imageChanged;
         [receivedPlayerData removeObjectAtIndex:receivedIndexPath.row];
         [receivedTableView deleteRowsAtIndexPaths:@[receivedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         [self.receivedTableView reloadData];
+        [Message send:receivedPlayerData];
         NSString *playerName = playerNameTextField.text;
         progressAlert = [[UIAlertView alloc] initWithTitle:nil
                                                    message:[NSString stringWithFormat:@"Player \"%@\" information deleted", playerName]

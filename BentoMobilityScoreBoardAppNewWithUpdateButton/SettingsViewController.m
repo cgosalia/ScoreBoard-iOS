@@ -115,6 +115,7 @@ DiscoveryInfo *discoveryInfo;
 //        [_appDelegate.mcManager setupPeerAndSessionWithDisplayName:_gameName.text];
 //        [_appDelegate.mcManager setupMCBrowser];
 //        [_appDelegate.mcManager advertiseSelf:YES];
+        
         discoveryInfo = [DiscoveryInfo getInstance];
         [discoveryInfo setDiscoveryInfoWithKey:@"gamename" andValue:self.gameName.text];
         

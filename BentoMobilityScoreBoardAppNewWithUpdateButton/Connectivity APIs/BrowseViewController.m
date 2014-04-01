@@ -1,4 +1,10 @@
-
+//
+//  BrowseViewController.m
+//  Bento Mobility Score Tracking App
+//
+//  Created by Ravi Varsha Cheemanahalli Gopalakrishna on 3/28/14.
+//  Copyright (c) 2014 Ravi Varsha Cheemanahalli Gopalakrishna. All rights reserved.
+//
 
 #import "BrowseViewController.h"
 
@@ -7,6 +13,10 @@
 @end
 
 @implementation BrowseViewController
+
+NSMutableOrderedSet *connectingGamesNameSet;
+NSMutableOrderedSet *connectedGamesNameSet;
+NSMutableOrderedSet *disconnectedGamesNameSet;
 
 #pragma mark - View lifecycle
 
@@ -18,6 +28,10 @@
     _sessionController = [SessionController sharedSessionController];
     self.sessionController.delegate = self;
     [self.sessionController startBrowserServices];
+    connectingGamesNameSet = [[NSMutableOrderedSet alloc] init];
+    connectedGamesNameSet = [[NSMutableOrderedSet alloc] init];
+    disconnectedGamesNameSet = [[NSMutableOrderedSet alloc] init];
+    [self sessionDidChangeState];
     self.title = [NSString stringWithFormat:@"Browse"];
 }
 
@@ -46,6 +60,44 @@
 
 - (void)sessionDidChangeState
 {
+    [connectingGamesNameSet removeAllObjects];
+    [connectedGamesNameSet removeAllObjects];
+    [disconnectedGamesNameSet removeAllObjects];
+    MCPeerID *peerToLookUp;
+    NSString *gameNameString;
+    NSArray *connectingPeers = self.sessionController.connectingPeers;
+    for(int i=0; i<connectingPeers.count; i++) {
+        peerToLookUp = [connectingPeers objectAtIndex:i];
+        gameNameString = [self.sessionController.peerIDToGameMap objectForKey:peerToLookUp];
+        if (gameNameString != nil) {
+            [connectingGamesNameSet addObject:gameNameString];
+        }
+        
+    }
+    
+    NSArray *connectedPeers = self.sessionController.connectedPeers;
+    for(int i=0; i<connectedPeers.count; i++) {
+        peerToLookUp = [connectedPeers objectAtIndex:i];
+        gameNameString = [self.sessionController.peerIDToGameMap objectForKey:peerToLookUp];
+        if (gameNameString != nil) {
+            [connectedGamesNameSet addObject:gameNameString];
+        }
+
+    }
+    
+    NSArray *disconnectedPeers = self.sessionController.disconnectedPeers;
+    for(int i=0; i<disconnectedPeers.count; i++) {
+        peerToLookUp = [disconnectedPeers objectAtIndex:i];
+        gameNameString = [self.sessionController.peerIDToGameMap objectForKey:peerToLookUp];
+        if (gameNameString != nil) {
+            if(![connectedGamesNameSet containsObject:gameNameString]) {
+                [disconnectedGamesNameSet addObject:gameNameString];
+            }
+            
+        }
+    }
+    
+    
     // Ensure UI updates occur on the main queue.
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
@@ -72,19 +124,19 @@
     {
         case MCSessionStateConnecting:
         {
-            rows = self.sessionController.connectingPeers.count;
+            rows = connectingGamesNameSet.count;
             break;
         }
             
         case MCSessionStateConnected:
         {
-            rows = self.sessionController.connectedPeers.count;
+            rows = connectedGamesNameSet.count;
             break;
         }
             
         case MCSessionStateNotConnected:
         {
-            rows = self.sessionController.disconnectedPeers.count;
+            rows = disconnectedGamesNameSet.count;
             break;
         }
     }
@@ -114,7 +166,7 @@
 
     cell.textLabel.text = @"None";
 
-	NSArray *peers = nil;
+	NSArray *games = nil;
     
     // Each tableView section represents an MCSessionState
     MCSessionState sessionState = indexPath.section;
@@ -123,32 +175,30 @@
     {
         case MCSessionStateConnecting:
         {
-            peers = self.sessionController.connectingPeers;
+            games = [connectingGamesNameSet array];
             break;
         }
             
         case MCSessionStateConnected:
         {
-            peers = self.sessionController.connectedPeers;
+            games = [connectedGamesNameSet array];
             break;
         }
             
         case MCSessionStateNotConnected:
         {
-            peers = self.sessionController.disconnectedPeers;
+            games = [disconnectedGamesNameSet array];
             break;
         }
     }
 
-    if ((peers.count > 0) && (peerIndex < peers.count))
+    if ((games.count > 0) && (peerIndex < games.count))
     {
-        MCPeerID *peerID = [peers objectAtIndex:peerIndex];
+        cell.textLabel.text = [games objectAtIndex:peerIndex];
         
-        if (peerID)
-        {
-            cell.textLabel.text = peerID.displayName;
-        }
     }
+    
+  
 	
 	return cell;
 }
@@ -169,13 +219,15 @@
             break;
             
         }
-            
+            //TODO: Still to test for intersection consistency between disconnected peers and peersInGame
         case MCSessionStateNotConnected:
         {
             peers = self.sessionController.disconnectedPeers;
             if ((peers.count > 0) && (peerIndex < peers.count))
             {
-                MCPeerID *peerID = [peers objectAtIndex:peerIndex];
+                NSString *gameName = [disconnectedGamesNameSet objectAtIndex:peerIndex];
+                NSArray *peersInGame = [self.sessionController.peerIDToGameMap allKeysForObject:gameName];
+                MCPeerID *peerID = [peersInGame objectAtIndex:0];
                 [_sessionController invitePeerWith:peerID];
             }
             break;
