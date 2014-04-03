@@ -112,9 +112,10 @@ bool imageChanged;
             } else {
                 newPlayer.playerImg = selectedPlayer.playerImg;
             }
+            [newPlayer setIsBeingEdited:NO];
             [receivedPlayerData replaceObjectAtIndex:receivedIndexPath.row withObject:newPlayer];
             [receivedIsPlayerBeingEdited removeObjectForKey:selectedPlayer];
-        [Message send:receivedPlayerData];
+            [Message send:receivedPlayerData];
         }
         
         [self.navigationController popViewControllerAnimated:YES];
@@ -131,9 +132,18 @@ bool imageChanged;
 
 
 - (IBAction)cancelPlayerDetails:(id)sender {
+    NSLog(@"inside the cancel player details screen: %d", receivedIndexPath.row);
     PlayerInfo *playerInfo = [receivedPlayerData objectAtIndex:receivedIndexPath.row];
+    
+    [playerInfo setIsBeingEdited:NO];
+    [receivedPlayerData replaceObjectAtIndex:receivedIndexPath.row withObject:playerInfo];
+    //[receivedIsPlayerBeingEdited removeObjectForKey:selectedPlayer];
+    [Message send:receivedPlayerData];
+    
     [self setPlayerInEditDoneMode:playerInfo];
     [self.navigationController popViewControllerAnimated:YES];
+    
+    
 }
 
 - (void) checkTimer:(NSTimer *)timer

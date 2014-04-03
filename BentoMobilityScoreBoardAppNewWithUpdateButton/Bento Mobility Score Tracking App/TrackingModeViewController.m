@@ -150,6 +150,7 @@ NSString *gameNameAliasSectionHeader;
     firstPlayer.playerName = combinedName;
     firstPlayer.score = 0;
     firstPlayer.playerImg = [UIImage imageNamed:@"unknownperson"];
+    firstPlayer.isBeingEdited = 0;
     
     cellData = [[NSMutableArray alloc] initWithObjects:firstPlayer, nil];
     isPlayerBeingEdited[firstPlayer] = @NO;
@@ -328,7 +329,9 @@ UIAlertView *progressAlert;
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:tapLocation];
     UITableViewCell *tappedCell = [self.tableView cellForRowAtIndexPath:indexPath];
     PlayerInfo *player = [cellData objectAtIndex:indexPath.row];
-    if (isPlayerBeingEdited[player]) {
+    NSLog(@"here %@ checking double tap %d",player.playerName , player.isBeingEdited);
+    if (player.isBeingEdited == 1) {
+        
         progressAlert = [[UIAlertView alloc] initWithTitle:@"Unable to get to details"
                                                    message:@"This player is being edited."
                                                   delegate: self
@@ -342,6 +345,15 @@ UIAlertView *progressAlert;
         [progressAlert show];
         return;
     }
+    player.isBeingEdited = 1;
+    [cellData replaceObjectAtIndex:indexPath.row withObject:player];
+    for(PlayerInfo* temp in cellData)
+    {
+        NSLog(@"%@", temp.playerName);
+        NSLog(@"%d", temp.isBeingEdited);
+    }
+    [self.tableView reloadData];
+    [self sendMessage];
     [self performSegueWithIdentifier:@"PlayerDetailsSegue" sender: tappedCell];
 }
 
@@ -526,6 +538,7 @@ UIAlertView *progressAlert;
     newPlayer.playerName = combinedName;
     newPlayer.score = 0;
     newPlayer.playerImg = [UIImage imageNamed:@"unknownperson"];
+    newPlayer.isBeingEdited = 0;
     [cellData addObject:newPlayer];
     isPlayerBeingEdited[newPlayer] = @NO;
     [self.tableView reloadData];
@@ -534,6 +547,12 @@ UIAlertView *progressAlert;
 
 
 -(void)sendMessage {
+    NSLog(@"In csend message functon");
+    for(PlayerInfo* temp in self.cellData)
+    {
+        NSLog(@"%@", temp.playerName);
+        NSLog(@"%d", temp.isBeingEdited);
+    }
     [Message send:self.cellData];
 }
 
@@ -548,6 +567,10 @@ UIAlertView *progressAlert;
         player.playerName = receivedPlayer.playerName;
         player.score = receivedPlayer.score;
         player.playerImg = receivedPlayer.playerImg;
+        player.isBeingEdited = receivedPlayer.isBeingEdited;
+        
+        NSLog(@"%@ : %d", receivedPlayer.playerName, receivedPlayer.isBeingEdited);
+//        NSLog(@"%d", temp.isBeingEdited);
         [newCellData addObject:player];
     }
     [self.cellData removeAllObjects];
