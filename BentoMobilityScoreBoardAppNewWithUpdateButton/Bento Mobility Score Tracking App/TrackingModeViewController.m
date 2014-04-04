@@ -575,6 +575,9 @@ UIAlertView *progressAlert;
     }
     [self.cellData removeAllObjects];
     [self.cellData addObjectsFromArray:newCellData];
+    [trackingModeDataSource setObject:cellData forKey:@"trackingModeDS"];
+    [[NSNotificationCenter defaultCenter] postNotification:notificationForScoreBoard];
+    
 }
 
 
