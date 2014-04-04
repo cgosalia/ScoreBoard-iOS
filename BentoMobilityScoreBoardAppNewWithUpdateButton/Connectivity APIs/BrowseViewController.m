@@ -12,7 +12,6 @@
 
 @interface BrowseViewController () // Class extension
 @property (nonatomic, strong) SessionController *sessionController;
-@property (nonatomic , strong) TrackingModeViewController *trackBoard;
 @end
 
 @implementation BrowseViewController
@@ -30,7 +29,6 @@ UIAlertView *checkForConnectedGames;
 {
     [super viewDidLoad];
     _sessionController = [SessionController sharedSessionController];
-    _trackBoard = [[TrackingModeViewController alloc] init];
     self.sessionController.delegate = self;
     [self.sessionController startBrowserServices];
     connectingGamesNameSet = [[NSMutableOrderedSet alloc] init];
@@ -255,7 +253,6 @@ UIAlertView *checkForConnectedGames;
         if(buttonIndex == 1)
         {
             [_sessionController teardownSession];
-            [_trackBoard clearTrackBoard];
         }
     }
 
