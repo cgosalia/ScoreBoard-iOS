@@ -329,7 +329,7 @@ UIAlertView *progressAlert;
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:tapLocation];
     UITableViewCell *tappedCell = [self.tableView cellForRowAtIndexPath:indexPath];
     PlayerInfo *player = [cellData objectAtIndex:indexPath.row];
-    NSLog(@"here %@ checking double tap %d",player.playerName , player.isBeingEdited);
+   // NSLog(@"here %@ checking double tap %d",player.playerName , player.isBeingEdited);
     if (player.isBeingEdited == 1) {
         
         progressAlert = [[UIAlertView alloc] initWithTitle:@"Unable to get to details"
@@ -347,11 +347,11 @@ UIAlertView *progressAlert;
     }
     player.isBeingEdited = 1;
     [cellData replaceObjectAtIndex:indexPath.row withObject:player];
-    for(PlayerInfo* temp in cellData)
-    {
-        NSLog(@"%@", temp.playerName);
-        NSLog(@"%d", temp.isBeingEdited);
-    }
+//    for(PlayerInfo* temp in cellData)
+//    {
+//        NSLog(@"%@", temp.playerName);
+//        NSLog(@"%d", temp.isBeingEdited);
+//    }
     [self.tableView reloadData];
     [self sendMessage];
     [self performSegueWithIdentifier:@"PlayerDetailsSegue" sender: tappedCell];
@@ -547,12 +547,12 @@ UIAlertView *progressAlert;
 
 
 -(void)sendMessage {
-    NSLog(@"In csend message functon");
-    for(PlayerInfo* temp in self.cellData)
-    {
-        NSLog(@"%@", temp.playerName);
-        NSLog(@"%d", temp.isBeingEdited);
-    }
+   // NSLog(@"In csend message functon");
+//    for(PlayerInfo* temp in self.cellData)
+//    {
+//        NSLog(@"%@", temp.playerName);
+//        NSLog(@"%d", temp.isBeingEdited);
+//    }
     [Message send:self.cellData];
 }
 
@@ -639,6 +639,10 @@ SettingsViewController *settingsController;
             break;
     }
     return sectionName;
+}
+-(void)clearTrackBoard{
+    
+    [self.cellData removeAllObjects];
 }
 
 
