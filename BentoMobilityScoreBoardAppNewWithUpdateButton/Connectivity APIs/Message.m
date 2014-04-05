@@ -14,7 +14,7 @@
 @implementation Message
 
 /* Send player info object as data.  Method archives player-info objects and collects in a dictionary which
- in turn is archived before sending.  The collection and the player-info are ns coding complaint.
+ in turn is archived before sending.  The collection and the player-info are ns coding compliant.
  */
 + (void) send:(NSMutableArray *)data {
     

@@ -27,6 +27,8 @@
 static NSString * const sessionServiceType = @"bmsbmcsession";
 
 NSArray *ArrayInvitationHandler;
+NSMutableDictionary *ConnectedPeerList;
+
 
 BOOL accepted;
 
@@ -51,17 +53,18 @@ DiscoveryInfo *discoveryInfo;
     if (self)
     {
         _peerID = [[MCPeerID alloc] initWithDisplayName:[[UIDevice currentDevice] name]];
-        
+        ConnectedPeerList=[[NSMutableDictionary alloc] init];
         _connectingPeersOrderedSet = [[NSMutableOrderedSet alloc] init];
         _disconnectedPeersOrderedSet = [[NSMutableOrderedSet alloc] init];
         
-        //                NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+        NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
         //
-        //                // Register for notifications
-        //                [defaultCenter addObserver:self
-        //                                  selector:@selector(startServices)
-        //                                      name:UIApplicationWillEnterForegroundNotification
-        //                                    object:nil];
+        // Register for notifications
+        [defaultCenter addObserver:self
+                          selector:@selector(startServices)
+                              name:UIApplicationWillEnterForegroundNotification
+                            object:nil];
+        
         //
         //                [defaultCenter addObserver:self
         //                                  selector:@selector(stopServices)
@@ -115,9 +118,9 @@ DiscoveryInfo *discoveryInfo;
 
 - (void)startServices
 {
-    [self setupSession];
-    [self.serviceAdvertiser startAdvertisingPeer];
-    [self.serviceBrowser startBrowsingForPeers];
+    NSLog(@"%@: Application Foreground.  Has started Browsing", _peerID);
+    [self startAdvertizerServices];
+    [self startBrowserServices];
 }
 
 - (void) startBrowserServices
@@ -136,7 +139,7 @@ DiscoveryInfo *discoveryInfo;
                                                            discoveryInfo:[discoveryInfo getDiscoveryInfo]
                                                              serviceType:sessionServiceType];
     self.serviceAdvertiser.delegate = self;
-
+    
     [self.serviceAdvertiser startAdvertisingPeer];
 }
 
@@ -203,9 +206,11 @@ DiscoveryInfo *discoveryInfo;
             [self.connectingPeersOrderedSet removeObject:peerID];
             [self.disconnectedPeersOrderedSet removeObject:peerID];
             if(accepted) {
+                [ConnectedPeerList setObject:peerID.displayName forKey:peerID];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"NewPeerJoined"
                                                                     object:nil
                                                                   userInfo:nil];
+                
                 accepted = false;
             }
             break;
@@ -307,14 +312,13 @@ DiscoveryInfo *discoveryInfo;
     [self.connectingPeersOrderedSet addObject:peerID];
     [self.disconnectedPeersOrderedSet removeObject:peerID];
     [self updateDelegate];
-    [_serviceBrowser invitePeer:peerID toSession:self.session withContext:nil timeout:300000.0];
+    [_serviceBrowser invitePeer:peerID toSession:self.session withContext:nil timeout:300.0];
 }
 
 
 - (void)browser:(MCNearbyServiceBrowser *)browser lostPeer:(MCPeerID *)peerID
 {
     NSLog(@"lostPeer %@", peerID.displayName);
-    
     [self.connectingPeersOrderedSet removeObject:peerID];
     [self.disconnectedPeersOrderedSet addObject:peerID];
     
@@ -331,16 +335,37 @@ DiscoveryInfo *discoveryInfo;
 - (void)advertiser:(MCNearbyServiceAdvertiser *)advertiser didReceiveInvitationFromPeer:(MCPeerID *)peerID withContext:(NSData *)context invitationHandler:(void(^)(BOOL accept, MCSession *session))invitationHandler
 {
     NSLog(@"didReceiveInvitationFromPeer %@", peerID.displayName);
-    NSString *msg = [NSString stringWithFormat:@"Do you like to accept the invitation from %@?",peerID.displayName];
-    ArrayInvitationHandler = [NSArray arrayWithObject:[invitationHandler copy]];
-    UIAlertView *alertView = [[UIAlertView alloc]
-                              initWithTitle:@"Incoming request"
-                              message:msg
-                              delegate:self
-                              cancelButtonTitle:@"Decline"
-                              otherButtonTitles:@"Accept", nil];
-    [alertView show];
-    [self updateDelegate];
+    NSString *peerName=nil;
+    bool containsPeerName=false;
+    NSString *value;
+    peerName=[ConnectedPeerList objectForKey:peerID];
+    
+    for(MCPeerID *peerIDKey in ConnectedPeerList)
+    {
+        value=[ConnectedPeerList objectForKey:peerIDKey];
+        if(value==peerID.displayName)
+            containsPeerName= true;
+    }
+    
+    if(!containsPeerName && peerName==nil)
+    {
+        NSLog(@"not a revisiting peer ");
+        NSString *msg = [NSString stringWithFormat:@"Do you like to accept the invitation from %@?",peerID.displayName];
+        ArrayInvitationHandler = [NSArray arrayWithObject:[invitationHandler copy]];
+        UIAlertView *alertView = [[UIAlertView alloc]
+                                  initWithTitle:@"Incoming request"
+                                  message:msg
+                                  delegate:self
+                                  cancelButtonTitle:@"Decline"
+                                  otherButtonTitles:@"Accept", nil];
+        [alertView show];
+        [self updateDelegate];
+    }
+    else {
+        NSLog(@"revisiting peer");
+        invitationHandler(YES, self.session);
+    }
+    
     
 }
 

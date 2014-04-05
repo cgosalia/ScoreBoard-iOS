@@ -32,6 +32,7 @@ its delegate method should explicitly dispatch or schedule that work.
 @property NSDictionary *discoveryInformationDictionary;
 @property (retain) NSMutableDictionary *peerIDToGameMap;
 
+
 // Helper method for human readable printing of MCSessionState. This state is per peer.
 - (NSString *)stringForPeerConnectionState:(MCSessionState)state;
 
