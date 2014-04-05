@@ -18,6 +18,7 @@
 
 @synthesize isBeingEdited;
 
+
 -(id) copyWithZone:(NSZone *)zone {
     id copy = [[[self class] alloc] init];
     if(copy) {
@@ -48,4 +49,5 @@
     }
     return self;
 }
+
 @end

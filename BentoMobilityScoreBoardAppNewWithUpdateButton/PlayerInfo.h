@@ -15,6 +15,7 @@
 @property int score;
 
 @property UIImage *playerImg;
+
 @property int isBeingEdited;
 
 @end

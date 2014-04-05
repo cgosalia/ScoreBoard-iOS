@@ -107,6 +107,8 @@ bool imageChanged;
                 [self updatePlayerNameAndScore:selectedPlayer newPlayer:newPlayer];
             }
             if(imageChanged) {
+                CGSize scaledSize = CGSizeMake(64, 64);
+                self.playerImageView.image = [self scaleImage:self.playerImageView.image to:scaledSize];
                 newPlayer.playerImg = self.playerImageView.image;
                 [self updatePlayerNameAndScore:selectedPlayer newPlayer:newPlayer];
             } else {
@@ -193,6 +195,79 @@ bool imageChanged;
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
+
+
+- (UIImage*)scaleImage:(UIImage *)originalImage to:(CGSize)targetSize
+{
+    UIImage *sourceImage = originalImage;
+    UIImage *newImage = nil;
+    CGSize imageSize = sourceImage.size;
+    CGFloat width = imageSize.width;
+    CGFloat height = imageSize.height;
+    CGFloat targetWidth = targetSize.width;
+    CGFloat targetHeight = targetSize.height;
+    CGFloat scaleFactor = 0.0;
+    CGFloat scaledWidth = targetWidth;
+    CGFloat scaledHeight = targetHeight;
+    CGPoint thumbnailPoint = CGPointMake(0.0,0.0);
+    
+    if (CGSizeEqualToSize(imageSize, targetSize) == NO)
+    {
+        CGFloat widthFactor = targetWidth / width;
+        CGFloat heightFactor = targetHeight / height;
+        
+        if (widthFactor > heightFactor)
+        {
+            scaleFactor = widthFactor; // scale to fit height
+        }
+        else
+        {
+            scaleFactor = heightFactor; // scale to fit width
+        }
+        
+        scaledWidth  = width * scaleFactor;
+        scaledHeight = height * scaleFactor;
+        
+        // center the image
+        if (widthFactor > heightFactor)
+        {
+            thumbnailPoint.y = (targetHeight - scaledHeight) * 0.5;
+        }
+        else
+        {
+            if (widthFactor < heightFactor)
+            {
+                thumbnailPoint.x = (targetWidth - scaledWidth) * 0.5;
+            }
+        }
+    }
+    
+    UIGraphicsBeginImageContext(targetSize); // this will crop
+    
+    CGRect thumbnailRect = CGRectZero;
+    thumbnailRect.origin = thumbnailPoint;
+    thumbnailRect.size.width  = scaledWidth;
+    thumbnailRect.size.height = scaledHeight;
+    
+    [sourceImage drawInRect:thumbnailRect];
+    
+    newImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    if(newImage == nil)
+    {
+        NSLog(@"could not scale image");
+    }
+    
+    //pop the context to get back to the default
+    UIGraphicsEndImageContext();
+    
+    // Set maximun compression in order to decrease file size 
+//    NSData *imageData = UIImageJPEGRepresentation(newImage, 0.0f);
+//    UIImage *processedImage = [UIImage imageWithData:imageData];
+    
+    return newImage;
+}
+
 
 -(void) setPlayerInEditingMode:(PlayerInfo *)player {
     receivedIsPlayerBeingEdited[player] = @YES;
