@@ -213,6 +213,10 @@ DiscoveryInfo *discoveryInfo;
                 
                 accepted = false;
             }
+//            discoveryInfo = [DiscoveryInfo getInstance];
+//            [discoveryInfo setDiscoveryInfoWithKey:@"gamename" andValue:@"Demo"];
+            [self startAdvertizerServices];
+//            NSLog(@"in connected: %@", [discoveryInfo getDiscoveryInfo]);
             break;
         }
             

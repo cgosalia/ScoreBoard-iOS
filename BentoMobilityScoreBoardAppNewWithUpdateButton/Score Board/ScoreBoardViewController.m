@@ -112,7 +112,7 @@ PlayerCollectionCell *cell;
 
 - (void)updateScoreBoard:(NSNotification *)notification
 {
-    // NSLog(@"Reacting to notification %@ from object %@ with userInfo %@", notification, notification.object, notification.userInfo);
+     NSLog(@"Reacting to notification %@ from object %@ with userInfo %@", notification, notification.object, notification.userInfo);
     NSMutableArray *tempArray = [notification.userInfo objectForKey:@"trackingModeDS"];
     dataSrc = [[NSMutableArray alloc] init];
     
@@ -131,9 +131,17 @@ PlayerCollectionCell *cell;
         else
             return 0;
     }];
-    [self.collectionView reloadData];
-    
+    //[self.collectionView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^
+                   {
+                       [self.collectionView reloadData];
+                       
+                   });
+    //[self.collectionView setNeedsDisplay];
+   
+
 }
+
 
 
 @end

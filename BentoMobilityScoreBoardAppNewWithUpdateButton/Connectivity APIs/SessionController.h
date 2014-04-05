@@ -51,6 +51,8 @@ its delegate method should explicitly dispatch or schedule that work.
 // Delegated.  Send data as 'message'.
 -(void) sendMessages:(NSData *)data;
 
+-(void) teardownSession;
+
 @end
 
 // Delegate methods for SessionController

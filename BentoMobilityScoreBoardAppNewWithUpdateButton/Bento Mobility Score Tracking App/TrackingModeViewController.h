@@ -18,4 +18,6 @@
 
 - (IBAction)goToSettings:(id)sender;
 
+-(void)clearTrackBoard;
+
 @end

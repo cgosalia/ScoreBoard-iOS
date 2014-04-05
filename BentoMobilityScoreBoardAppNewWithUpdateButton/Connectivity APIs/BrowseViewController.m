@@ -7,6 +7,8 @@
 //
 
 #import "BrowseViewController.h"
+#import "TrackingModeViewController.h"
+#import "ScoreBoardViewController.h"
 
 @interface BrowseViewController () // Class extension
 @property (nonatomic, strong) SessionController *sessionController;
@@ -17,6 +19,9 @@
 NSMutableOrderedSet *connectingGamesNameSet;
 NSMutableOrderedSet *connectedGamesNameSet;
 NSMutableOrderedSet *disconnectedGamesNameSet;
+
+UIAlertView *checkForConnectedGames;
+
 
 #pragma mark - View lifecycle
 
@@ -74,6 +79,7 @@ NSMutableOrderedSet *disconnectedGamesNameSet;
     
     NSArray *connectedPeers = self.sessionController.connectedPeers;
     for(int i=0; i<connectedPeers.count; i++) {
+        NSLog(@"in session did change state");
         peerToLookUp = [connectedPeers objectAtIndex:i];
         gameNameString = [self.sessionController.peerIDToGameMap objectForKey:peerToLookUp];
         if (gameNameString != nil) {
@@ -217,8 +223,20 @@ NSMutableOrderedSet *disconnectedGamesNameSet;
             //TODO: Still to test for intersection consistency between disconnected peers and peersInGame
         case MCSessionStateNotConnected:
         {
+            
+            NSLog(@"in not connected section: %@", connectedGamesNameSet);
+            if(connectedGamesNameSet.count > 0)
+            {
+                checkForConnectedGames = [[UIAlertView alloc] initWithTitle:@"Do you wish to continue?"
+                                                           message:@"Do you wish to disconnect from the current game?."
+                                                          delegate: self
+                                                 cancelButtonTitle: @"NO"
+                                                 otherButtonTitles: @"YES",nil];
+                [checkForConnectedGames show];
+                
+            }
             peers = self.sessionController.disconnectedPeers;
-            if ((peers.count > 0) && (peerIndex < peers.count))
+            if ((peers.count > 0) && (peerIndex < peers.count) && disconnectedGamesNameSet.count > 0)
             {
                 NSString *gameName = [disconnectedGamesNameSet objectAtIndex:peerIndex];
                 NSArray *peersInGame = [self.sessionController.peerIDToGameMap allKeysForObject:gameName];
@@ -229,5 +247,14 @@ NSMutableOrderedSet *disconnectedGamesNameSet;
         }
     }
 }
+
+
+-(void) alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+        if(buttonIndex == 1)
+        {
+            [_sessionController teardownSession];
+        }
+    }
+
 
 @end
