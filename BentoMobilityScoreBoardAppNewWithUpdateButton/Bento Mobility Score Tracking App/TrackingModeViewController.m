@@ -108,8 +108,7 @@ NSString *gameNameAliasSectionHeader;
     [super viewDidLoad];
     
     _appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    //_txtMsg.delegate = self;
-    
+    //[self.tableView setEditing:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receiveDataOn:)
                                                  name:@"MCDidReceiveDataNotification"
@@ -517,20 +516,24 @@ UIAlertView *progressAlert;
  }
  */
 
-/*
+
  // Override to support rearranging the table view.
  - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
  {
  }
- */
 
 
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
+//// Override to support conditional rearranging of the table view.
+//- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    // Return NO if you do not want the item to be re-orderable.
+//    return YES;
+//}
+//
+//- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return UITableViewCellEditingStyleNone;
+//}
 
 - (IBAction)addPlayer:(id)sender {
     PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
@@ -547,12 +550,6 @@ UIAlertView *progressAlert;
 
 
 -(void)sendMessage {
-    // NSLog(@"In csend message functon");
-    //    for(PlayerInfo* temp in self.cellData)
-    //    {
-    //        NSLog(@"%@", temp.playerName);
-    //        NSLog(@"%d", temp.isBeingEdited);
-    //    }
     [Message send:self.cellData];
 }
 

@@ -102,10 +102,9 @@ bool imageChanged;
     @try{
         PlayerInfo *selectedPlayer = [receivedPlayerData objectAtIndex:receivedIndexPath.row];
         PlayerInfo *newPlayer = [[PlayerInfo alloc] init];
-        if ([playerNameTextField.text length]>0 || imageChanged) {
-            if ((![selectedPlayer.playerName isEqualToString:playerNameTextField.text]) || (selectedPlayer.score != [playerScoreTextField.text intValue])) {
-                [self updatePlayerNameAndScore:selectedPlayer newPlayer:newPlayer];
-            }
+        if ([playerNameTextField.text length]>0) {
+            [self updatePlayerNameAndScore:selectedPlayer newPlayer:newPlayer];
+            
             if(imageChanged) {
                 CGSize scaledSize = CGSizeMake(64, 64);
                 self.playerImageView.image = [self scaleImage:self.playerImageView.image to:scaledSize];
@@ -261,9 +260,9 @@ bool imageChanged;
     //pop the context to get back to the default
     UIGraphicsEndImageContext();
     
-    // Set maximun compression in order to decrease file size 
-//    NSData *imageData = UIImageJPEGRepresentation(newImage, 0.0f);
-//    UIImage *processedImage = [UIImage imageWithData:imageData];
+    // Set maximun compression in order to decrease file size
+    //    NSData *imageData = UIImageJPEGRepresentation(newImage, 0.0f);
+    //    UIImage *processedImage = [UIImage imageWithData:imageData];
     
     return newImage;
 }

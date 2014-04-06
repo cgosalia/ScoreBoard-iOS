@@ -131,6 +131,7 @@ PlayerCollectionCell *cell;
         else
             return 0;
     }];
+    
     //[self.collectionView reloadData];
     dispatch_async(dispatch_get_main_queue(), ^
                    {
@@ -141,6 +142,7 @@ PlayerCollectionCell *cell;
    
 
 }
+
 
 
 
