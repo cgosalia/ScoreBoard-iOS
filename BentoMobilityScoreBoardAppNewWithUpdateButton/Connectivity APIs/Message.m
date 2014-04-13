@@ -36,4 +36,26 @@
     [sessionController sendMessages:messageData];
 }
 
++ (void) sendOneCell:(PlayerInfo *)playerInfoCell  forIndex:(NSInteger *)index withMessageType:(NSString *)msgType{
+    PlayerInfo *sendablePlayerInfo = [[PlayerInfo alloc] init];
+    if (![msgType isEqualToString:@"image"] && ![msgType isEqualToString:@"add"]) {
+        sendablePlayerInfo.playerName = playerInfoCell.playerName;
+        sendablePlayerInfo.score = playerInfoCell.score;
+        sendablePlayerInfo.isBeingEdited = playerInfoCell.isBeingEdited;
+    } else {
+        sendablePlayerInfo.playerName = playerInfoCell.playerName;
+        sendablePlayerInfo.score = playerInfoCell.score;
+        sendablePlayerInfo.isBeingEdited = playerInfoCell.isBeingEdited;
+        sendablePlayerInfo.playerImg = playerInfoCell.playerImg;
+    }
+    NSData *archivedPlayerInfo = [NSKeyedArchiver archivedDataWithRootObject:sendablePlayerInfo];
+    PlayerDictionary *playerInfoDictionary = [[PlayerDictionary alloc] init];
+    [playerInfoDictionary add:@"player-info" value:archivedPlayerInfo];
+    [playerInfoDictionary add:@"index" value:[NSKeyedArchiver archivedDataWithRootObject:[NSString stringWithFormat:@"%d",index]]];
+    [playerInfoDictionary add:@"msg-type" value:[NSKeyedArchiver archivedDataWithRootObject:msgType]];
+    NSData *messageData = [NSKeyedArchiver archivedDataWithRootObject:playerInfoDictionary];
+    SessionController *sessionController = [SessionController sharedSessionController];
+    [sessionController sendMessages:messageData];
+}
+
 @end

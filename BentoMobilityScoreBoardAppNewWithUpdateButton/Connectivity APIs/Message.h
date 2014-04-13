@@ -7,9 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "PlayerInfo.h"
 
 @interface Message : NSObject
 
 + (void) send:(NSMutableArray *)data;
+
++ (void) sendOneCell:(PlayerInfo *)playerInfoCell  forIndex:(NSInteger *)index withMessageType:(NSString *)msgType;
 
 @end

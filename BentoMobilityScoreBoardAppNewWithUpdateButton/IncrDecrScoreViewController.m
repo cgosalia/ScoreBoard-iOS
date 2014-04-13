@@ -227,7 +227,8 @@ Stack *stack;
     newPlayer.playerImg = selectedPlayer.playerImg;
     [receivedPlayerData replaceObjectAtIndex:receivedIndexPath.row withObject:newPlayer];
     [self.receivedTableView reloadData];
-    [Message send:receivedPlayerData];
+    //[Message send:receivedPlayerData];
+    [Message sendOneCell:[receivedPlayerData objectAtIndex:receivedIndexPath.row] forIndex:receivedIndexPath.row withMessageType:@"scoreOrName"];
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 

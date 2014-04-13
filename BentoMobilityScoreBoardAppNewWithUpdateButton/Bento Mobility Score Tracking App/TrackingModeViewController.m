@@ -58,6 +58,13 @@ NSMutableDictionary *isPlayerBeingEdited;
 
 NSString *gameNameAliasSectionHeader;
 
+UIAlertView *progressAlert;
+
+typedef enum {
+    scoreOrName, add, delete, image, editing
+} messageType;
+
+
 -(void) setGameName:(NSString *) name {
     gameNameAliasSectionHeader = name;
 }
@@ -76,7 +83,7 @@ NSString *gameNameAliasSectionHeader;
     newPlayer.playerImg = selectedPlayer.playerImg;
     [cellData replaceObjectAtIndex:indexPath.row withObject:newPlayer];
     [self.tableView reloadData];
-    [self sendMessage];
+    [self sendOneCell:indexPath.row withMessage:@"scoreOrName"];
 }
 
 -(void) decrementScoreBy:(int)value forCellAtIndex:(NSIndexPath *)indexPath {
@@ -91,9 +98,10 @@ NSString *gameNameAliasSectionHeader;
     newPlayer.playerImg = selectedPlayer.playerImg;
     [cellData replaceObjectAtIndex:indexPath.row withObject:newPlayer];
     [self.tableView reloadData];
-    [self sendMessage];
+    [self sendOneCell:indexPath.row withMessage:@"scoreOrName"];
     
 }
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -315,20 +323,11 @@ PlayerInfo *player;
     // NSLog(@"Did swipe with percentage : %f", percentage);
 }
 
-UIAlertView *progressAlert;
-
-- (void) checkTimer:(NSTimer *)timer
-{
-	[progressAlert dismissWithClickedButtonIndex:-1 animated:YES];
-    [timer invalidate];
-}
-
 -(void) handleTapGesturesOnCell:(UITapGestureRecognizer *) gesture {
     CGPoint tapLocation = [gesture locationInView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:tapLocation];
     UITableViewCell *tappedCell = [self.tableView cellForRowAtIndexPath:indexPath];
     PlayerInfo *player = [cellData objectAtIndex:indexPath.row];
-    // NSLog(@"here %@ checking double tap %d",player.playerName , player.isBeingEdited);
     if (player.isBeingEdited == 1) {
         
         progressAlert = [[UIAlertView alloc] initWithTitle:@"Unable to get to details"
@@ -346,13 +345,8 @@ UIAlertView *progressAlert;
     }
     player.isBeingEdited = 1;
     [cellData replaceObjectAtIndex:indexPath.row withObject:player];
-    //    for(PlayerInfo* temp in cellData)
-    //    {
-    //        NSLog(@"%@", temp.playerName);
-    //        NSLog(@"%d", temp.isBeingEdited);
-    //    }
     [self.tableView reloadData];
-    [self sendMessage];
+    [self sendOneCell:indexPath.row withMessage:@"editing"];
     [self performSegueWithIdentifier:@"PlayerDetailsSegue" sender: tappedCell];
 }
 
@@ -361,7 +355,7 @@ UIAlertView *progressAlert;
     return YES;
 }
 
-
+/* below --------------------------------- unused -------------------------------------- */
 - (void)longPressIncrement:(UILongPressGestureRecognizer*)gesture {
     if ( gesture.state == UIGestureRecognizerStateEnded ) {
         
@@ -482,6 +476,7 @@ UIAlertView *progressAlert;
     }
 }
 
+/* above --------------------------------- unused -------------------------------------- */
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     selectedCell = (PlayerCell *)[tableView cellForRowAtIndexPath:indexPath];
@@ -543,9 +538,11 @@ UIAlertView *progressAlert;
     newPlayer.playerImg = [UIImage imageNamed:@"unknownperson"];
     newPlayer.isBeingEdited = 0;
     [cellData addObject:newPlayer];
-    isPlayerBeingEdited[newPlayer] = @NO;
+    int index = [cellData count] - 1;
+    NSInteger *indexInt = index;
+       isPlayerBeingEdited[newPlayer] = @NO;
     [self.tableView reloadData];
-    [self sendMessage];
+    [self sendOneCell:indexInt withMessage:@"add"];
 }
 
 
@@ -553,7 +550,12 @@ UIAlertView *progressAlert;
     [Message send:self.cellData];
 }
 
-- (void)updateModelWith:(NSMutableDictionary *)receivedData {
+-(void)sendOneCell:(NSInteger *)index withMessage:(NSString *) messageType {
+    [Message sendOneCell:[cellData objectAtIndex:index] forIndex:index withMessageType:messageType];
+}
+
+
+- (void)replaceModelWith:(NSMutableDictionary *)receivedData {
     NSInteger count = [receivedData count];
     NSMutableArray *newCellData = [[NSMutableArray alloc] initWithObjects: nil];
     for(int i = 0 ;i<count ; i++){
@@ -577,11 +579,55 @@ UIAlertView *progressAlert;
     
 }
 
+-(void) replaceObjectInCellDataAtIndex:(NSUInteger)index withObject:(id)object {
+    [self.cellData replaceObjectAtIndex:index withObject:object];
+}
+
+-(void) addObjectInCellDataWithObject:(id)object {
+    [self.cellData addObject:object];
+}
+
+-(void) deleteObjectInCellDataAtIndex:(NSUInteger)index withObject:(id)object {
+    [self.cellData removeObjectAtIndex:index];
+}
+
+-(void) replaceOldImageObjectInCellDataAtIndex:(NSUInteger)index withObject:(id)object {
+    PlayerInfo *oldPlayerInfo = [cellData objectAtIndex:index];
+    oldPlayerInfo.playerName = ((PlayerInfo *) object).playerName;
+    oldPlayerInfo.score = ((PlayerInfo *) object).score;
+    oldPlayerInfo.isBeingEdited = ((PlayerInfo *) object).isBeingEdited;
+}
 
 -(void)receiveDataOn:(NSNotification *)notification{
     NSMutableDictionary *receivedData = [notification userInfo];
-    [self updateModelWith:receivedData];
+    bool deleted = false;
+    NSString *msgType;
+    NSString *index;
+    PlayerInfo *playerInfo;
+    if ([receivedData objectForKey:@"msg-type"]) {
+        msgType = [NSKeyedUnarchiver unarchiveObjectWithData:[receivedData objectForKey:@"msg-type"]];
+        index =[NSKeyedUnarchiver unarchiveObjectWithData:[receivedData objectForKey:@"index"]];
+        playerInfo =[NSKeyedUnarchiver unarchiveObjectWithData:[receivedData objectForKey:@"player-info"]];
+
+        if([msgType isEqualToString:@"scoreOrName"]) {
+            [self replaceOldImageObjectInCellDataAtIndex:[index integerValue] withObject:playerInfo];
+        } else if ([msgType isEqualToString:@"add"]) {
+            [self addObjectInCellDataWithObject:playerInfo];
+        } else if ([msgType isEqualToString:@"delete"]) {
+            [self deleteObjectInCellDataAtIndex:[index integerValue] withObject:playerInfo];
+            deleted = true;
+        } else if ([msgType isEqualToString:@"image"]) {
+            [self replaceObjectInCellDataAtIndex:[index integerValue] withObject:playerInfo];
+        } else if ([msgType isEqualToString:@"editing"]) {
+            [self replaceOldImageObjectInCellDataAtIndex:[index integerValue] withObject:playerInfo];
+        }
+    } else {
+        [self replaceModelWith:receivedData];
+    }
     dispatch_async(dispatch_get_main_queue(),^{[self.tableView reloadData];});
+//    if (deleted) {
+//        [self showAlert:playerInfo.playerName];
+//    }
 }
 
 SettingsViewController *settingsController;
@@ -645,5 +691,24 @@ SettingsViewController *settingsController;
     [self.cellData removeAllObjects];
 }
 
+-(void) showAlert:(NSString *)name {
+    progressAlert = [[UIAlertView alloc] initWithTitle:nil
+                                               message:[NSString stringWithFormat:@"%@ is deleted",name]
+                                              delegate: self
+                                     cancelButtonTitle: nil
+                                     otherButtonTitles: nil];
+    [NSTimer scheduledTimerWithTimeInterval: 1.0f target: self selector:@selector(checkTimer:) userInfo: nil repeats: YES];
+    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    activityView.frame = CGRectMake(139.0f-18.0f, 78.0f, 37.0f, 37.0f);
+    [progressAlert addSubview:activityView];
+    [activityView startAnimating];
+    [progressAlert show];
+}
+
+- (void) checkTimer:(NSTimer *)timer
+{
+	[progressAlert dismissWithClickedButtonIndex:-1 animated:YES];
+    [timer invalidate];
+}
 
 @end

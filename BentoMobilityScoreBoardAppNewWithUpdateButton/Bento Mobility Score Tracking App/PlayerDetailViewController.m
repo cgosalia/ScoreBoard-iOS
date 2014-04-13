@@ -113,10 +113,16 @@ bool imageChanged;
             } else {
                 newPlayer.playerImg = selectedPlayer.playerImg;
             }
-            [newPlayer setIsBeingEdited:NO];
+            
             [receivedPlayerData replaceObjectAtIndex:receivedIndexPath.row withObject:newPlayer];
+            [newPlayer setIsBeingEdited:NO];
             [receivedIsPlayerBeingEdited removeObjectForKey:selectedPlayer];
-            [Message send:receivedPlayerData];
+            //[Message send:receivedPlayerData];
+            if (imageChanged) {
+                [Message sendOneCell:[receivedPlayerData objectAtIndex:receivedIndexPath.row] forIndex:receivedIndexPath.row withMessageType:@"image"];
+            } else {
+                [Message sendOneCell:[receivedPlayerData objectAtIndex:receivedIndexPath.row] forIndex:receivedIndexPath.row withMessageType:@"scoreOrName"];
+            }
         }
         
         [self.navigationController popViewControllerAnimated:YES];
@@ -157,14 +163,18 @@ bool imageChanged;
     
     if (buttonIndex == 1 && alertView.tag==1) {
         PlayerInfo *playerInfo = [receivedPlayerData objectAtIndex:receivedIndexPath.row];
+        int savedIndex = receivedIndexPath.row;
+        NSInteger *savedIndexInt = savedIndex;
         [receivedIsPlayerBeingEdited removeObjectForKey:playerInfo];
         [receivedPlayerData removeObjectAtIndex:receivedIndexPath.row];
         [receivedTableView deleteRowsAtIndexPaths:@[receivedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         [self.receivedTableView reloadData];
-        [Message send:receivedPlayerData];
+        //[Message send:receivedPlayerData];
+        playerInfo.playerImg = nil;
+        [Message sendOneCell:playerInfo forIndex:savedIndexInt withMessageType:@"delete"];
         NSString *playerName = playerNameTextField.text;
         progressAlert = [[UIAlertView alloc] initWithTitle:nil
-                                                   message:[NSString stringWithFormat:@"Player \"%@\" information deleted", playerName]
+                                                   message:[NSString stringWithFormat:@"\"%@\" information deleted", playerName]
                                                   delegate: self
                                          cancelButtonTitle: nil
                                          otherButtonTitles: nil];

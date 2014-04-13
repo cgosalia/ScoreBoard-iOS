@@ -19,6 +19,7 @@
 NSMutableOrderedSet *connectingGamesNameSet;
 NSMutableOrderedSet *connectedGamesNameSet;
 NSMutableOrderedSet *disconnectedGamesNameSet;
+NSInteger *indexPathPeer;
 
 UIAlertView *checkForConnectedGames;
 
@@ -207,6 +208,7 @@ UIAlertView *checkForConnectedGames;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MCSessionState sessionState = indexPath.section;
     NSInteger peerIndex = indexPath.row;
+    indexPathPeer = indexPath.row;
     NSArray *peers = nil;
     switch (sessionState)
     {
@@ -235,6 +237,8 @@ UIAlertView *checkForConnectedGames;
                 [checkForConnectedGames show];
                 
             }
+         
+            
             peers = self.sessionController.disconnectedPeers;
             if ((peers.count > 0) && (peerIndex < peers.count) && disconnectedGamesNameSet.count > 0)
             {
@@ -253,6 +257,7 @@ UIAlertView *checkForConnectedGames;
         if(buttonIndex == 1)
         {
             [_sessionController teardownSession];
+            
         }
     }
 
