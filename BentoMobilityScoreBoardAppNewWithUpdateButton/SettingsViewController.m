@@ -124,6 +124,9 @@ DiscoveryInfo *discoveryInfo;
         sessionController = [SessionController sharedSessionController];
         [sessionController startAdvertizerServices];
         
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"GameStart" object:nil userInfo:nil];
+        
+        
         [self.receivedTableView reloadData];
         
     }

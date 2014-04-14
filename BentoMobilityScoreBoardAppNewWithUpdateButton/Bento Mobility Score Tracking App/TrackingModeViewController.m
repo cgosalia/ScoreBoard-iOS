@@ -127,6 +127,12 @@ typedef enum {
                                                  name:@"NewPeerJoined"
                                                object:nil];
     
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(clearTrackBoardWithOnePlayer)
+                                                 name:@"GameStart"
+                                               object:nil];
+    
     trackingModeDataSource = [[NSMutableDictionary alloc] init];
     
     notificationForScoreBoard = [NSNotification notificationWithName:@"PlayerInfoChangedNotification"
@@ -710,5 +716,30 @@ SettingsViewController *settingsController;
 	[progressAlert dismissWithClickedButtonIndex:-1 animated:YES];
     [timer invalidate];
 }
+
+
+-(void) clearTrackBoardWithOnePlayer
+{
+    [self clearTrackBoard];
+    playerId=1;
+    
+    
+    PlayerInfo *firstPlayer = [[PlayerInfo alloc] init];
+    
+    NSString *combinedName = [NSString stringWithFormat:@"%@%@%@", @"Player (", [NSString stringWithFormat:@"%d",playerId++],@")"];
+    firstPlayer.playerName = combinedName;
+    firstPlayer.score = 0;
+    firstPlayer.playerImg = [UIImage imageNamed:@"unknownperson"];
+    firstPlayer.isBeingEdited = 0;
+    
+    [cellData addObject:firstPlayer];
+    [self.tableView reloadData];
+    
+    
+    
+}
+
+
+
 
 @end
