@@ -112,7 +112,6 @@ PlayerCollectionCell *cell;
 
 - (void)updateScoreBoard:(NSNotification *)notification
 {
-     NSLog(@"Reacting to notification %@ from object %@ with userInfo %@", notification, notification.object, notification.userInfo);
     NSMutableArray *tempArray = [notification.userInfo objectForKey:@"trackingModeDS"];
     dataSrc = [[NSMutableArray alloc] init];
     

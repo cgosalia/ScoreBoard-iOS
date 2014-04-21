@@ -29,6 +29,9 @@ static NSString * const sessionServiceType = @"bmsbmcsession";
 NSArray *ArrayInvitationHandler;
 NSMutableDictionary *ConnectedPeerList;
 
+NSMutableArray *previouslyConnectedPeers;
+NSMutableString *previouslyConnectedGame;
+
 
 BOOL accepted;
 
@@ -56,7 +59,8 @@ DiscoveryInfo *discoveryInfo;
         ConnectedPeerList=[[NSMutableDictionary alloc] init];
         _connectingPeersOrderedSet = [[NSMutableOrderedSet alloc] init];
         _disconnectedPeersOrderedSet = [[NSMutableOrderedSet alloc] init];
-        
+        previouslyConnectedPeers = [[NSMutableArray alloc] init];
+        NSLog(@"My peer id description: %@, name: %@",_peerID.description, _peerID.displayName);
         NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
         //
         // Register for notifications
@@ -65,11 +69,11 @@ DiscoveryInfo *discoveryInfo;
                               name:UIApplicationWillEnterForegroundNotification
                             object:nil];
         
-        //
-        //                [defaultCenter addObserver:self
-        //                                  selector:@selector(stopServices)
-        //                                      name:UIApplicationDidEnterBackgroundNotification
-        //                                    object:nil];
+        
+        [defaultCenter addObserver:self
+                          selector:@selector(stopServices)
+                              name:UIApplicationDidEnterBackgroundNotification
+                            object:nil];
         //
         //        [self startServices];
         
@@ -118,7 +122,6 @@ DiscoveryInfo *discoveryInfo;
 
 - (void)startServices
 {
-    NSLog(@"%@: Application Foreground.  Has started Browsing", _peerID);
     [self startAdvertizerServices];
     [self startBrowserServices];
 }
@@ -146,9 +149,13 @@ DiscoveryInfo *discoveryInfo;
 
 - (void)stopServices
 {
+        if (self.session.connectedPeers.count > 0) {
+            previouslyConnectedPeers = [NSMutableArray arrayWithArray:self.session.connectedPeers];
+            previouslyConnectedGame = [[[DiscoveryInfo getInstance] getDiscoveryInfo] objectForKey:@"gamename"];
+        }
     [self.serviceBrowser stopBrowsingForPeers];
     [self.serviceAdvertiser stopAdvertisingPeer];
-    [self teardownSession];
+    //[self teardownSession];
 }
 
 - (void)updateDelegate
@@ -191,7 +198,8 @@ DiscoveryInfo *discoveryInfo;
 - (void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state
 {
     NSLog(@"Peer [%@] changed state to %@", peerID.displayName, [self stringForPeerConnectionState:state]);
-    
+    NSLog(@"My session: %@",self.session.description);
+    NSLog(@"Received sesssion: %@", session.description);
     switch (state)
     {
         case MCSessionStateConnecting:
@@ -206,17 +214,15 @@ DiscoveryInfo *discoveryInfo;
             [self.connectingPeersOrderedSet removeObject:peerID];
             [self.disconnectedPeersOrderedSet removeObject:peerID];
             if(accepted) {
-                [ConnectedPeerList setObject:peerID.displayName forKey:peerID];
+                //[ConnectedPeerList setObject:peerID.displayName forKey:peerID];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"NewPeerJoined"
                                                                     object:nil
                                                                   userInfo:nil];
                 
                 accepted = false;
             }
-//            discoveryInfo = [DiscoveryInfo getInstance];
-//            [discoveryInfo setDiscoveryInfoWithKey:@"gamename" andValue:@"Demo"];
             [self startAdvertizerServices];
-//            NSLog(@"in connected: %@", [discoveryInfo getDiscoveryInfo]);
+            //            NSLog(@"in connected: %@", [discoveryInfo getDiscoveryInfo]);
             break;
         }
             
@@ -285,12 +291,11 @@ DiscoveryInfo *discoveryInfo;
 
 - (void) session:(MCSession *)session didReceiveCertificate:(NSArray *)certificate fromPeer:(MCPeerID *)peerID certificateHandler:(void (^)(BOOL accept))certificateHandler
 {
-    certificateHandler(YES);
+    if (certificateHandler != nil) { certificateHandler(YES); }
 }
 
 -(void) mapPeerID:(MCPeerID *) peerID toGameName:(NSString *)gameName {
     [_peerIDToGameMap setObject:gameName forKey:peerID];
-    NSLog(@"");
 }
 
 #pragma mark - MCNearbyServiceBrowserDelegate protocol conformance
@@ -310,15 +315,31 @@ DiscoveryInfo *discoveryInfo;
     discoveryInfo = [DiscoveryInfo getInstance];
     [discoveryInfo setDiscoveryInfoWithKey:@"gamename" andValue:[info objectForKey:@"gamename"]];
     [self updateDelegate];
+        if ([previouslyConnectedPeers count] > 0) {
+            if ([previouslyConnectedPeers containsObject:peerID] && [previouslyConnectedGame isEqualToString:[info objectForKey:@"gamename"]]) {
+                [self invitePeerWith:peerID];
+            }
+        }
 }
 
 - (void) invitePeerWith:(MCPeerID *)peerID {
     [self.connectingPeersOrderedSet addObject:peerID];
     [self.disconnectedPeersOrderedSet removeObject:peerID];
     [self updateDelegate];
-    [_serviceBrowser invitePeer:peerID toSession:self.session withContext:nil timeout:300.0];
+    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [_serviceBrowser invitePeer:peerID toSession:self.session withContext:nil timeout:300.0];  // 5 mins
+    });
 }
 
+- (void) invitePeersWith:(NSArray *)peerIDs {
+    for (MCPeerID *peerId in peerIDs) {
+        NSLog(@"Inviting peers description: %@, name: %@",peerId.description, peerId.displayName);
+        [self.connectingPeersOrderedSet addObject:peerId];
+        [self.disconnectedPeersOrderedSet removeObject:peerId];
+        [_serviceBrowser invitePeer:peerId toSession:self.session withContext:nil timeout:30.0];
+    }
+    [self updateDelegate];
+}
 
 - (void)browser:(MCNearbyServiceBrowser *)browser lostPeer:(MCPeerID *)peerID
 {

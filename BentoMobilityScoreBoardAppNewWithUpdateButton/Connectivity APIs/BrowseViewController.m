@@ -61,6 +61,7 @@ NSInteger globalPeerIndex;
     _sessionController.delegate = nil;
 }
 
+
 #pragma mark - SessionControllerDelegate protocol conformance
 
 - (void)sessionDidChangeState
@@ -119,7 +120,7 @@ NSInteger globalPeerIndex;
 - (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section
 {
     NSInteger rows = 0;
-
+    
     // Each tableView section represents an MCSessionState
     MCSessionState sessionState = section;
     
@@ -166,9 +167,9 @@ NSInteger globalPeerIndex;
     static NSString *cellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-
+    
     cell.textLabel.text = @"None";
-
+    
 	NSArray *games = nil;
     
     // Each tableView section represents an MCSessionState
@@ -194,14 +195,14 @@ NSInteger globalPeerIndex;
             break;
         }
     }
-
+    
     if ((games.count > 0) && (peerIndex < games.count))
     {
         cell.textLabel.text = [games objectAtIndex:peerIndex];
         
     }
     
-  
+    
 	
 	return cell;
 }
@@ -209,6 +210,12 @@ NSInteger globalPeerIndex;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MCSessionState sessionState = indexPath.section;
     NSInteger peerIndex = indexPath.row;
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    NSString *cellLabel = cell.textLabel.text;
+    if ([cellLabel isEqualToString:@"None"]) {
+        return;
+    }
+    
     indexPathPeer = indexPath.row;
     NSArray *peers = nil;
     switch (sessionState)
@@ -232,23 +239,22 @@ NSInteger globalPeerIndex;
             {
                 globalPeerIndex=peerIndex;
                 checkForConnectedGames = [[UIAlertView alloc] initWithTitle:@"Do you wish to continue?"
-                                                           message:@"Do you wish to disconnect from the current game?."
-                                                          delegate: self
-                                                 cancelButtonTitle: @"NO"
-                                                 otherButtonTitles: @"YES",nil];
+                                                                    message:@"Do you wish to disconnect from the current game?."
+                                                                   delegate: self
+                                                          cancelButtonTitle: @"NO"
+                                                          otherButtonTitles: @"YES",nil];
                 [checkForConnectedGames show];
                 
             }
             else{
-            
-            peers = self.sessionController.disconnectedPeers;
-            if ((peers.count > 0) && (peerIndex < peers.count) && disconnectedGamesNameSet.count > 0)
-            {
-                NSString *gameName = [disconnectedGamesNameSet objectAtIndex:peerIndex];
-                NSArray *peersInGame = [self.sessionController.peerIDToGameMap allKeysForObject:gameName];
-                MCPeerID *peerID = [peersInGame objectAtIndex:0];
-                [_sessionController invitePeerWith:peerID];
-            }
+                
+                peers = self.sessionController.disconnectedPeers;
+                if ((peers.count > 0) && (peerIndex < peers.count) && disconnectedGamesNameSet.count > 0)
+                {
+                    NSString *gameName = [disconnectedGamesNameSet objectAtIndex:peerIndex];
+                    NSArray *peersInGame = [self.sessionController.peerIDToGameMap allKeysForObject:gameName];
+                    [_sessionController invitePeersWith:peersInGame];
+                }
             }
             break;
         }
@@ -257,23 +263,23 @@ NSInteger globalPeerIndex;
 
 
 -(void) alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-        if(buttonIndex == 1)
+    if(buttonIndex == 1)
+    {
+        NSArray *peers=nil;
+        
+        peers = self.sessionController.disconnectedPeers;
+        if ((peers.count > 0) && (globalPeerIndex < peers.count) && disconnectedGamesNameSet.count > 0)
         {
-            NSArray *peers=nil;
-            
-            peers = self.sessionController.disconnectedPeers;
-            if ((peers.count > 0) && (globalPeerIndex < peers.count) && disconnectedGamesNameSet.count > 0)
-            {
-                NSString *gameName = [disconnectedGamesNameSet objectAtIndex:globalPeerIndex];
-                NSArray *peersInGame = [self.sessionController.peerIDToGameMap allKeysForObject:gameName];
-                MCPeerID *peerID = [peersInGame objectAtIndex:0];
-                [_sessionController invitePeerWith:peerID];
-            }
-            
-            [_sessionController teardownSession];
+            NSString *gameName = [disconnectedGamesNameSet objectAtIndex:globalPeerIndex];
+            NSArray *peersInGame = [self.sessionController.peerIDToGameMap allKeysForObject:gameName];
+            [_sessionController invitePeersWith:peersInGame];
             
         }
+        
+        [_sessionController teardownSession];
+        
     }
+}
 
 
 @end

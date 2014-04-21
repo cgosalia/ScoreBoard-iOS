@@ -573,9 +573,7 @@ PlayerInfo *player;
         player.score = receivedPlayer.score;
         player.playerImg = receivedPlayer.playerImg;
         player.isBeingEdited = receivedPlayer.isBeingEdited;
-        
-        NSLog(@"%@ : %d", receivedPlayer.playerName, receivedPlayer.isBeingEdited);
-        //        NSLog(@"%d", temp.isBeingEdited);
+
         [newCellData addObject:player];
     }
     [self.cellData removeAllObjects];
@@ -734,8 +732,6 @@ SettingsViewController *settingsController;
     
     [cellData addObject:firstPlayer];
     [self.tableView reloadData];
-    
-    
     
 }
 
