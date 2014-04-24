@@ -32,9 +32,7 @@ static NSString * const sessionServiceType = @"bmsbmcsession";
 
 NSArray *ArrayInvitationHandler;
 
-
-
-
+BOOL alreadyInvited = false;
 
 BOOL accepted;
 
@@ -64,7 +62,7 @@ DiscoveryInfo *discoveryInfo;
         _previouslyConnectedPeers = [[NSMutableArray alloc] init];
         _lostPeersOrderedSet = [[NSMutableOrderedSet alloc] init];
         _invitedPeers = [[NSMutableDictionary alloc] init];
-        NSLog(@"My peer id description: %@, name: %@",_peerID.description, _peerID.displayName);
+        
         NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
         //
         // Register for notifications
@@ -80,11 +78,7 @@ DiscoveryInfo *discoveryInfo;
                             object:nil];
         //
         //        [self startServices];
-        
-        
-        _connectedPeers = self.session.connectedPeers;
-        _connectingPeers = [self.connectingPeersOrderedSet array];
-        _disconnectedPeers = [self.disconnectedPeersOrderedSet array];
+
         
         _displayName = self.session.myPeerID.displayName;
         _peerIDToGameMap = [[NSMutableDictionary alloc] init];
@@ -114,6 +108,9 @@ DiscoveryInfo *discoveryInfo;
     // Create the session that peers will be invited/join into.
     _session = [[MCSession alloc] initWithPeer:self.peerID];
     self.session.delegate = self;
+    _connectedPeers = self.session.connectedPeers;
+    _connectingPeers = [self.connectingPeersOrderedSet array];
+    _disconnectedPeers = [self.disconnectedPeersOrderedSet array];
 }
 
 
@@ -126,6 +123,8 @@ DiscoveryInfo *discoveryInfo;
 
 - (void)startServices
 {
+    _peerID = [[MCPeerID alloc] initWithDisplayName:[[UIDevice currentDevice] name]];
+    [self setupSession];
     [self startAdvertizerServices];
     [self startBrowserServices];
 }
@@ -158,9 +157,10 @@ DiscoveryInfo *discoveryInfo;
         _previouslyConnectedGame = [[[DiscoveryInfo getInstance] getDiscoveryInfo] objectForKey:@"gamename"];
         [self.invitedPeers removeAllObjects];
     }
+    alreadyInvited = false;
     [self.serviceBrowser stopBrowsingForPeers];
     [self.serviceAdvertiser stopAdvertisingPeer];
-    //[self teardownSession];
+    [self teardownSession];
 }
 
 - (void)updateDelegate
@@ -208,6 +208,7 @@ DiscoveryInfo *discoveryInfo;
     for (MCPeerID *p in self.session.connectedPeers) {
         NSLog(@"Con: %@",p.displayName);
     }
+    
     switch (state)
     {
         case MCSessionStateConnecting:
@@ -242,6 +243,9 @@ DiscoveryInfo *discoveryInfo;
             [self.lostPeersOrderedSet addObject:peerID];
             break;
         }
+    }
+    if ([self.session.connectedPeers count] == 0) {
+        alreadyInvited = false;
     }
     
     [self updateDelegate];
@@ -325,22 +329,23 @@ DiscoveryInfo *discoveryInfo;
     discoveryInfo = [DiscoveryInfo getInstance];
     [discoveryInfo setDiscoveryInfoWithKey:@"gamename" andValue:[info objectForKey:@"gamename"]];
     [self updateDelegate];
-    if ([_previouslyConnectedPeers count] > 0) {
-        if ([_previouslyConnectedPeers containsObject:peerID] && [_previouslyConnectedGame isEqualToString:[info objectForKey:@"gamename"]]) {
+    if ([_previouslyConnectedPeers count] > 0 && !alreadyInvited) {
+        if ([_previouslyConnectedPeers containsObject:peerID] && [_previouslyConnectedGame isEqualToString:[info objectForKey:@"gamename"]] && ![self.session.connectedPeers containsObject:peerID]) {
             if (![[self.invitedPeers objectForKey:peerID.displayName] isEqualToString:@"true"]) {
                 [self invitePeerWith:peerID];
             }
-            
         }
     }
+    
 }
 
 - (void) invitePeerWith:(MCPeerID *)peerID {
     [self.connectingPeersOrderedSet addObject:peerID];
     [self.disconnectedPeersOrderedSet removeObject:peerID];
     [self.invitedPeers setValue:@"true" forKey:peerID.displayName];
+    [_serviceBrowser invitePeer:peerID toSession:self.session withContext:nil timeout:30.0]; 
+    alreadyInvited = true;
     [self updateDelegate];
-    [_serviceBrowser invitePeer:peerID toSession:self.session withContext:nil timeout:300.0];  // 5 mins
 }
 
 - (void) invitePeersWith:(NSArray *)peerIDs {
@@ -359,6 +364,7 @@ DiscoveryInfo *discoveryInfo;
     NSLog(@"lostPeer %@", peerID.displayName);
     [self.connectingPeersOrderedSet removeObject:peerID];
     [self.disconnectedPeersOrderedSet addObject:peerID];
+    [self.lostPeersOrderedSet addObject:peerID];
     
     [self updateDelegate];
 }
@@ -374,12 +380,10 @@ DiscoveryInfo *discoveryInfo;
 {
     NSLog(@"didReceiveInvitationFromPeer %@", peerID.displayName);
     
-    if([self.lostPeersOrderedSet containsObject:peerID])
+    if([self.lostPeersOrderedSet containsObject:peerID] && ![self.session.connectedPeers containsObject:peerID])
     {
-        invitationHandler(YES, self.session);
-        accepted = true;
-    }
-    else {
+//        invitationHandler(YES, self.session);
+//        accepted = true;
         NSString *msg = [NSString stringWithFormat:@"Do you like to accept the invitation from %@?",peerID.displayName];
         ArrayInvitationHandler = [NSArray arrayWithObject:[invitationHandler copy]];
         UIAlertView *alertView = [[UIAlertView alloc]
@@ -389,6 +393,21 @@ DiscoveryInfo *discoveryInfo;
                                   cancelButtonTitle:@"Decline"
                                   otherButtonTitles:@"Accept", nil];
         [alertView show];
+    }
+    else {
+        if (![self.session.connectedPeers containsObject:peerID]) {
+            
+        
+        NSString *msg = [NSString stringWithFormat:@"Do you like to accept the invitation from %@?",peerID.displayName];
+        ArrayInvitationHandler = [NSArray arrayWithObject:[invitationHandler copy]];
+        UIAlertView *alertView = [[UIAlertView alloc]
+                                  initWithTitle:@"Incoming request"
+                                  message:msg
+                                  delegate:self
+                                  cancelButtonTitle:@"Decline"
+                                  otherButtonTitles:@"Accept", nil];
+        [alertView show];
+        }
     }
     [self updateDelegate];
 }

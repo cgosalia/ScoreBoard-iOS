@@ -253,7 +253,8 @@ NSInteger globalPeerIndex;
                 {
                     NSString *gameName = [disconnectedGamesNameSet objectAtIndex:peerIndex];
                     NSArray *peersInGame = [self.sessionController.peerIDToGameMap allKeysForObject:gameName];
-                    [_sessionController invitePeersWith:peersInGame];
+                    [_sessionController invitePeerWith:[peersInGame objectAtIndex:0]];
+                    //[_sessionController invitePeersWith:peersInGame];
                 }
             }
             break;
@@ -272,7 +273,8 @@ NSInteger globalPeerIndex;
         {
             NSString *gameName = [disconnectedGamesNameSet objectAtIndex:globalPeerIndex];
             NSArray *peersInGame = [self.sessionController.peerIDToGameMap allKeysForObject:gameName];
-            [_sessionController invitePeersWith:peersInGame];
+            [_sessionController invitePeerWith:[peersInGame objectAtIndex:0]];
+            //[_sessionController invitePeersWith:peersInGame];
             
         }
         
