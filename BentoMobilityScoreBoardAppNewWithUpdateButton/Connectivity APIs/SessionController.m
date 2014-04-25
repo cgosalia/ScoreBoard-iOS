@@ -125,7 +125,6 @@ DiscoveryInfo *discoveryInfo;
 {
     _peerID = [[MCPeerID alloc] initWithDisplayName:[[UIDevice currentDevice] name]];
     [self setupSession];
-    [self startAdvertizerServices];
     [self startBrowserServices];
 }
 
@@ -161,6 +160,11 @@ DiscoveryInfo *discoveryInfo;
     [self.serviceBrowser stopBrowsingForPeers];
     [self.serviceAdvertiser stopAdvertisingPeer];
     [self teardownSession];
+}
+
+- (void) removeSavedPeers
+{
+    [_previouslyConnectedPeers removeAllObjects];
 }
 
 - (void)updateDelegate
@@ -343,7 +347,8 @@ DiscoveryInfo *discoveryInfo;
     [self.connectingPeersOrderedSet addObject:peerID];
     [self.disconnectedPeersOrderedSet removeObject:peerID];
     [self.invitedPeers setValue:@"true" forKey:peerID.displayName];
-    [_serviceBrowser invitePeer:peerID toSession:self.session withContext:nil timeout:30.0]; 
+    [_serviceBrowser invitePeer:peerID toSession:self.session withContext:nil timeout:30.0];
+    NSLog(@"");
     alreadyInvited = true;
     [self updateDelegate];
 }

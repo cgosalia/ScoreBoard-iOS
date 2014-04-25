@@ -266,22 +266,26 @@ NSInteger globalPeerIndex;
 -(void) alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if(buttonIndex == 1)
     {
+        
         NSArray *peers=nil;
         
         peers = self.sessionController.disconnectedPeers;
+       
+        _sessionController = [SessionController sharedSessionController];
+       
         if ((peers.count > 0) && (globalPeerIndex < peers.count) && disconnectedGamesNameSet.count > 0)
         {
+            [_sessionController teardownSession];
             NSString *gameName = [disconnectedGamesNameSet objectAtIndex:globalPeerIndex];
             NSArray *peersInGame = [self.sessionController.peerIDToGameMap allKeysForObject:gameName];
-            [_sessionController invitePeerWith:[peersInGame objectAtIndex:0]];
-            //[_sessionController invitePeersWith:peersInGame];
-            
+            MCPeerID *peerID = [peersInGame objectAtIndex:0];
+            [_sessionController invitePeerWith:peerID];
         }
         
-        [_sessionController teardownSession];
+        
+        
         
     }
 }
-
 
 @end

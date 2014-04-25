@@ -1556,11 +1556,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Connectivity APIs/SessionController.m"
-            timestampString = "420011811.356184"
+            timestampString = "420018386.962433"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "406"
-            endingLineNumber = "406"
+            startingLineNumber = "411"
+            endingLineNumber = "411"
             landmarkName = "-advertiser:didReceiveInvitationFromPeer:withContext:invitationHandler:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1908,11 +1908,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Connectivity APIs/SessionController.m"
-            timestampString = "420011811.356184"
+            timestampString = "420018386.962433"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "409"
-            endingLineNumber = "409"
+            startingLineNumber = "414"
+            endingLineNumber = "414"
             landmarkName = "-advertiser:didReceiveInvitationFromPeer:withContext:invitationHandler:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1924,11 +1924,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Connectivity APIs/SessionController.m"
-            timestampString = "420011811.356184"
+            timestampString = "420018386.962433"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "369"
-            endingLineNumber = "369"
+            startingLineNumber = "374"
+            endingLineNumber = "374"
             landmarkName = "-browser:lostPeer:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1936,15 +1936,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Connectivity APIs/SessionController.m"
-            timestampString = "420011811.356184"
+            timestampString = "420018386.962433"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "380"
-            endingLineNumber = "380"
+            startingLineNumber = "385"
+            endingLineNumber = "385"
             landmarkName = "-advertiser:didReceiveInvitationFromPeer:withContext:invitationHandler:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1956,11 +1956,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Connectivity APIs/SessionController.m"
-            timestampString = "420011811.356184"
+            timestampString = "420018386.962433"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "407"
-            endingLineNumber = "407"
+            startingLineNumber = "412"
+            endingLineNumber = "412"
             landmarkName = "-advertiser:didReceiveInvitationFromPeer:withContext:invitationHandler:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1972,11 +1972,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Connectivity APIs/SessionController.m"
-            timestampString = "420011811.356184"
+            timestampString = "420017751.940837"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "205"
-            endingLineNumber = "205"
+            startingLineNumber = "209"
+            endingLineNumber = "209"
             landmarkName = "-session:peer:didChangeState:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1988,11 +1988,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Connectivity APIs/SessionController.m"
-            timestampString = "420011811.356184"
+            timestampString = "420016818.68654"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
             landmarkName = "-startAdvertizerServices"
             landmarkType = "5">
          </BreakpointContent>
@@ -2000,7 +2000,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Connectivity APIs/SessionController.m"
@@ -2032,15 +2032,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Connectivity APIs/SessionController.m"
-            timestampString = "420011811.356184"
+            timestampString = "420016818.68654"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "155"
-            endingLineNumber = "155"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
             landmarkName = "-stopServices"
             landmarkType = "5">
          </BreakpointContent>
@@ -2052,11 +2052,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Connectivity APIs/SessionController.m"
-            timestampString = "420011811.356184"
+            timestampString = "420017751.940837"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "331"
-            endingLineNumber = "331"
+            startingLineNumber = "335"
+            endingLineNumber = "335"
             landmarkName = "-browser:foundPeer:withDiscoveryInfo:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2068,11 +2068,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Connectivity APIs/SessionController.m"
-            timestampString = "420011811.356184"
+            timestampString = "420017751.940837"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
+            startingLineNumber = "216"
+            endingLineNumber = "216"
             landmarkName = "-session:peer:didChangeState:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2084,11 +2084,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Connectivity APIs/SessionController.m"
-            timestampString = "420011811.356184"
+            timestampString = "420018386.962433"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "422"
-            endingLineNumber = "422"
+            startingLineNumber = "427"
+            endingLineNumber = "427"
             landmarkName = "-alertView:clickedButtonAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2096,7 +2096,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Connectivity APIs/SessionController.m"
@@ -2112,7 +2112,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Connectivity APIs/SessionController.m"
@@ -2128,7 +2128,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Connectivity APIs/SessionController.m"
@@ -2138,6 +2138,54 @@
             startingLineNumber = "119"
             endingLineNumber = "119"
             landmarkName = "-teardownSession"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Connectivity APIs/BrowseViewController.m"
+            timestampString = "420017746.934034"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "267"
+            endingLineNumber = "267"
+            landmarkName = "-alertView:clickedButtonAtIndex:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Connectivity APIs/SessionController.m"
+            timestampString = "420018077.055293"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "347"
+            endingLineNumber = "347"
+            landmarkName = "-invitePeerWith:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Connectivity APIs/BrowseViewController.m"
+            timestampString = "420088331.076718"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "276"
+            endingLineNumber = "276"
+            landmarkName = "-alertView:clickedButtonAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

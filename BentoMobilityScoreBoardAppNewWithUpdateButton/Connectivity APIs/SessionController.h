@@ -39,6 +39,9 @@ its delegate method should explicitly dispatch or schedule that work.
 // Get singleton of the session controller shared across the app.
 + (id)sharedSessionController;
 
+//
+-(void) startServices;
+
 // Initialize and advertize services
 - (void) startAdvertizerServices;
 
@@ -55,6 +58,8 @@ its delegate method should explicitly dispatch or schedule that work.
 -(void) sendMessages:(NSData *)data;
 
 -(void) teardownSession;
+
+-(void) removeSavedPeers;
 
 @end
 
