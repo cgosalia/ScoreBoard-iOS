@@ -48,10 +48,19 @@ its delegate method should explicitly dispatch or schedule that work.
 // Delegated.  Invite peer to connect
 - (void) invitePeerWith:(MCPeerID *)peerID;
 
+// Delegated.  Invite multiple peers to connect
+- (void) invitePeersWith:(NSArray *)peerIDs;
+
 // Delegated.  Send data as 'message'.
 -(void) sendMessages:(NSData *)data;
 
 -(void) teardownSession;
+
+- (void)startServices;
+
+-(void) setupSession;
+
+- (void) removeSavedPeerData;
 
 @end
 

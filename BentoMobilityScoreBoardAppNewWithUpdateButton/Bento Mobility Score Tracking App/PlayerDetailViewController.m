@@ -49,6 +49,9 @@ bool imageChanged;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [scroller setScrollEnabled:YES];
+    [scroller setContentSize:CGSizeMake(320, 568)];
+    
     PlayerInfo *playerInfo = [receivedPlayerData objectAtIndex:receivedIndexPath.row];
     playerNameTextField.text = [playerInfo playerName];
     playerScoreTextField.text = [NSString stringWithFormat:@"%d",[playerInfo score]];

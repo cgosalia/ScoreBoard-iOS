@@ -31,7 +31,12 @@
 }
 
 -(void) setDiscoveryInfoWithKey:(NSString *)key andValue:(NSString *)value {
-    [discoveryInfoDictionary setObject:value forKey:key];
+    
+    if (value != nil) {
+        [discoveryInfoDictionary setObject:value forKey:key];
+    }
+    
+    
 }
 
 -(NSDictionary *)getDiscoveryInfo {

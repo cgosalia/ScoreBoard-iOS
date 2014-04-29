@@ -17,17 +17,24 @@
 
 @implementation SettingsViewController
 
+
+
 UIAlertView *progressAlert;
 
 @synthesize receivedSBViewController;
 
 @synthesize receivedTableView;
 
+@synthesize collectionView;
+
+
+
 NSMutableArray *gameNames;
 
-SessionController *sessionController;
+SessionController *sessionController = nil;
 
 DiscoveryInfo *discoveryInfo;
+UITapGestureRecognizer *tapGesture;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -41,19 +48,36 @@ DiscoveryInfo *discoveryInfo;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+//    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(showAlertView:)];
+//    self.navigationItem.leftBarButtonItem = leftBarButtonItem;
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gameMenu:)];
+    tapGesture.numberOfTapsRequired = 1;
+    [self.collectionView addGestureRecognizer:tapGesture];
+    
+    
+    //[scroller setScrollEnabled:YES];
+    //[scroller setContentSize:CGSizeMake(320, 400)];
+    
     _appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     gameNames = [[NSMutableArray alloc] init];
     
 }
-
-- (IBAction)startGame:(id)sender {
+- (void)showAlertView:(id)sender
+{
+    NSLog(@"Here back presed");
+    
+    //[self performSegueWithIdentifier:@"SettingsSegue" sender: sender];
+    
+    
+}
+- (void)startGame
+{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Start Game" message:@"Enter Name of Game" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Start Game",nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     self.gameName = [alert textFieldAtIndex:0];
     [alert setTag:1];
     [alert show];
-    
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -64,7 +88,8 @@ DiscoveryInfo *discoveryInfo;
 
 
 
-- (IBAction)defaultPresets:(id)sender {
+- (void)defaultPresets
+{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Restore Preset Values " message: @"Do you want to reset preset button values to 1 5 10 and 25?" delegate: self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes",nil];
     [alert setTag:2];
     [alert show];
@@ -72,8 +97,10 @@ DiscoveryInfo *discoveryInfo;
     
 }
 
-- (IBAction)goToScoreBoard:(id)sender {
-    [self.navigationController pushViewController:receivedSBViewController animated:YES];
+- (void)goToScoreBoard
+{
+    [self presentViewController:receivedSBViewController animated:YES completion:nil];
+    //[self.navigationController pushViewController:receivedSBViewController animated:YES];
 }
 
 - (void) checkTimer:(NSTimer *)timer
@@ -105,38 +132,110 @@ DiscoveryInfo *discoveryInfo;
     }
     if(buttonIndex == 1 && alertView.tag==1)
     {
-//        _appDelegate.mcManager.peerID = nil;
-//        _appDelegate.mcManager.session = nil;
-//        _appDelegate.mcManager.browser = nil;
-//        
-//        _appDelegate.mcManager.advertiser = nil;
-//        
-//        
-//        [_appDelegate.mcManager setupPeerAndSessionWithDisplayName:_gameName.text];
-//        [_appDelegate.mcManager setupMCBrowser];
-//        [_appDelegate.mcManager advertiseSelf:YES];
         
         discoveryInfo = [DiscoveryInfo getInstance];
         [discoveryInfo setDiscoveryInfoWithKey:@"gamename" andValue:self.gameName.text];
         
         [gameNames addObject:self.gameName.text];
+        if (sessionController != nil) {
+            [sessionController teardownSession];
+        }
         
         sessionController = [SessionController sharedSessionController];
+        [sessionController setupSession];
         [sessionController startAdvertizerServices];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"GameStart" object:nil userInfo:nil];
+        
         
         [self.receivedTableView reloadData];
         
     }
     
-    
+   
 }
 
 
-- (NSString *) stringForGameNameAt:(int)section {
-    if([gameNames count] == 0) {
-        return NULL;
+- (IBAction)back:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return 4;
+}
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+//    UILabel *label = (UILabel *)[cell viewWithTag:100];
+    
+    
+    if(indexPath.row == 0)
+    {
+        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Start" forIndexPath:indexPath];
+        cell.layer.borderWidth = 1.0f;
+        cell.layer.borderColor = [UIColor blackColor].CGColor;
+        return cell;
     }
-    return [gameNames objectAtIndex:section];
+    else if(indexPath.row == 1)
+    {
+        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Join" forIndexPath:indexPath];
+        cell.layer.borderWidth = 1.0f;
+        cell.layer.borderColor = [UIColor blackColor].CGColor;
+        return cell;
+    }
+    else if(indexPath.row == 2)
+    {
+        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Scoreboard" forIndexPath:indexPath];
+        cell.layer.borderWidth = 1.0f;
+        cell.layer.borderColor = [UIColor blackColor].CGColor;
+        return cell;
+    }
+    else if(indexPath.row == 3)
+    {
+        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Preset" forIndexPath:indexPath];
+        cell.layer.borderWidth = 1.0f;
+        cell.layer.borderColor = [UIColor blackColor].CGColor;
+        return cell;
+    }
+    
+    
+
+    return nil;
+}
+
+
+
+
+- (void)gameMenu:(UITapGestureRecognizer *)sender
+{
+    CGPoint tapLocation = [sender locationInView:self.collectionView];
+    //NSLog(@"taplocation : %f %f",tapLocation.x,tapLocation.y);
+    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:tapLocation];
+    UICollectionViewCell *cell=[self.collectionView cellForItemAtIndexPath:indexPath];
+    if(cell.tag==100)
+    {
+        [self startGame];
+    }
+    else if(cell.tag==200)
+    {
+        [self performSegueWithIdentifier:@"JoinGame" sender:self];
+    }
+    else if(cell.tag==300)
+    {
+          //[self.navigationController pushViewController:receivedSBViewController animated:YES];
+        [self goToScoreBoard];
+        
+    }
+    else if(cell.tag==400)
+    {
+        [self defaultPresets];
+    }
+   
 }
 
 @end

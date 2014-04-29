@@ -108,6 +108,9 @@ typedef enum {
     if (self) {
         // Custom initialization
     }
+    
+    
+    
     return self;
 }
 
@@ -125,6 +128,12 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(sendMessage)
                                                  name:@"NewPeerJoined"
+                                               object:nil];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(clearTrackBoardWithOnePlayer)
+                                                 name:@"GameStart"
                                                object:nil];
     
     trackingModeDataSource = [[NSMutableDictionary alloc] init];
@@ -347,7 +356,7 @@ PlayerInfo *player;
     [cellData replaceObjectAtIndex:indexPath.row withObject:player];
     [self.tableView reloadData];
     [self sendOneCell:indexPath.row withMessage:@"editing"];
-    [self performSegueWithIdentifier:@"PlayerDetailsSegue" sender: tappedCell];
+    [self performSegueWithIdentifier:@"PlayerDetailsSeguenew" sender: tappedCell];
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
@@ -567,15 +576,14 @@ PlayerInfo *player;
         player.score = receivedPlayer.score;
         player.playerImg = receivedPlayer.playerImg;
         player.isBeingEdited = receivedPlayer.isBeingEdited;
-        
-        NSLog(@"%@ : %d", receivedPlayer.playerName, receivedPlayer.isBeingEdited);
-        //        NSLog(@"%d", temp.isBeingEdited);
+
         [newCellData addObject:player];
     }
     [self.cellData removeAllObjects];
     [self.cellData addObjectsFromArray:newCellData];
     [trackingModeDataSource setObject:cellData forKey:@"trackingModeDS"];
-    [[NSNotificationCenter defaultCenter] postNotification:notificationForScoreBoard];
+    
+   [[NSNotificationCenter defaultCenter] postNotification:notificationForScoreBoard];
     
 }
 
@@ -624,6 +632,8 @@ PlayerInfo *player;
     } else {
         [self replaceModelWith:receivedData];
     }
+    [trackingModeDataSource setObject:self.cellData forKey:@"trackingModeDS"];
+    [[NSNotificationCenter defaultCenter] postNotification:notificationForScoreBoard];
     dispatch_async(dispatch_get_main_queue(),^{[self.tableView reloadData];});
 //    if (deleted) {
 //        [self showAlert:playerInfo.playerName];
@@ -637,7 +647,7 @@ SettingsViewController *settingsController;
 // In a story board-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString:@"PlayerDetailsSegue"]) {
+    if ([segue.identifier isEqualToString:@"PlayerDetailsSeguenew"]) {
         PlayerDetailViewController *playerDetailView = (PlayerDetailViewController *)segue.destinationViewController;
         playerDetailView.receivedPlayerData = cellData;
         playerDetailView.receivedIndexPath = [self.tableView indexPathForCell:sender];
@@ -656,7 +666,10 @@ SettingsViewController *settingsController;
     }
 }
 - (IBAction)goToSettings:(id)sender {
+       
+    
     [self performSegueWithIdentifier:@"SettingsSegue" sender: sender];
+    
 }
 
 
@@ -710,5 +723,28 @@ SettingsViewController *settingsController;
 	[progressAlert dismissWithClickedButtonIndex:-1 animated:YES];
     [timer invalidate];
 }
+
+
+-(void) clearTrackBoardWithOnePlayer
+{
+    [self clearTrackBoard];
+    playerId=1;
+    
+    
+    PlayerInfo *firstPlayer = [[PlayerInfo alloc] init];
+    
+    NSString *combinedName = [NSString stringWithFormat:@"%@%@%@", @"Player (", [NSString stringWithFormat:@"%d",playerId++],@")"];
+    firstPlayer.playerName = combinedName;
+    firstPlayer.score = 0;
+    firstPlayer.playerImg = [UIImage imageNamed:@"unknownperson"];
+    firstPlayer.isBeingEdited = 0;
+    
+    [cellData addObject:firstPlayer];
+    [self.tableView reloadData];
+    
+}
+
+
+
 
 @end

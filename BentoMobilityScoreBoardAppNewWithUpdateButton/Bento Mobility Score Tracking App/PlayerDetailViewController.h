@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface PlayerDetailViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+{
+    IBOutlet UIScrollView *scroller;
+}
 
 @property (strong, nonatomic) IBOutlet UITextField *playerNameTextField;
 

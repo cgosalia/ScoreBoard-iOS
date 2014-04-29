@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F665EB51908DEE100FBF5EE /* CustomSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F665EB41908DEE100FBF5EE /* CustomSegue.m */; };
 		CD10442C18C3E7A100566889 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = CD10442918C3E7A100566889 /* help.png */; };
 		CD10442D18C3E7A100566889 /* minus.png in Resources */ = {isa = PBXBuildFile; fileRef = CD10442A18C3E7A100566889 /* minus.png */; };
 		CD10442E18C3E7A100566889 /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = CD10442B18C3E7A100566889 /* plus.png */; };
@@ -55,6 +56,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9F665EB31908DEE100FBF5EE /* CustomSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSegue.h; sourceTree = "<group>"; };
+		9F665EB41908DEE100FBF5EE /* CustomSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSegue.m; sourceTree = "<group>"; };
 		CD10442918C3E7A100566889 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = help.png; path = images/help.png; sourceTree = "<group>"; };
 		CD10442A18C3E7A100566889 /* minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = minus.png; path = images/minus.png; sourceTree = "<group>"; };
 		CD10442B18C3E7A100566889 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = plus.png; path = images/plus.png; sourceTree = "<group>"; };
@@ -198,6 +201,8 @@
 				CDF7ED2018A72764006C1306 /* TrackingModeViewController.m */,
 				CDF7ED2218A75339006C1306 /* PlayerCell.h */,
 				CDF7ED2318A75339006C1306 /* PlayerCell.m */,
+				9F665EB31908DEE100FBF5EE /* CustomSegue.h */,
+				9F665EB41908DEE100FBF5EE /* CustomSegue.m */,
 			);
 			name = TrackBoard;
 			path = ..;
@@ -421,6 +426,7 @@
 				CDDC61E018D41173003901CB /* ScoreBoardViewController.m in Sources */,
 				CD8AE50518CD9BB00062CB20 /* Stack.m in Sources */,
 				CDED03F918E8C66D0046897F /* PlayerDictionary.m in Sources */,
+				9F665EB51908DEE100FBF5EE /* CustomSegue.m in Sources */,
 				CDDC61E418D42A71003901CB /* PlayerCollectionCell.m in Sources */,
 				CDF7ED2418A75339006C1306 /* PlayerCell.m in Sources */,
 				CD9998D618E6913B00A57DF2 /* SessionController.m in Sources */,

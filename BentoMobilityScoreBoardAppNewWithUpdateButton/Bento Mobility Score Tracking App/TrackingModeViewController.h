@@ -19,5 +19,5 @@
 - (IBAction)goToSettings:(id)sender;
 
 -(void)clearTrackBoard;
-
+-(void)clearTrackBoardWithOnePlayer;
 @end

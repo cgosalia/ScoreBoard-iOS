@@ -9,6 +9,7 @@
 #import "BrowseViewController.h"
 #import "TrackingModeViewController.h"
 #import "ScoreBoardViewController.h"
+#import "DiscoveryInfo.h"
 
 @interface BrowseViewController () // Class extension
 @property (nonatomic, strong) SessionController *sessionController;
@@ -22,7 +23,12 @@ NSMutableOrderedSet *disconnectedGamesNameSet;
 NSInteger *indexPathPeer;
 
 UIAlertView *checkForConnectedGames;
+NSString *switchingToGameName;
+MCPeerID *switchToPeerID;
 
+UIAlertView *progressAlert;
+const double delayToSwitch = 20.0;
+DiscoveryInfo *discoveryInfo;
 
 #pragma mark - View lifecycle
 
@@ -60,6 +66,7 @@ UIAlertView *checkForConnectedGames;
     _sessionController.delegate = nil;
 }
 
+
 #pragma mark - SessionControllerDelegate protocol conformance
 
 - (void)sessionDidChangeState
@@ -67,6 +74,7 @@ UIAlertView *checkForConnectedGames;
     [connectingGamesNameSet removeAllObjects];
     [connectedGamesNameSet removeAllObjects];
     [disconnectedGamesNameSet removeAllObjects];
+    
     MCPeerID *peerToLookUp;
     NSString *gameNameString;
     NSArray *connectingPeers = self.sessionController.connectingPeers;
@@ -99,6 +107,11 @@ UIAlertView *checkForConnectedGames;
         }
     }
     
+    discoveryInfo = [DiscoveryInfo getInstance];
+    NSString *myGame = [[discoveryInfo getDiscoveryInfo] objectForKey:@"gamename"];
+    if ([disconnectedGamesNameSet containsObject:myGame]) {
+        [disconnectedGamesNameSet removeObject:myGame];
+    }
     
     // Ensure UI updates occur on the main queue.
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -118,7 +131,7 @@ UIAlertView *checkForConnectedGames;
 - (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section
 {
     NSInteger rows = 0;
-
+    
     // Each tableView section represents an MCSessionState
     MCSessionState sessionState = section;
     
@@ -165,9 +178,9 @@ UIAlertView *checkForConnectedGames;
     static NSString *cellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-
+    
     cell.textLabel.text = @"None";
-
+    
 	NSArray *games = nil;
     
     // Each tableView section represents an MCSessionState
@@ -193,21 +206,25 @@ UIAlertView *checkForConnectedGames;
             break;
         }
     }
-
+    
     if ((games.count > 0) && (peerIndex < games.count))
     {
         cell.textLabel.text = [games objectAtIndex:peerIndex];
         
     }
     
-  
-	
 	return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MCSessionState sessionState = indexPath.section;
     NSInteger peerIndex = indexPath.row;
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    NSString *cellLabel = cell.textLabel.text;
+    if ([cellLabel isEqualToString:@"None"]) {
+        return;
+    }
+    
     indexPathPeer = indexPath.row;
     NSArray *peers = nil;
     switch (sessionState)
@@ -229,37 +246,73 @@ UIAlertView *checkForConnectedGames;
             NSLog(@"in not connected section: %@", connectedGamesNameSet);
             if(connectedGamesNameSet.count > 0)
             {
-                checkForConnectedGames = [[UIAlertView alloc] initWithTitle:@"Do you wish to continue?"
-                                                           message:@"Do you wish to disconnect from the current game?."
-                                                          delegate: self
-                                                 cancelButtonTitle: @"NO"
-                                                 otherButtonTitles: @"YES",nil];
+                switchingToGameName = [disconnectedGamesNameSet objectAtIndex:peerIndex];
+                checkForConnectedGames = [[UIAlertView alloc] initWithTitle:@"Switch Game?"
+                                                                    message:@"Do you wish to disconnect from the current game and switch to the new game?"
+                                                                   delegate: self
+                                                          cancelButtonTitle: @"NO"
+                                                          otherButtonTitles: @"YES",nil];
                 [checkForConnectedGames show];
                 
             }
-         
-            
-            peers = self.sessionController.disconnectedPeers;
-            if ((peers.count > 0) && (peerIndex < peers.count) && disconnectedGamesNameSet.count > 0)
-            {
-                NSString *gameName = [disconnectedGamesNameSet objectAtIndex:peerIndex];
-                NSArray *peersInGame = [self.sessionController.peerIDToGameMap allKeysForObject:gameName];
-                MCPeerID *peerID = [peersInGame objectAtIndex:0];
-                [_sessionController invitePeerWith:peerID];
+            else{
+                
+                peers = self.sessionController.disconnectedPeers;
+                if ((peers.count > 0) && (peerIndex < peers.count) && disconnectedGamesNameSet.count > 0)
+                {
+                    NSString *gameName = [disconnectedGamesNameSet objectAtIndex:peerIndex];
+                    NSArray *peersInGame = [self.sessionController.peerIDToGameMap allKeysForObject:gameName];
+                    [_sessionController invitePeerWith:[peersInGame objectAtIndex:0]];
+                    //[_sessionController invitePeersWith:peersInGame];
+                }
             }
             break;
         }
     }
 }
 
+- (IBAction)backButton:(id)sender {
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 -(void) alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-        if(buttonIndex == 1)
+    if(buttonIndex == 1)
+    {
+        NSArray *peers=nil;
+        [_sessionController teardownSession];
+        [_sessionController startServices];
+        peers = self.sessionController.disconnectedPeers;
+        if ((peers.count > 0) && disconnectedGamesNameSet.count > 0)
         {
-            [_sessionController teardownSession];
-            
+            NSArray *peersInGame = [self.sessionController.peerIDToGameMap allKeysForObject:switchingToGameName];
+            switchToPeerID = [peersInGame objectAtIndex:0];
+            [self performSelector:@selector(invitePeerAfterDelay) withObject:self afterDelay:delayToSwitch];
+            progressAlert = [[UIAlertView alloc] initWithTitle:@"Please wait"
+                                                       message:[NSString stringWithFormat:@"Disconnecting from current game and joining game: %@", switchingToGameName]
+                                                      delegate: self
+                                             cancelButtonTitle: nil
+                                             otherButtonTitles: nil];
+            [NSTimer scheduledTimerWithTimeInterval: delayToSwitch target: self selector:@selector(checkTimer:) userInfo: nil repeats: YES];
+            UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+            activityView.frame = CGRectMake(139.0f-18.0f, 78.0f, 37.0f, 37.0f);
+            [progressAlert addSubview:activityView];
+            [activityView startAnimating];
+            [progressAlert show];
+            //[_sessionController invitePeerWith:peerID];
+            //[_sessionController invitePeersWith:peersInGame];
         }
     }
+}
 
+-(void) invitePeerAfterDelay {
+    [_sessionController invitePeerWith:switchToPeerID];
+}
+
+- (void) checkTimer:(NSTimer *)timer
+{
+	[progressAlert dismissWithClickedButtonIndex:-1 animated:YES];
+    [timer invalidate];
+}
 
 @end

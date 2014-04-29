@@ -11,7 +11,10 @@
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 #import "ScoreBoardViewController.h"
 
-@interface SettingsViewController : UIViewController<UITextViewDelegate>
+@interface SettingsViewController : UIViewController<UITextViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+/*{
+    IBOutlet UIScrollView *scroller;
+}*/
 
 
 @property (strong, nonatomic) UITextField *gameName;
@@ -27,5 +30,9 @@
 @property (atomic) IBOutlet UITableView *receivedTableView;
 
 - (NSString *) stringForGameNameAt:(int)section;
+
+- (IBAction)back:(id)sender;
+
+@property (atomic) IBOutlet UICollectionView *collectionView;
 
 @end

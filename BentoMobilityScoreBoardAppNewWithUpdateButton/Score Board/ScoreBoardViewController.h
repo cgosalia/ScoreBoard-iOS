@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface ScoreBoardViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
-
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property(nonatomic, strong) NSMutableArray *dataSrc;
+
+- (IBAction)goBack:(id)sender;
 
 - (void)updateScoreBoard:(NSNotification *)notification;
 

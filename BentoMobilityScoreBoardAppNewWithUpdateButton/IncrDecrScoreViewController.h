@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface IncrDecrScoreViewController : UIViewController
+{
+    IBOutlet UIScrollView *scroller;
+}
 
 // True indicate increment and False to decrement
 @property (atomic) BOOL incrementOrDecrementFlag;
